@@ -1,0 +1,4769 @@
+openapi: 3.0.0
+info:
+  title: Backpack Exchange API
+  description: "\n# Introduction\n\nWelcome to the Backpack Exchange API. This API is for programmatic trade execution. All of the endpoints require requests to be signed with an ED25519 keypair for authentication.\n\nThe API is hosted at `https://api.backpack.exchange/` and the WS API is hosted at `wss://ws.backpack.exchange/`.\n\n# Authentication\n\n\n## Signing requests\n\nSigned requests are required for any API calls that mutate state. Additionally, some read only requests can be performed by signing or via session authentication.\n\nSigned requests require the following additional headers:\n\n- `X-Timestamp` - Unix time in milliseconds that the request was sent.\n- `X-Window` - Time window in milliseconds that the request is valid for, default is `5000` and maximum is `60000`.\n- `X-API-Key` - Base64 encoded verifying key of the ED25519 keypair.\n- `X-Signature` - Base64 encoded signature generated according to the instructions below.\n\nTo generate a signature perform the following:\n\n1) The key/values of the request body or query parameters should be ordered alphabetically and then turned into query string format.\n\n2) Append the header values for the timestamp and receive window to the above generated string in the format `&timestamp=<timestamp>&window=<window>`. If no `X-Window` header is passed the default value of `5000` still needs to be added to the signing string.\n\nEach request also has an instruction type, valid instructions are:\n\n```\nbalanceQuery\ndepositAddressQuery\ndepositQueryAll\nfillHistoryQueryAll\norderCancel\norderCancelAll\norderExecute\norderHistoryQueryAll\norderQuery\norderQueryAll\nwithdraw\nwithdrawalQueryAll\n```\n\nThe correct instruction type should be prefixed to the signing string. The instruction types for each request are documented alongside the request.\n\nFor example, an API request to cancel an order with the following body:\n\n```json\n{\n    \"orderId\": 28\n    \"symbol\": \"BTC_USDT\",\n}\n```\n\nWould require the following to be signed:\n\n```text\ninstruction=orderCancel&orderId=28&symbol=BTC_USDT&timestamp=1614550000000&window=5000\n```\n\nIf the API endpoint requires query parameters instead of a request body, the same procedure should be used on the query parameters. If the API endpoint does not have a request body or query parameters, only the timestamp and receive window need to be signed.\n\nThis message should be signed using the private key of the ED25519 keypair that corresponds to the public key in the `X-API-Key` header. The signature should then be base64 encoded and submitted in the `X-Signature` header.\n\n\n<br /><br />\n\n---\n\n# Changelog\n\n## 2024-05-14\n\n- Add `executedQuantity` and `executedQuoteQuantity` to order history endpoint.\n\n## 2024-05-03\n\n- Add single market order update stream `account.orderUpdate.<symbol>`.\n\n## 2024-05-02\n\n- Add optional `from` and `to` timestamp to get withdrawals endpoint.\n\n## 2024-05-01\n\n- Add optional `from` and `to` timestamp to get deposits endpoint.\n\n## 2024-03-14\n\n- Add optional `orderId` filter to order history endpoint.\n- Add optional `from` and `to` timestamp to order fills endpoint.\n\n## 2024-02-28\n\n- Return the withdrawal in request withdrawal response.\n\n## 2024-02-24\n\n- An additional field `t` was added to the private order update stream. It is the `trade_id` of the fill that generated the order update.\n- Added a maximum value for the `X-Window` header of `60000`.\n\n## 2024-01-16\n\n### Breaking\n\n- A new websocket API is available at `wss://ws.backpack.exchange`. Please see the documentation. The previous API remains on the same endpoint and will be deprecated after a migration period. The new API changes the following:\n  - Subscription endpoint is now `wss://ws.backpack.exchange` instead of `wss://ws.backpack.exchange/stream`.\n  - Can subscribe and unsubscribe to/from multiple streams by passing more than one in the `params` field.\n  - Signature should now be sent in a separate `signature` field.\n  - Signature instruction changed from `accountQuery` to `subscribe`.\n  - Event and engine timestamps are now in `microseconds` instead of `milliseconds`.\n  - Add engine timestamp to `bookTicker`, `depth`, and `order` streams.\n  - Add quote asset volume to ticker stream.\n  - Add sequential trade id to trade stream.\n  - Rename the event type in the depth stream from `depthEvent` to `depth`.\n  - Change the format of streams from `<symbol>@<type>` to `<type>.<symbol>` or `kline.<interval>.<symbol>` for K-lines.\n  - Flatten the K-Line in the K-line stream so its not nested.\n\n## 2024-01-11\n\n### Breaking\n\n- Replaced `identifier` field on deposits with `transaction_hash` and `provider_id`.\n  This aims to provide clearer representation of the field, particularly for fiat deposits.\n- Removed duplicate `pending` values from the `WithdrawalStatus` and `DepositStatus` spec enum.\n\n\n<br /><br />\n\n---\n    "
+  version: '1.0'
+servers:
+- url: https://api.backpack.exchange
+tags:
+- name: BorrowLend
+  description: Borrow lending
+- name: Capital
+  description: Capital management.
+- name: Funding
+  description: Futures funding.
+- name: History
+  description: Historical account data.
+- name: Markets
+  description: Public market data.
+- name: Order
+  description: Order management.
+- name: Position
+  description: Exchange system status.
+- name: Streams
+  description: |-
+    # Usage
+
+    ## Subscribing
+
+    To use the websocket API, connect to
+    `wss://ws.backpack.exchange`.
+
+    To subscribe to a stream with the name `stream` send a text frame
+    over the websocket connection with the following JSON payload:
+
+    ```
+    {
+      "method": "SUBSCRIBE",
+      "params": ["stream"]
+    }
+    ```
+
+    Similarly, to unsubscribe from a stream with the name `stream`:
+
+    ```
+    {
+      "method": "UNSUBSCRIBE",
+      "params": ["stream"]
+    }
+    ```
+
+    You can subscribe or unsubscribe from multiple streams if you include
+    more than one in the params field.
+
+    All data from streams is wrapped in a JSON object of the following form:
+
+    ```
+    {
+      "stream": "<stream>",
+      "data": "<payload>"
+    }
+    ```
+
+    The following command can be used to test subscribing to a stream:
+    ```
+    (sleep 1; \
+    echo '{"method":"SUBSCRIBE","params":["depth.SOL_USDC"]}';\
+    cat) |\
+    wscat -c wss://ws.backpack.exchange
+    ```
+    The payloads for each stream time are outlined below.
+
+    ## Timing
+
+    Timestamps are in microseconds (except for the K-line start and end
+    times). The event timestamp is the time the event was emitted from
+    the websocket server, and the engine timestamp is the time the event
+    was generated by the matching engine.
+
+    If a message aggregates more than one event (for example, a depth
+    message), the engine timestamp will be the timestamp of the last
+    matching engine event.
+
+    ## Keeping the connection alive
+
+    To keep the connection alive, a `Ping` frame will be sent from the
+    server every 60s, and a `Pong` is expected to be received from the
+    client. If a `Pong` is not received within 120s, a `Close` frame will be
+    sent and the connection will be closed.
+
+    If the server is shutting down, a `Close` frame will be sent and then a
+    grace period of 30s will be given before the connection is closed. The
+    client should reconnect after receiving the `Close` frame. The client
+    will be reconnected to a server that is not shutting down.
+
+    # Private
+
+    Subscribing to a private stream requires a valid signature generated
+    from an ED25519 keypair. For stream subscriptions, the signature
+    should be of the form:
+
+    ```text
+    instruction=subscribe&timestamp=1614550000000&window=5000
+    ```
+
+    Where the timestamp and window are in milliseconds.
+
+    Private streams are prefixed with `account.` and require signature data
+    to be submitted in the subscribe parameters. The verifying key and
+    signature should be base64 encoded.
+
+    ```
+    {
+      "method": "SUBSCRIBE",
+      "params": ["stream"],
+      "signature": ["<verifying key>", "<signature>", "<timestamp>", "<window>"]
+    }
+    ````
+
+    ## Order update stream
+
+    On any mutation to an order the order will be pushed to the order update
+    stream. The event type of the order update will be one of the
+    following:
+
+    - `orderAccepted`
+    - `orderCancelled`
+    - `orderExpired`
+    - `orderFill`
+
+    Stream name format for all markets: `account.orderUpdate`
+    Stream name format for single market: `account.orderUpdate.<symbol>`
+
+    ```
+    {
+      "e": "orderAccepted",   // Event type
+      "E": 1694687692980000,  // Event time in microseconds
+      "s": "SOL_USD",         // Symbol
+      "c": 123,               // Client order ID
+      "S": "Bid",             // Side
+      "o": "LIMIT",           // Order type
+      "f": "GTC",             // Time in force
+      "q": "32123",           // Quantity
+      "Q": "32123",           // Quantity in quote
+      "p": "20",              // Price
+      "P": "21",              // Trigger price
+      "X": "Filled",          // Order state
+      "i": "1111343026172067" // Order ID
+      "t": 567,               // Trade ID
+      "l": "1.23",            // Fill quantity
+      "z": "321",             // Executed quantity
+      "Z": "123",             // Executed quantity in quote
+      "L": "20",              // Fill price
+      "m": true,              // Whether the order was maker
+      "n": "23",              // Fee
+      "N": "USD",             // Fee symbol
+      "V": "RejectTaker",     // Self trade prevention
+      "T": 1694687692989999   // Engine timestamp in microseconds
+    }
+    ```
+
+    Some fields are conditional on the order settings or event type:
+
+    - `c` - Only present if the order has a client order ID.
+    - `q` - Only present if the order has a quantity set.
+    - `Q` - Only present if the order is reverse market order.
+    - `p` - Only present if the order is a limit order.
+    - `P` - Only present if the order is a trigger order.
+    - `t` - Only present if the event is a `orderFill` event.
+    - `l` - Only present if the event is a `orderFill` event.
+    - `L` - Only present if the event is a `orderFill` event.
+    - `m` - Only present if the event is a `orderFill` event.
+    - `n` - Only present if the event is a `orderFill` event.
+    - `N` - Only present if the event is a `orderFill` event.
+
+    # Public
+
+    ## K-Line stream
+
+    Stream name format: `kline.<interval>.<symbol>`
+
+    ```
+    {
+      "e": "kline",           // Event type
+      "E": 1694687692980000,  // Event time in microseconds
+      "s": "SOL_USD",         // Symbol
+      "t": 123400000,         // K-Line start time in seconds
+      "T": 123460000,         // K-Line close time in seconds
+      "o": "18.75",           // Open price
+      "c": "19.25",           // Close price
+      "h": "19.80",           // High price
+      "l": "18.50",           // Low price
+      "v": "32123",           // Base asset volume
+      "n": 93828,             // Number of trades
+      "X": false              // Is this k-line closed?
+    }
+    ```
+
+    ## Ticker stream
+
+    The ticker stream pushes 24hr rolling statistics for a single symbol.
+
+    Stream name format: `ticker.<symbol>`
+
+    ```
+    {
+      "e": "ticker",          // Event type
+      "E": 1694687692980000,  // Event time in microseconds
+      "s": "SOL_USD",         // Symbol
+      "o": "18.75",           // First price
+      "c": "19.24",           // Last price
+      "h": "19.80",           // High price
+      "l": "18.50",           // Low price
+      "v": "32123",           // Base asset volume
+      "V": "928190",          // Quote asset volume
+      "n": 93828              // Number of trades
+    }
+    ```
+
+    ## Trade stream
+
+    Contains public trade data for a single symbol. The trade ID is a
+    sequential number specific to the symbol.
+
+    Stream name format: `trade.<symbol>`
+    ```
+    {
+      "e": "trade",                   // Event type
+      "E": 1694688638091000,          // Event time in microseconds
+      "s": "SOL_USDC",                // Symbol
+      "p": "18.68",                   // Price
+      "q": "0.122",                   // Quantity
+      "b": "111063114377265150",      // Buyer order ID
+      "a": "111063114585735170",      // Seller order ID
+      "t": 12345,                     // Trade ID
+      "T": 1694688638089000,          // Engine timestamp in microseconds
+      "m": true                       // Is the buyer the maker?
+    }
+    ```
+
+    ## Depth stream
+
+    Contains incremental depth updates. Each depth update has the absolute
+    value of the depths at the given levels, and only changes when the
+    depth has changed.
+
+    To obtain an initial snapshot of the depth, the client should query the
+    [REST API](https://docs.backpack.exchange/#tag/Markets/operation/get_depth).
+
+    The depth stream will push updates as quickly as possible, but under
+    load it may aggregate more than one update into a single event. In
+    this case the `U` and `u` fields will not be the same. The `U` field
+    is the first update ID in the event, and the `u` field is the final
+    update ID in the event.
+
+    There is an alternative depth stream that aggregates updates into a
+    single message over a 200ms period instead of pushing updates in
+    realtime. This is useful for reducing network traffic.
+
+    Updates are sequential, so `U` will always be `u + 1` from the previous
+    message. If this is not the case, the client should assume that the
+    depth has been invalidated and requery the REST API.
+
+    Stream name format: `depth.<symbol>` (realtime)
+    Stream name format: `depth.200ms.<symbol>` (aggregated)
+    ```
+    {
+      "e": "depth",           // Event type
+      "E": 1694687965941000,  // Event time in microseconds
+      "s": "SOL_USDC",        // Symbol
+      "a": [                  // Asks
+        [
+          "18.70",
+          "0.000"
+        ]
+      ],
+      "b": [                  // Bids
+        [
+          "18.67",
+          "0.832"
+        ],
+        [
+          "18.68",
+          "0.000"
+        ]
+      ],
+      "U": 94978271,          // First update ID in event
+      "u": 94978271,          // Final update ID in event
+      "T": 1694687965940999   // Engine timestamp in microseconds
+    }
+    ```
+
+    ## Book Ticker stream
+
+    Stream name format: `bookTicker.<symbol>`
+    ```
+    {
+      "e": "bookTicker",          // Event type
+      "E": 1694687965941000,      // Event time in microseconds
+      "s": "SOL_USDC",            // Symbol
+      "a": "18.70",               // Inside ask price
+      "A": "1.000",               // Inside ask quantity
+      "b": "18.67",               // Inside bid price
+      "B": "2.000",               // Inside bid quantity
+      "u": "111063070525358080",  // Update ID of event
+      "T": 1694687965940999       // Engine timestamp in microseconds
+    }
+    ```
+- name: System
+  description: Account position summary.
+- name: Trades
+  description: Public trade data.
+paths:
+  /api/v1/borrow/positions:
+    get:
+      tags:
+      - BorrowLend
+      summary: Get borrow lend positions.
+      description: |-
+        Retrieves account borrow lend positions.
+
+        **Instruction:** `borrowLendPositionQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/BorrowLendPosition'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_borrow_lends
+  /api/v1/borrow:
+    post:
+      tags:
+      - BorrowLend
+      summary: Create a borrow of an asset from the lending book.
+      description: '**Instruction:** `borrowCreate`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/BorrowCreatePayload'
+        required: true
+      responses:
+        '200':
+          description: Borrow created.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: ''
+        '503':
+          description: System under maintenance.
+      operationId: create_borrow
+  /api/v1/borrow/close:
+    post:
+      tags:
+      - BorrowLend
+      summary: |-
+        Repay a borrow of an asset from the lending book. If the borrow is being
+        repaid using USDC, a market order will be executed.
+      description: '**Instruction:** `marketCloseBorrow`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/BorrowRepayPayload'
+        required: true
+      responses:
+        '200':
+          description: Borrow repay created.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: ''
+        '503':
+          description: System under maintenance.
+      operationId: close_borrow
+  /api/v1/lend:
+    post:
+      tags:
+      - BorrowLend
+      summary: Create a lend of an asset to the lending book.
+      description: '**Instruction:** `lendCreate`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/LendCreatePayload'
+        required: true
+      responses:
+        '200':
+          description: Lend created.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: ''
+        '503':
+          description: System under maintenance.
+      operationId: create_lend
+  /api/v1/lend/redeem:
+    post:
+      tags:
+      - BorrowLend
+      summary: Redeem a lend of an asset to the lending book.
+      description: '**Instruction:** `lendRedeem`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/LendRedeemPayload'
+        required: true
+      responses:
+        '200':
+          description: Lend redeem created.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: ''
+        '503':
+          description: System under maintenance.
+      operationId: redeem_lend
+  /api/v1/capital/interest:
+    get:
+      tags:
+      - BorrowLend
+      summary: Get borrow lending interest payments.
+      description: |-
+        User's interest payments for borrow lending.
+
+        **Instruction:** `interestPaymentHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: int32
+        in: query
+        description: Filter for a subaccount.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterestPayment'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: ''
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: ''
+        '500':
+          description: ''
+      operationId: get_borrow_lend_payments
+  /api/v1/borrowLend/history:
+    get:
+      tags:
+      - BorrowLend
+      summary: |-
+        Get borrow lending movement history associated to creation and repay or
+        redeem.
+      description: |-
+        User's movements for borrow lending.
+
+        **Instruction:** `borrowLendHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: |-
+          Time the request is valid for in milliseconds (default
+              `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: int32
+        in: query
+        description: Filter for a subaccount.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Asset symbol to query. If not set, all assets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: type
+        schema:
+          $ref: '#/components/schemas/BorrowLendSide'
+        in: query
+        description: Filter to return movements for either borrows or lends.
+        required: false
+        deprecated: false
+        explode: true
+      - name: direction
+        schema:
+          $ref: '#/components/schemas/BorrowLendDirection'
+        in: query
+        description: |-
+          Filter to return movements associated to creations or
+          repayments/redemptions.
+        required: false
+        deprecated: false
+        explode: true
+      - name: source
+        schema:
+          $ref: '#/components/schemas/BorrowLendSource'
+        in: query
+        description: Filter to return movements of a particular source.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowLendMovement'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: ''
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: ''
+      operationId: get_borrow_lend_history
+  /api/v1/lending/summary:
+    get:
+      tags:
+      - BorrowLend
+      summary: Get borrow lending books summary.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowLendSummary'
+        '500':
+          description: Internal server error.
+      operationId: get_lending_summary
+  /api/v1/lending/summary/history:
+    get:
+      tags:
+      - BorrowLend
+      summary: Get historical borrow lending book summaries
+      parameters:
+      - name: interval
+        schema:
+          $ref: '#/components/schemas/HistoricalBorrowLendSummaryInterval'
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowLendSummary'
+        '500':
+          description: Internal server error.
+      operationId: get_historical_lending_summaries
+  /api/v1/capital:
+    get:
+      tags:
+      - Capital
+      summary: Get balances.
+      description: |-
+        Retrieves account balances and the state of the balances (locked or
+        available).
+
+        Locked assets are those that are currently in an open order.
+
+        **Instruction:** `balanceQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Balance'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_balances
+  /wapi/v1/capital/deposits:
+    get:
+      tags:
+      - Capital
+      summary: Get deposits.
+      description: |-
+        Retrieves deposit history.
+
+        **Instruction:** `depositQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: from
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to minimum time (milliseconds).
+        required: false
+        deprecated: false
+        explode: true
+      - name: to
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to maximum time (milliseconds).
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deposit'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_deposits
+  /wapi/v1/capital/deposit/address:
+    get:
+      tags:
+      - Capital
+      summary: Get deposit address.
+      description: |-
+        Retrieves the user specific deposit address if the user were to deposit
+        on the specified blockchain.
+
+        **Instruction:** `depositAddressQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: blockchain
+        schema:
+          $ref: '#/components/schemas/Blockchain'
+        in: query
+        description: Blockchain symbol to get a deposit address for.
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/DepositAddress'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+        '500':
+          description: Internal server error.
+      operationId: get_deposit_address
+  /wapi/v1/history/orders:
+    get:
+      tags:
+      - History
+      summary: Get order history.
+      description: |-
+        Retrieves the order history for the user. This includes orders that have
+        been filled and are no longer on the book. It may include orders
+        that are on the book, but the `/orders` endpoint contains more up to
+        date data.
+
+        **Instruction:** `orderHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: orderId
+        schema:
+          type: string
+        in: query
+        description: Filter to the given order.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_order_history
+  /wapi/v1/history/fills:
+    get:
+      tags:
+      - History
+      summary: Get fill history.
+      description: |-
+        Retrieves historical fills, with optional filtering for a specific order
+        or symbol.
+
+        **Instruction:** `fillHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: orderId
+        schema:
+          type: string
+        in: query
+        description: Filter to the given order.
+        required: false
+        deprecated: false
+        explode: true
+      - name: from
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to minimum time (milliseconds).
+        required: false
+        deprecated: false
+        explode: true
+      - name: to
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to maximum time (milliseconds).
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: fillType
+        schema:
+          $ref: '#/components/schemas/FillType'
+        in: query
+        description: Filter to return fills for different fill types
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderFill'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_fills
+  /api/v1/collateralSummary:
+    get:
+      tags:
+      - Capital
+      summary: Get collateral summary.
+      description: |-
+        Retrieves collateral information for an account.
+
+        **Instruction:** `collateralSummaryQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MarginAccountSummary'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: get_collateral_summary
+  /api/v1/insuranceFundBalance:
+    get:
+      tags:
+      - Capital
+      summary: Get insurance fund balance.
+      description: Retrieves the current balance of the insurance fund account
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Balance'
+      operationId: get_insurance_fund_balance
+  /api/v1/account/leverageLimit:
+    patch:
+      tags:
+      - Capital
+      summary: Update account leverage limit settings.
+      description: '**Instruction:** `updateAccountLeverageLimit`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountLeverageLimitRequest'
+        required: true
+      responses:
+        '200':
+          description: Account leverage limit updated.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: ''
+        '503':
+          description: System under maintenance.
+      operationId: update_account_leverage_limit
+    get:
+      tags:
+      - Capital
+      summary: Get account leverage limit for a main account or subaccount.
+      description: '**Instruction:** `getAccountLeverageLimit`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/AccountLeverageLimit'
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_account_leverage_limit
+  /api/v1/assets:
+    get:
+      tags:
+      - Markets
+      summary: Get assets.
+      description: Retrieves all the assets that are supported by the exchange.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketAsset'
+        '500':
+          description: Internal server error.
+      operationId: get_assets
+  /api/v1/markets:
+    get:
+      tags:
+      - Markets
+      summary: Get markets.
+      description: Retrieves all the markets that are supported by the exchange.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Market'
+        '500':
+          description: Internal server error.
+      operationId: get_markets
+  /api/v1/market:
+    get:
+      tags:
+      - Markets
+      summary: Get market.
+      description: Retrieves a market supported by the exchange.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Market'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_market
+  /api/v1/ticker:
+    get:
+      tags:
+      - Markets
+      summary: Get ticker.
+      description: |-
+        Retrieves summarised statistics for the last 24 hours for the given
+        market symbol.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Ticker'
+        '204':
+          description: Not found.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_ticker
+  /api/v1/tickers:
+    get:
+      tags:
+      - Markets
+      summary: Get tickers.
+      description: |-
+        Retrieves summarised statistics for the last 24 hours for all market
+        symbols.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ticker'
+        '500':
+          description: Internal server error.
+      operationId: get_tickers
+  /api/v1/depth:
+    get:
+      tags:
+      - Markets
+      summary: Get depth.
+      description: Retrieves the order book depth for a given market symbol.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Depth'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: ''
+      operationId: get_depth
+  /api/v1/klines:
+    get:
+      tags:
+      - Markets
+      summary: Get K-lines.
+      description: |-
+        Get K-Lines for the given market symbol, optionally providing a
+        `startTime` and `endTime`. If no `startTime` is provided, the interval
+        duration will be used. If no `endTime` is provided, the current time
+        will be used.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      - name: interval
+        schema:
+          $ref: '#/components/schemas/KlineInterval'
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      - name: startTime
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: UTC timestamp in seconds.
+        required: true
+        deprecated: false
+        explode: true
+      - name: endTime
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: UTC timestamp in seconds. Set to the current time if not provided.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Kline'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_klines
+  /api/v1/markPrice:
+    get:
+      tags:
+      - Markets
+      summary: Get mark price.
+      description: |-
+        Retrieves mark price, index price and funding rate for the given
+        market symbol.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MarkPrice'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_mark_price
+  /api/v1/openInterest:
+    get:
+      tags:
+      - Markets
+      summary: Get open interest.
+      description: Retrieves the current open interest for the given market.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/OpenInterest'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: get_open_interest
+  /api/v1/order:
+    get:
+      tags:
+      - Order
+      summary: Get open order.
+      description: |-
+        Retrieves an open order from the order book. This only returns the order
+        if it is resting on the order book (i.e. has not been completely filled,
+        expired, or cancelled).
+
+        One of `orderId` or `clientId` must be specified. If both are specified
+        then the request will be rejected.
+
+        **Instruction:** `orderQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: clientId
+        schema:
+          type: integer
+          format: uint32
+        in: query
+        description: Client ID of the order.
+        required: false
+        deprecated: false
+        explode: true
+      - name: orderId
+        schema:
+          type: string
+        in: query
+        description: ID of the order.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol for the order.
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/OrderType'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '404':
+          description: Order not found.
+      operationId: get_order
+    post:
+      tags:
+      - Order
+      summary: Execute order.
+      description: |-
+        Submits an order to the matching engine for execution.
+
+        **Instruction:** `orderExecute`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/OrderExecutePayload'
+        required: true
+      responses:
+        '200':
+          description: Order executed.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/OrderType'
+        '202':
+          description: Request accepted but not yet executed.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/OrderAck'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '503':
+          description: System under maintenance.
+      operationId: execute_order
+    delete:
+      tags:
+      - Order
+      summary: Cancel open order.
+      description: |-
+        Cancels an open order from the order book.
+
+        One of `orderId` or `clientId` must be specified. If both are specified
+        then the request will be rejected.
+
+        **Instruction:** `orderCancel`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/OrderCancelPayload'
+        required: true
+      responses:
+        '200':
+          description: Order cancelled.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/OrderType'
+        '202':
+          description: Request accepted but not yet executed.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '503':
+          description: System under maintenance.
+      operationId: cancel_order
+  /api/v1/orders:
+    get:
+      tags:
+      - Order
+      summary: Get open orders.
+      description: |-
+        Retrieves all open orders. If a symbol is provided, only open orders for
+        that market will be returned, otherwise all open orders are
+        returned.
+
+        **Instruction:** `orderQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: The symbol of the market for the orders.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderType'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: get_open_orders
+    delete:
+      tags:
+      - Order
+      summary: Cancel open orders.
+      description: |-
+        Cancels all open orders on the specified market.
+
+        **Instruction:** `orderCancelAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/OrderCancelAllPayload'
+        required: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderType'
+        '202':
+          description: Request accepted but not yet executed.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '503':
+          description: System under maintenance.
+      operationId: cancel_open_orders
+  /api/v1/status:
+    get:
+      tags:
+      - System
+      summary: Status.
+      description: Get the system status, and the status message, if any.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/StatusAndMessage'
+      operationId: get_status
+  /api/v1/ping:
+    get:
+      tags:
+      - System
+      summary: Ping.
+      description: Responds with `pong`.
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: ping
+  /api/v1/time:
+    get:
+      tags:
+      - System
+      summary: Get system time.
+      description: Retrieves the current system time.
+      responses:
+        '200':
+          description: ''
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: get_time
+  /api/v1/position:
+    get:
+      tags:
+      - Position
+      summary: Get account positions.
+      description: |-
+        Retrieves account position summary.
+        **Instruction:** `positionQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Returns account position summary
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/AccountPositionSummary'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: ''
+        '500':
+          description: ''
+      operationId: get_positions
+  /api/v1/capital/pnl:
+    get:
+      tags:
+      - Position
+      summary: Get pnl payments.
+      description: |-
+        Users pnl payment history for futures.
+
+        **Instruction:** `pnlHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        description: Filter for a subaccount.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PnlPayment'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_pnl_payments
+  /api/v1/capital/funding:
+    get:
+      tags:
+      - Funding
+      summary: Get funding payments.
+      description: |-
+        Users funding payment history for futures.
+
+        **Instruction:** `fundingHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        description: Filter for a subaccount.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FundingPayment'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_funding_payments
+  /api/v1/trades:
+    get:
+      tags:
+      - Trades
+      summary: Get recent trades.
+      description: |-
+        Retrieve the most recent trades for a symbol. This is public data and
+        is not specific to any account.
+
+        The maximum available recent trades is `1000`. If you need more than
+        `1000` trades use the historical trades endpoint.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query fills for.
+        required: true
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        description: Limit the number of fills returned. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trade'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: get_recent_trades
+  /api/v1/trades/history:
+    get:
+      tags:
+      - Trades
+      summary: Get historical trades.
+      description: |-
+        Retrieves all historical trades for the given symbol. This is public
+        trade data and is not specific to any account.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        required: true
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Limit the number of trades returned. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trade'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+      operationId: get_historical_trades
+  /wapi/v1/capital/withdrawals:
+    get:
+      tags:
+      - Capital
+      summary: Get withdrawals.
+      description: |-
+        Retrieves withdrawal history.
+
+        **Instruction:** `withdrawalQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: from
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to minimum time (milliseconds).
+        required: false
+        deprecated: false
+        explode: true
+      - name: to
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to maximum time (milliseconds).
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Withdrawal'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+      operationId: get_withdrawals
+    post:
+      tags:
+      - Capital
+      summary: Request withdrawal.
+      description: |-
+        Requests a withdrawal from the exchange.
+
+        The `twoFactorToken` field is required if the withdrawal address is not
+        an address that is configured in the address book to not require
+        2FA. These addresses can be configured [here](https://backpack.exchange/settings/withdrawal-addresses?twoFactorWithdrawalAddress=true).
+
+        **Instruction:** `withdraw`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/AccountWithdrawalPayload'
+        required: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/Withdrawal'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '403':
+          description: Forbidden.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '429':
+          description: Too many requests.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+        '503':
+          description: System under maintenance.
+      operationId: request_withdrawal
+components:
+  schemas:
+    AccountLeverageLimit:
+      type: object
+      required:
+      - leverageLimit
+      properties:
+        leverageLimit:
+          type: string
+          format: decimal
+          description: |-
+            If true then automatically borrows if needed during
+            collateral reconciliation and automatically repays borrows if needed
+            during balance increases.
+    AccountPositionSummary:
+      type: object
+      required:
+      - isLiquidating
+      - positions
+      - positionNotionalWeighted
+      properties:
+        isLiquidating:
+          type: boolean
+          description: True if the account is being liquidated.
+        positions:
+          type: array
+          description: Open positions summary.
+          items:
+            $ref: '#/components/schemas/PositionWithMargin'
+        positionLimit:
+          type: string
+          format: decimal
+          description: If None, uses the global default position limit.
+        positionNotionalWeighted:
+          type: string
+          format: decimal
+          description: The total weighted notional value of all positions.
+    AccountWithdrawalPayload:
+      type: object
+      required:
+      - address
+      - blockchain
+      - quantity
+      - symbol
+      properties:
+        address:
+          type: string
+          description: Address to withdraw to.
+        blockchain:
+          allOf:
+          - $ref: '#/components/schemas/Blockchain'
+          - description: Blockchain to withdraw on.
+        clientId:
+          type: string
+          description: Custom client id.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity to withdraw.
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: Symbol of the asset to withdraw.
+        twoFactorToken:
+          type: string
+          description: Issued two factor token.
+    Asset:
+      type: string
+      enum:
+      - BTC
+      - ETH
+      - SOL
+      - USDC
+      - USDT
+      - PYTH
+      - JTO
+      - BONK
+      - HNT
+      - MOBILE
+      - WIF
+      - JUP
+      - RENDER
+      - WEN
+      - W
+      - TNSR
+      - PRCL
+      - SHARK
+      - KMNO
+      - MEW
+      - BOME
+      - RAY
+      - HONEY
+      - SHFL
+      - BODEN
+      - IO
+      - DRIFT
+      - PEPE
+      - SHIB
+      - LINK
+      - UNI
+      - ONDO
+      - FTM
+      - MATIC
+      - STRK
+      - BLUR
+      - WLD
+      - GALA
+      - NYAN
+      - HLG
+      - MON
+      - ZKJ
+      - MANEKI
+      - HABIBI
+      - UNA
+      - ZRO
+      - ZEX
+      - AAVE
+      - LDO
+      - MOTHER
+      - CLOUD
+      - MAX
+      - POL
+    Balance:
+      type: object
+      required:
+      - available
+      - locked
+      - staked
+      properties:
+        available:
+          type: string
+          format: decimal
+          description: Funds available for use.
+        locked:
+          type: string
+          format: decimal
+          description: |-
+            Funds that are locked because they are in an order that has not been
+            executed.
+        staked:
+          type: string
+          format: decimal
+          description: Funds that are staked.
+    Blockchain:
+      type: string
+      enum:
+      - Solana
+      - Ethereum
+      - Polygon
+      - Bitcoin
+    BorrowCreatePayload:
+      type: object
+      required:
+      - quantity
+      - symbol
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          description: The borrow quantity
+        symbol:
+          type: string
+          description: The asset for the borrow.
+    BorrowLendDirection:
+      type: string
+      enum:
+      - increase
+      - decrease
+    BorrowLendMovement:
+      type: object
+      required:
+      - userId
+      - symbol
+      - quantity
+      - eventType
+      - direction
+      - source
+      - timestamp
+      properties:
+        userId:
+          type: integer
+          format: int32
+          description: User id of the account the movement is associated with.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Id of the subaccount the event is associated with, if any.
+        symbol:
+          type: string
+          description: The symbol of the market the event is associated with.
+        quantity:
+          type: string
+          format: decimal
+          description: Amount of the movement.
+        eventType:
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendSide'
+          - description: Type of movement.
+        direction:
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendDirection'
+          - description: Direction of the movement.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendSource'
+          - description: Source of the movement.
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: The timestamp for the movement.
+    BorrowLendPosition:
+      type: object
+      required:
+      - netQuantity
+      - mmfFactor
+      - mmfBase
+      - symbol
+      properties:
+        netQuantity:
+          type: string
+          format: decimal
+          description: |-
+            Funds in/from the borrow-lending-book.
+
+            Negative if borrow. Positive if lend.
+        mmfFactor:
+          type: string
+          format: decimal
+          description: The MMF factor used for the position.
+        mmfBase:
+          type: string
+          format: decimal
+          description: Lower bound for the MMF for this position.
+        symbol:
+          type: string
+          description: Symbol of the asset.
+    BorrowLendPositionWithMargin:
+      type: object
+      required:
+      - imf
+      - imfBase
+      - imfFactor
+      - netQuantity
+      - markPrice
+      - mmf
+      - mmfBase
+      - mmfFactor
+      - netExposureQuantity
+      - netExposureNotional
+      - symbol
+      properties:
+        imf:
+          type: string
+          format: decimal
+          description: Initial margin fraction for this position.
+        imfBase:
+          type: string
+          format: decimal
+        imfFactor:
+          type: string
+          format: decimal
+        netQuantity:
+          type: string
+          format: decimal
+          description: Net quantity of the position, positive if long, negative if short.
+        markPrice:
+          type: string
+          format: decimal
+          description: Mark price of the underlying asset.
+        mmf:
+          type: string
+          format: decimal
+          description: Maintenance margin fraction for this position.
+        mmfBase:
+          type: string
+          format: decimal
+        mmfFactor:
+          type: string
+          format: decimal
+        netExposureQuantity:
+          type: string
+          format: decimal
+          description: |-
+            Net exposure of the position, positive if long, negative if short. Lends
+            have no exposure.
+        netExposureNotional:
+          type: string
+          format: decimal
+          description: Notional value of the position.
+        symbol:
+          type: string
+          description: Symbol of the underlying asset.
+    BorrowLendSide:
+      type: string
+      enum:
+      - borrow
+      - lend
+    BorrowLendSource:
+      type: string
+      enum:
+      - manual
+      - auto
+      - liquidation
+      - liquidationAdl
+      - liquidationBackstop
+    BorrowLendSummary:
+      type: object
+      description: Borrow Lending book summary.
+      required:
+      - symbol
+      - timestamp
+      - lentQuantity
+      - borrowedQuantity
+      - utilization
+      - borrowInterestRate
+      - lendInterestRate
+      - assetMarkPrice
+      - fee
+      - throttleUtilizationThreshold
+      - throttleUtilizationBound
+      - throttleUpdateFraction
+      - maxUtilization
+      - openBorrowLendLimit
+      properties:
+        symbol:
+          type: string
+          description: Uniquely identifies the token.
+        timestamp:
+          type: string
+          format: date-time
+          description: Optional timestamp of the summary.
+        lentQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets lent to the pool.
+        borrowedQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets borrowed from the pool.
+        utilization:
+          type: string
+          format: decimal
+          description: Utilisation.
+        borrowInterestRate:
+          type: string
+          format: decimal
+          description: The rate borrowers pay.
+        lendInterestRate:
+          type: string
+          format: decimal
+          description: The APY rate lenders receive.
+        assetMarkPrice:
+          type: string
+          format: decimal
+          description: Mark price of spot instrument.
+        fee:
+          type: string
+          format: decimal
+          description: The fee that the exchange takes on borrow lend yield.
+        throttleUtilizationThreshold:
+          type: string
+          format: decimal
+          description: The threshold that triggers borrow throttling.
+        throttleUtilizationBound:
+          type: string
+          format: decimal
+          description: |-
+            The max utilization threhsold for any given timestep. Any borrow
+            or lend redemption should fail if it puts utilization above this
+            (with the exception of liquidations).
+        throttleUpdateFraction:
+          type: string
+          format: decimal
+          description: |-
+            Hyper-param determining the max utilization can increase during any
+            timestep.
+        maxUtilization:
+          type: string
+          format: decimal
+          description: |-
+            The max amount of utilization that can be used by borrowing or redeeming
+            lend, irrespsective of the throttle.
+        openBorrowLendLimit:
+          type: string
+          format: decimal
+          description: |-
+            Can't increase borrows or lends pass this threshold. It's possible
+            this is less than the outstanding amount. If that's the case, then
+            it simply prevents new borrow or lends from being created.
+    BorrowRepayPayload:
+      type: object
+      required:
+      - inSymbol
+      - borrowSymbol
+      properties:
+        inSymbol:
+          type: string
+          description: The asset to pay off the borrow with.
+        inQuantity:
+          type: string
+          format: decimal
+          description: |-
+            The maximum amount of the `in_symbol` that can be spent to pay the
+            borrow. If not given, uses the available balance. At least one of
+            in_quantity and borrow_quantity must be provided.
+        borrowSymbol:
+          type: string
+          description: The borrow to pay off.
+        borrowQuantity:
+          type: string
+          format: decimal
+          description: |-
+            The maximum amount of the borrow to pay off. If not given, uses
+            the borrowed balance. At least one of
+            in_quantity and borrow_quantity must be provided.
+    Collateral:
+      type: object
+      required:
+      - symbol
+      - assetMarkPrice
+      - preHaircutQuantity
+      - balanceNotional
+      - collateralWeight
+      - collateralValue
+      - openOrderQuantity
+      - lendQuantity
+      - availableQuantity
+      properties:
+        symbol:
+          type: string
+          description: Spot asset of the collateral.
+        assetMarkPrice:
+          type: string
+          format: decimal
+          description: Mark price of spot instrument
+        preHaircutQuantity:
+          type: string
+          format: decimal
+          description: Pre haircut quantity of the asset.
+        balanceNotional:
+          type: string
+          format: decimal
+          description: |-
+            Balance of spot instrument in USDC.
+            This is calculated as `index_price * balance`.
+        collateralWeight:
+          type: string
+          format: decimal
+          description: Collateral weight of spot instrument, applied as a haircut.
+        collateralValue:
+          type: string
+          format: decimal
+          description: |-
+            Collateral Value (or adjusted equity).
+            This is calculated as `index_price * balance * collateral_weight`.
+        openOrderQuantity:
+          type: string
+          format: decimal
+          description: The amount added to collateral from open orders.
+        lendQuantity:
+          type: string
+          format: decimal
+          description: The amount added to collateral from lending.
+        availableQuantity:
+          type: string
+          format: decimal
+          description: The amount of freely available assets.
+    Deposit:
+      type: object
+      required:
+      - id
+      - source
+      - status
+      - symbol
+      - quantity
+      - createdAt
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Unique id of the deposit.
+        toAddress:
+          type: string
+          description: Deposit address.
+        fromAddress:
+          type: string
+          description: Source address.
+        confirmationBlockNumber:
+          type: integer
+          format: int64
+          description: Confirmation status, if this is a blockchain deposit.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/DepositSource'
+          - description: Source of the deposit, blockchain or a payment processor.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/DepositStatus'
+          - description: Status of the deposit.
+        transactionHash:
+          type: string
+          description: Transaction hash of the blockchain transfer.
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: Symbol of the asset to be deposited.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity to be deposited.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: When the deposit was created.
+    DepositAddress:
+      type: object
+      required:
+      - address
+      properties:
+        address:
+          type: string
+          description: Address.
+    DepositSource:
+      type: string
+      enum:
+      - administrator
+      - solana
+      - ethereum
+      - bitcoin
+      - nuvei
+      - banxa
+      - ioFinnet
+      - internal
+    DepositStatus:
+      type: string
+      enum:
+      - cancelled
+      - confirmed
+      - declined
+      - expired
+      - initiated
+      - pending
+      - refunded
+    Depth:
+      type: object
+      required:
+      - asks
+      - bids
+      - lastUpdateId
+      properties:
+        asks:
+          type: array
+          description: Asks on the order book.
+          items:
+            type: array
+            items:
+              type: string
+            maxLength: 2
+            minLength: 2
+        bids:
+          type: array
+          description: Bids on the order book.
+          items:
+            type: array
+            items:
+              type: string
+            maxLength: 2
+            minLength: 2
+        lastUpdateId:
+          type: string
+          description: Update ID that caused the last change to the order book depth.
+      example:
+        asks:
+        - - '21.9'
+          - '500.123'
+        - - '22.1'
+          - '2321.11'
+        bids:
+        - - '20.12'
+          - '255.123'
+        - - '20.5'
+          - '499.555'
+        lastUpdateId: '1684026955123'
+    FillType:
+      type: string
+      enum:
+      - user
+      - liquidation
+      - collateralConversion
+      - adl
+      - allLiquidation
+    FundingPayment:
+      type: object
+      required:
+      - userId
+      - symbol
+      - quantity
+      - intervalEndTimestamp
+      properties:
+        userId:
+          type: integer
+          format: int32
+          description: User id of the account the payment is associated with.
+        subaccountId:
+          type: integer
+          format: uint16
+          description: Id of the subaccount the payment is associated with, if any.
+        symbol:
+          type: string
+          description: The symbol of the market the payment is associated with.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity of the payment
+        intervalEndTimestamp:
+          type: string
+          format: naive-date-time
+          description: The end of the funding interval for the payment.
+    HistoricalBorrowLendSummaryInterval:
+      type: string
+      enum:
+      - 1d
+      - 1w
+      - 1month
+      - 1year
+      - allTime
+    InterestPayment:
+      type: object
+      required:
+      - userId
+      - symbol
+      - quantity
+      - paymentType
+      - intervalEndTimestamp
+      properties:
+        userId:
+          type: integer
+          format: int32
+          description: User id of the account the payment is associated with.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Id of the subaccount the payment is associated with, if any.
+        symbol:
+          type: string
+          description: The symbol of the market the payment is associated with.
+        quantity:
+          type: string
+          format: decimal
+          description: Amount of the payment.
+        paymentType:
+          type: string
+          description: Type of payment.
+        intervalEndTimestamp:
+          type: string
+          format: naive-date-time
+          description: The timestamp for the borrow lending interest payment.
+    Kline:
+      type: object
+      required:
+      - start
+      - end
+      - volume
+      - quoteVolume
+      - trades
+      properties:
+        start:
+          type: string
+          description: Start time.
+        end:
+          type: string
+          description: End time.
+        open:
+          type: string
+          description: Open price.
+        high:
+          type: string
+          description: High price.
+        low:
+          type: string
+          description: Low price.
+        close:
+          type: string
+          description: Close price.
+        volume:
+          type: string
+          description: Volume in base asset.
+        quoteVolume:
+          type: string
+          description: Volume in quote asset.
+        trades:
+          type: string
+          description: Number of trades during the K-line.
+    KlineInterval:
+      type: string
+      enum:
+      - 1m
+      - 3m
+      - 5m
+      - 15m
+      - 30m
+      - 1h
+      - 2h
+      - 4h
+      - 6h
+      - 8h
+      - 12h
+      - 1d
+      - 3d
+      - 1w
+      - 1month
+    LendCreatePayload:
+      type: object
+      required:
+      - quantity
+      - symbol
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          description: The lend quantity.
+        symbol:
+          type: string
+          description: The asset to be lent.
+    LendRedeemPayload:
+      type: object
+      required:
+      - quantity
+      - symbol
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          description: The lend quantity to be redeemed.
+        symbol:
+          type: string
+          description: The lent asset to be redeemed.
+    LeverageFilter:
+      type: object
+      required:
+      - minLeverage
+      - maxLeverage
+      - stepSize
+      properties:
+        minLeverage:
+          type: integer
+          format: int32
+          description: Minimum leverage the order book will allow.
+        maxLeverage:
+          type: integer
+          format: int32
+          description: Maximum leverage the order book will allow.
+        stepSize:
+          type: integer
+          format: int32
+          description: Leverage increment.
+    LimitOrder:
+      type: object
+      required:
+      - id
+      - symbol
+      - side
+      - quantity
+      - executedQuantity
+      - executedQuoteQuantity
+      - price
+      - timeInForce
+      - selfTradePrevention
+      - postOnly
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+          description: ID of the order.
+        clientId:
+          type: integer
+          format: uint32
+          description: Custom order ID.
+        symbol:
+          type: string
+          description: Market symbol.
+        side:
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The order side. It will be matched against the resting orders on the
+              other side of the order book.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity to fill.
+        executedQuantity:
+          type: string
+          format: decimal
+          description: Quantity that has been filled.
+        executedQuoteQuantity:
+          type: string
+          format: decimal
+          description: The quantity of the quote asset that has been filled.
+        price:
+          type: string
+          format: decimal
+          description: |-
+            The limit price. The order book will only match this order with
+            other orders at this price or better.
+        triggerPrice:
+          type: string
+          format: decimal
+          description: Price the order should trigger at, if any.
+        timeInForce:
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: How long the order is good for.
+        selfTradePrevention:
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: |-
+              Action to take in the event the user crosses themselves in the
+              order book.
+        postOnly:
+          type: boolean
+          description: Whether the order is post only or not
+        status:
+          allOf:
+          - $ref: '#/components/schemas/OrderStatus'
+          - description: Status of the order.
+        createdAt:
+          type: integer
+          format: int64
+          description: Time the order was created.
+    MarginAccountSummary:
+      type: object
+      required:
+      - assetsValue
+      - borrows
+      - borrowLiability
+      - collaterals
+      - imf
+      - insuranceFundEquity
+      - isLiquidating
+      - liabilitiesValue
+      - mmf
+      - netEquity
+      - netEquityAvailable
+      - netEquityLocked
+      - netExposureFutures
+      - pnlUnrealized
+      - positions
+      - userId
+      properties:
+        assetsValue:
+          type: string
+          format: decimal
+          description: Notional value of assets
+        borrows:
+          type: array
+          description: All borrows for the account.
+          items:
+            $ref: '#/components/schemas/BorrowLendPositionWithMargin'
+        borrowLiability:
+          type: string
+          format: decimal
+          description: Total borrow notional.
+        borrowLimit:
+          type: string
+          format: decimal
+          description: Borrow limit.
+        collaterals:
+          type: array
+          description: Collateral held for a given spot asset.
+          items:
+            $ref: '#/components/schemas/Collateral'
+        imf:
+          type: string
+          format: decimal
+          description: Initial margin fraction.
+        insuranceFundEquity:
+          type: string
+          format: decimal
+          description: Unsettled claim on the insurance fund.
+        isLiquidating:
+          type: boolean
+          description: True if the account is currently being liquidated.
+        liabilitiesValue:
+          type: string
+          format: decimal
+          description: Notional value of liabilities
+        marginFraction:
+          type: string
+          format: decimal
+          description: Margin fraction.
+        mmf:
+          type: string
+          format: decimal
+          description: Maintenance margin fraction.
+        netEquity:
+          type: string
+          format: decimal
+          description: Net equity.
+        netEquityAvailable:
+          type: string
+          format: decimal
+          description: Net equity available.
+        netEquityLocked:
+          type: string
+          format: decimal
+          description: Net equity Locked.
+        netExposureFutures:
+          type: string
+          format: decimal
+          description: Total exposure of positions as well potential open positions.
+        pnlUnrealized:
+          type: string
+          format: decimal
+          description: Unrealised PnL.
+        positions:
+          type: array
+          description: All futures positions for the account.
+          items:
+            $ref: '#/components/schemas/PositionWithMargin'
+        positionLimit:
+          type: string
+          format: decimal
+          description: Futures position limit.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Subaccount id.
+        userId:
+          type: integer
+          format: int32
+          description: Id of the user.
+    MarkPrice:
+      type: object
+      required:
+      - fundingRate
+      - indexPrice
+      - markPrice
+      - nextFundingTimestamp
+      - symbol
+      properties:
+        fundingRate:
+          type: string
+          format: decimal
+          description: The funding rate for the current interval.
+        indexPrice:
+          type: string
+          format: decimal
+          description: The index price for the market.
+        markPrice:
+          type: string
+          format: decimal
+          description: The mark price for the market.
+        nextFundingTimestamp:
+          type: integer
+          format: int64
+          description: |-
+            The end time of the current interval and start time of next interval.
+            Funding payments will be distributed at this time.
+        symbol:
+          type: string
+          description: The symbol of the market.
+    Market:
+      type: object
+      required:
+      - symbol
+      - baseSymbol
+      - quoteSymbol
+      - filters
+      properties:
+        symbol:
+          type: string
+          description: Symbol of the market, e.g. ETH_USDC
+        baseSymbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The base asset of the market.
+        quoteSymbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The quote asset of the market.
+        filters:
+          allOf:
+          - $ref: '#/components/schemas/OrderBookFilters'
+          - description: Price, lot and leverage rules.
+        fundingInterval:
+          type: integer
+          format: uint64
+          description: Funding interval for perpetuals in milliseconds.
+    MarketAsset:
+      type: object
+      required:
+      - symbol
+      - tokens
+      properties:
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: Symbol of the asset, e.g. ETH.
+        tokens:
+          type: array
+          description: Token on each blockchain the asset is available on.
+          items:
+            $ref: '#/components/schemas/Token'
+    MarketOrder:
+      type: object
+      required:
+      - id
+      - symbol
+      - side
+      - executedQuantity
+      - executedQuoteQuantity
+      - timeInForce
+      - selfTradePrevention
+      - status
+      - createdAt
+      properties:
+        id:
+          type: string
+          description: |-
+            Unique ID of this order. This gets assigned by the matching engine
+            so it is initially None.
+        clientId:
+          type: integer
+          format: uint32
+          description: Custom order ID.
+        symbol:
+          type: string
+          description: Market symbol.
+        side:
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The order side. It will be matched against the resting orders on the
+              other side of the order book.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity to fill.
+        executedQuantity:
+          type: string
+          format: decimal
+          description: Quantity that has been filled.
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity of the quote asset to fill.
+        executedQuoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity of the quote asset that has been filled.
+        triggerPrice:
+          type: string
+          format: decimal
+          description: Price the order should trigger at, if any.
+        timeInForce:
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: How long the order is good for.
+        selfTradePrevention:
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: |-
+              Action to take in the event the user crosses themselves in the
+              order book.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/OrderStatus'
+          - description: Status of the order.
+        createdAt:
+          type: integer
+          format: int64
+          description: Time the order was created.
+    OpenInterest:
+      type: object
+      required:
+      - symbol
+      - timestamp
+      properties:
+        symbol:
+          type: string
+          description: The symbol of the market.
+        openInterest:
+          type: string
+          format: decimal
+          description: The open interest.
+        timestamp:
+          type: integer
+          format: int64
+          description: Timestamp.
+    Order:
+      type: object
+      required:
+      - id
+      - orderType
+      - symbol
+      - side
+      - timeInForce
+      - selfTradePrevention
+      - status
+      properties:
+        id:
+          type: string
+        orderType:
+          $ref: '#/components/schemas/OrderTypeEnum'
+        symbol:
+          type: string
+        side:
+          $ref: '#/components/schemas/Side'
+        price:
+          type: string
+          format: decimal
+        triggerPrice:
+          type: string
+          format: decimal
+        quantity:
+          type: string
+          format: decimal
+        quoteQuantity:
+          type: string
+          format: decimal
+        executedQuantity:
+          type: string
+          format: decimal
+        executedQuoteQuantity:
+          type: string
+          format: decimal
+        timeInForce:
+          $ref: '#/components/schemas/TimeInForce'
+        selfTradePrevention:
+          $ref: '#/components/schemas/SelfTradePrevention'
+        postOnly:
+          type: boolean
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+    OrderAck:
+      type: object
+      description: Response for order execute when the order is accepted but not yet executed.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+          description: Order id.
+    OrderBookFilters:
+      type: object
+      required:
+      - price
+      - quantity
+      properties:
+        price:
+          allOf:
+          - $ref: '#/components/schemas/PriceFilter'
+          - description: Defines the price rules for the order book.
+        quantity:
+          allOf:
+          - $ref: '#/components/schemas/QuantityFilter'
+          - description: Defines the quantity rules for the order book.
+        leverage:
+          allOf:
+          - $ref: '#/components/schemas/LeverageFilter'
+          - description: Defines the leverage rules for the order book.
+    OrderCancelAllPayload:
+      type: object
+      required:
+      - symbol
+      properties:
+        symbol:
+          type: string
+          description: Market to cancel orders for.
+    OrderCancelPayload:
+      type: object
+      required:
+      - symbol
+      properties:
+        clientId:
+          type: integer
+          format: uint32
+          description: Client ID of the order.
+        orderId:
+          type: string
+          description: ID of the order.
+        symbol:
+          type: string
+          description: Market the order exists on.
+    OrderExecutePayload:
+      type: object
+      required:
+      - orderType
+      - side
+      - symbol
+      properties:
+        clientId:
+          type: integer
+          format: uint32
+          description: Custom order id.
+        orderType:
+          allOf:
+          - $ref: '#/components/schemas/OrderTypeEnum'
+          - description: Order type, market or limit.
+        postOnly:
+          type: boolean
+          description: Whether the order is post only or not
+        price:
+          type: string
+          format: decimal
+          description: The order price if this is a limit order
+        quantity:
+          type: string
+          format: decimal
+          description: |-
+            The order quantity. Market orders must specify either a `quantity` or
+            `quoteQuantity`. All other order types must specify a `quantity`.
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: |-
+            The maximum amount of the quote asset to spend (Ask) or receive (Bid)
+            for market orders. This is used for reverse market orders. The
+            order book will execute a `quantity` as close as possible to the
+            notional value of `quote_quantity`.
+        selfTradePrevention:
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: |-
+              Action to take in the event the user crosses themselves in the
+              order book.
+        side:
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The order side. It will be matched against the resting orders on the
+              other side of the order book.
+        symbol:
+          type: string
+          description: The market for the order.
+        timeInForce:
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: How long the order is good for.
+        triggerPrice:
+          type: string
+          format: decimal
+          description: Trigger price if this is a conditional order.
+        reduceOnly:
+          type: boolean
+          description: If true then the order can only reduce the positon. Futures only.
+        autoBorrow:
+          type: boolean
+          description: If true then the order can borrow. Spot margin only.
+    OrderFill:
+      type: object
+      required:
+      - timestamp
+      - orderId
+      - symbol
+      - side
+      - price
+      - quantity
+      - fee
+      - feeSymbol
+      - isMaker
+      - systemOrderType
+      properties:
+        timestamp:
+          type: string
+          format: naive-date-time
+        tradeId:
+          type: integer
+          format: int64
+        orderId:
+          type: string
+        symbol:
+          type: string
+        side:
+          $ref: '#/components/schemas/Side'
+        price:
+          type: string
+          format: decimal
+        quantity:
+          type: string
+          format: decimal
+        fee:
+          type: string
+          format: decimal
+        feeSymbol:
+          type: string
+        isMaker:
+          type: boolean
+        systemOrderType:
+          type: string
+    OrderStatus:
+      type: string
+      enum:
+      - Cancelled
+      - Expired
+      - Filled
+      - New
+      - PartiallyFilled
+      - Triggered
+    OrderType:
+      type: object
+      anyOf:
+      - $ref: '#/components/schemas/OrderType_MarketOrder'
+      - $ref: '#/components/schemas/OrderType_LimitOrder'
+      discriminator:
+        propertyName: orderType
+        mapping:
+          Market: '#/components/schemas/OrderType_MarketOrder'
+          Limit: '#/components/schemas/OrderType_LimitOrder'
+    OrderTypeEnum:
+      type: string
+      enum:
+      - Market
+      - Limit
+    OrderType_LimitOrder:
+      allOf:
+      - type: object
+        required:
+        - orderType
+        properties:
+          orderType:
+            type: string
+            enum:
+            - Limit
+            example: Limit
+      - $ref: '#/components/schemas/LimitOrder'
+    OrderType_MarketOrder:
+      allOf:
+      - type: object
+        required:
+        - orderType
+        properties:
+          orderType:
+            type: string
+            enum:
+            - Market
+            example: Market
+      - $ref: '#/components/schemas/MarketOrder'
+    PnlPayment:
+      type: object
+      required:
+      - userId
+      - symbol
+      - pnlRealized
+      - timestamp
+      properties:
+        userId:
+          type: integer
+          format: int32
+          description: User id of the account the payment is associated with.
+        subaccountId:
+          type: integer
+          format: uint16
+          description: Id of the subaccount the payment is associated with, if any.
+        symbol:
+          type: string
+          description: The symbol of the market the payment is associated with.
+        pnlRealized:
+          type: string
+          format: decimal
+          description: Quantity of the payment
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: The end of the funding interval for the payment.
+    PositionWithMargin:
+      type: object
+      description: User position model
+      required:
+      - breakEvenPrice
+      - entryPrice
+      - estLiquidationPrice
+      - fundingPayments
+      - imf
+      - imfBase
+      - imfFactor
+      - markPrice
+      - mmf
+      - mmfBase
+      - mmfFactor
+      - netCost
+      - netQuantity
+      - netExposureQuantity
+      - netExposureNotional
+      - pnlRealized
+      - pnlCulled
+      - pnlUnrealized
+      - symbol
+      - userId
+      properties:
+        breakEvenPrice:
+          type: string
+          format: decimal
+          description: Break-even price for this position.
+        entryPrice:
+          type: string
+          format: decimal
+          description: Entry price for this position.
+        estLiquidationPrice:
+          type: string
+          format: decimal
+          description: Estimated liquidation price for this position.
+        fundingPayments:
+          type: string
+          format: decimal
+          description: The total amount of funding payments paid out to this position.
+        imf:
+          type: string
+          format: decimal
+          description: Initial margin fraction for this position.
+        imfBase:
+          type: string
+          format: decimal
+        imfFactor:
+          type: string
+          format: decimal
+        markPrice:
+          type: string
+          format: decimal
+          description: Mark price for this position's market.
+        mmf:
+          type: string
+          format: decimal
+          description: Maintenance margin fraction for this position.
+        mmfBase:
+          type: string
+          format: decimal
+        mmfFactor:
+          type: string
+          format: decimal
+        netCost:
+          type: string
+          format: decimal
+          description: |-
+            Positive if long. Negative if short.
+
+            The net cost to enter into the position,i.e., price*quantity for
+            all orders adjusting this position.
+        netQuantity:
+          type: string
+          format: decimal
+          description: Positive if long. Negative if short.
+        netExposureQuantity:
+          type: string
+          format: decimal
+          description: Quantity of this futures position including worst case open orders.
+        netExposureNotional:
+          type: string
+          format: decimal
+          description: Notional value of the futures position including worst case open orders.
+        pnlRealized:
+          type: string
+          format: decimal
+          description: Aggregates the amount of pnl realized on this position since opening.
+        pnlCulled:
+          type: string
+          format: decimal
+          description: The total amount of pnl culled from this position.
+        pnlUnrealized:
+          type: string
+          format: decimal
+          description: Unrealized profit and loss for this position.
+        subaccountId:
+          type: integer
+          format: uint16
+          description: ID of the user subaccount that the position is for.
+        symbol:
+          type: string
+          description: Future to which this position belongs.
+        userId:
+          type: integer
+          format: int32
+          description: Id of the user.
+    PriceBandMarkPrice:
+      type: object
+      required:
+      - maxMultiplier
+      - minMultiplier
+      properties:
+        maxMultiplier:
+          type: string
+          format: decimal
+          description: Maximum allowed multiplier move from mean price.
+        minMultiplier:
+          type: string
+          format: decimal
+          description: Minimum allowed multiplier move from mean price.
+    PriceBandMeanPremium:
+      type: object
+      required:
+      - tolerancePct
+      properties:
+        tolerancePct:
+          type: string
+          format: decimal
+          description: |-
+            Maximum allowed deviation from the mean premium. E.g. if
+            tolerance_pct is 0.05 (5%), and the mean premium is 5%, then
+            orders will be prevented from being placed if the premium exceeds 10%.
+    PriceFilter:
+      type: object
+      required:
+      - minPrice
+      - tickSize
+      properties:
+        minPrice:
+          type: string
+          format: decimal
+          description: Minimum price the order book will allow.
+        maxPrice:
+          type: string
+          format: decimal
+          description: Maximum price the order book will allow.
+        tickSize:
+          type: string
+          format: decimal
+          description: Price increment.
+        maxMultiplier:
+          type: string
+          format: decimal
+          description: Maximum allowed multiplier from last active price.
+        minMultiplier:
+          type: string
+          format: decimal
+          description: Minimum allowed multiplier from last active price.
+        maxImpactMultiplier:
+          type: string
+          format: decimal
+          description: |-
+            Maximum allowed impact multiplier from last active price. This
+            determines how far above the best ask a market buy can penetrate.
+        minImpactMultiplier:
+          type: string
+          format: decimal
+          description: |-
+            Minimum allowed impact multiplier from last active price. This
+            determines how far below the best bid a market sell can penetrate.
+        meanMarkPriceBand:
+          allOf:
+          - $ref: '#/components/schemas/PriceBandMarkPrice'
+          - description: |-
+              Futures price band. Used to determine how far the price is allowed to
+              deviate from the mean mark price.
+        meanPremiumBand:
+          allOf:
+          - $ref: '#/components/schemas/PriceBandMeanPremium'
+          - description: |-
+              Futures price band. Used to determine how far the premium is allowed to
+              deviate from the mean premium.
+    QuantityFilter:
+      type: object
+      required:
+      - minQuantity
+      - stepSize
+      properties:
+        minQuantity:
+          type: string
+          format: decimal
+          description: |-
+            Minimum quantity the order book will allow.
+
+            For futures, this will be the threshold at which a position gets closed
+            and so it should be as close as possible, preferably equal, to the
+            step_size.
+        maxQuantity:
+          type: string
+          format: decimal
+          description: Maximum quantity the order book will allow.
+        stepSize:
+          type: string
+          format: decimal
+          description: Quantity increment.
+    SelfTradePrevention:
+      type: string
+      enum:
+      - RejectTaker
+      - RejectMaker
+      - RejectBoth
+      - Allow
+    Side:
+      type: string
+      enum:
+      - Bid
+      - Ask
+    Status:
+      type: string
+      enum:
+      - Ok
+      - Maintenance
+    StatusAndMessage:
+      type: object
+      required:
+      - status
+      properties:
+        status:
+          allOf:
+          - $ref: '#/components/schemas/Status'
+          - description: Status of the system.
+        message:
+          type: string
+          description: Status message, if any.
+    Ticker:
+      type: object
+      required:
+      - symbol
+      - firstPrice
+      - lastPrice
+      - priceChange
+      - priceChangePercent
+      - high
+      - low
+      - volume
+      - quoteVolume
+      - trades
+      properties:
+        symbol:
+          type: string
+          description: The symbol of the market.
+        firstPrice:
+          type: string
+          format: decimal
+          description: First price for the interval.
+        lastPrice:
+          type: string
+          format: decimal
+          description: Last price for the interval.
+        priceChange:
+          type: string
+          format: decimal
+          description: Price change for the interval.
+        priceChangePercent:
+          type: string
+          format: decimal
+          description: Percentage price change for the interval.
+        high:
+          type: string
+          format: decimal
+          description: Highest price for the interval.
+        low:
+          type: string
+          format: decimal
+          description: Lowest price for the interval.
+        volume:
+          type: string
+          format: decimal
+          description: Base volume for the interval.
+        quoteVolume:
+          type: string
+          format: decimal
+          description: Quote volume for the interval.
+        trades:
+          type: string
+          description: Trades for the interval.
+    TimeInForce:
+      type: string
+      enum:
+      - GTC
+      - IOC
+      - FOK
+    Token:
+      type: object
+      required:
+      - blockchain
+      - depositEnabled
+      - minimumDeposit
+      - withdrawEnabled
+      - minimumWithdrawal
+      - withdrawalFee
+      properties:
+        blockchain:
+          $ref: '#/components/schemas/Blockchain'
+        contractAddress:
+          type: string
+        depositEnabled:
+          type: boolean
+        minimumDeposit:
+          type: string
+          format: decimal
+        withdrawEnabled:
+          type: boolean
+        minimumWithdrawal:
+          type: string
+          format: decimal
+        maximumWithdrawal:
+          type: string
+          format: decimal
+        withdrawalFee:
+          type: string
+          format: decimal
+    Trade:
+      type: object
+      required:
+      - price
+      - quantity
+      - quoteQuantity
+      - timestamp
+      - isBuyerMaker
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Id of the trade.
+        price:
+          type: string
+          format: decimal
+          description: Price of the trade.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity of the trade in the base asset.
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity of the trade in the quote asset.
+        timestamp:
+          type: integer
+          format: int64
+          description: Timestamp of the trade (server time).
+        isBuyerMaker:
+          type: boolean
+          description: Whether the buyer was the maker order.
+    UpdateAccountLeverageLimitRequest:
+      type: object
+      properties:
+        leverageLimit:
+          type: string
+          format: decimal
+          description: |-
+            Determines the maximum leverage allowed for the main account or
+            subaccount.
+    Withdrawal:
+      type: object
+      required:
+      - id
+      - blockchain
+      - quantity
+      - fee
+      - symbol
+      - status
+      - toAddress
+      - createdAt
+      - isInternal
+      properties:
+        id:
+          type: integer
+          format: int32
+          description: Unique id of the withdrawal.
+        blockchain:
+          allOf:
+          - $ref: '#/components/schemas/Blockchain'
+          - description: Blockchain the withdrawal was requested for.
+        clientId:
+          type: string
+          description: Custom client id.
+        identifier:
+          type: string
+          description: Transaction hash of the withdrawal, if it has been sent.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity of the asset to withdraw.
+        fee:
+          type: string
+          format: decimal
+          description: Fee charged.
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: Symbol of the asset to withdraw.
+        status:
+          allOf:
+          - $ref: '#/components/schemas/WithdrawalStatus'
+          - description: Status of the withdrawal.
+        subaccountId:
+          type: integer
+          format: uint16
+          description: ID of the subaccount requesting this withdrawal.
+        toAddress:
+          type: string
+          description: Address to withdraw to.
+        transactionHash:
+          type: string
+          description: Transaction hash of withdrawal.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: When the withdrawal was created.
+        isInternal:
+          type: boolean
+          description: Whether the withdrawal is an internal transfer.
+    WithdrawalStatus:
+      type: string
+      enum:
+      - confirmed
+      - pending
+x-tagGroups:
+- name: Public Endpoints
+  tags:
+  - Markets
+  - System
+  - Trades
+- name: Authenticated Endpoints
+  tags:
+  - Capital
+  - History
+  - Order
+- name: Websocket
+  tags:
+  - Streams
+
