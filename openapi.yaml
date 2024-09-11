@@ -2430,20 +2430,11 @@ paths:
         required: false
         deprecated: false
         explode: true
-      - name: subaccountId
-        schema:
-          type: integer
-          format: int32
-        in: query
-        description: Filter for a subaccount.
-        required: false
-        deprecated: false
-        explode: true
       - name: symbol
         schema:
           type: string
         in: query
-        description: Asset symbol to query. If not set, all assets are returned.
+        description: Filter to the given symbol.
         required: false
         deprecated: false
         explode: true
@@ -2737,15 +2728,6 @@ paths:
           format: uint64
         in: header
         description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      - name: subaccountId
-        schema:
-          type: integer
-          format: uint16
-        in: query
-        description: Filter for a subaccount.
         required: false
         deprecated: false
         explode: true
