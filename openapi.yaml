@@ -6,6 +6,8 @@ info:
 servers:
 - url: https://api.backpack.exchange
 tags:
+- name: Account
+  description: Account settings.
 - name: BorrowLend
   description: Borrow lending
 - name: Capital
@@ -1123,121 +1125,6 @@ paths:
                 additionalProperties:
                   $ref: '#/components/schemas/Balance'
       operationId: get_insurance_fund_balance
-  /api/v1/account/leverageLimit:
-    patch:
-      tags:
-      - Capital
-      summary: Update account leverage limit settings.
-      description: '**Instruction:** `updateAccountLeverageLimit`'
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      requestBody:
-        content:
-          application/json; charset=utf-8:
-            schema:
-              $ref: '#/components/schemas/UpdateAccountLeverageLimitRequest'
-        required: true
-      responses:
-        '200':
-          description: Account leverage limit updated.
-        '400':
-          description: Bad request.
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-        '401':
-          description: Unauthorized.
-        '500':
-          description: ''
-        '503':
-          description: System under maintenance.
-      operationId: update_account_leverage_limit
-    get:
-      tags:
-      - Capital
-      summary: Get account leverage limit for a main account or subaccount.
-      description: '**Instruction:** `getAccountLeverageLimit`'
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/AccountLeverageLimit'
-        '401':
-          description: Unauthorized.
-        '500':
-          description: Internal server error.
-      operationId: get_account_leverage_limit
   /api/v1/assets:
     get:
       tags:
@@ -2940,18 +2827,6 @@ paths:
       operationId: get_order_history
 components:
   schemas:
-    AccountLeverageLimit:
-      type: object
-      required:
-      - leverageLimit
-      properties:
-        leverageLimit:
-          type: string
-          format: decimal
-          description: |-
-            If true then automatically borrows if needed during
-            collateral reconciliation and automatically repays borrows if needed
-            during balance increases.
     AccountPositionSummary:
       type: object
       required:
@@ -4661,15 +4536,6 @@ components:
         isBuyerMaker:
           type: boolean
           description: Whether the buyer was the maker order.
-    UpdateAccountLeverageLimitRequest:
-      type: object
-      properties:
-        leverageLimit:
-          type: string
-          format: decimal
-          description: |-
-            Determines the maximum leverage allowed for the main account or
-            subaccount.
     Withdrawal:
       type: object
       required:
@@ -4743,6 +4609,7 @@ x-tagGroups:
   - Trades
 - name: Authenticated Endpoints
   tags:
+  - Account
   - Capital
   - History
   - Order
