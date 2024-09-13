@@ -2389,7 +2389,7 @@ paths:
         '503':
           description: System under maintenance.
       operationId: request_withdrawal
-  /wapi/v1/borrow/history:
+  /wapi/v1/history/borrow:
     get:
       tags:
       - History
