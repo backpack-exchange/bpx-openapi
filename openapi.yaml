@@ -312,6 +312,120 @@ tags:
 - name: Trades
   description: Public trade data.
 paths:
+  /api/v1/account:
+    get:
+      tags:
+      - Account
+      summary: Get account settings.
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/AccountLimits'
+        '401':
+          description: Unauthorized.
+        '500':
+          description: Internal server error.
+      operationId: get_account_limits
+    patch:
+      tags:
+      - Account
+      summary: Update account leverage limit settings.
+      description: '**Instruction:** `updateAccountLimits`'
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/UpdateAccountLimitsRequest'
+        required: true
+      responses:
+        '200':
+          description: Account leverage limit updated.
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized.
+        '500':
+          description: ''
+        '503':
+          description: System under maintenance.
+      operationId: update_account_settings
   /api/v1/borrow:
     post:
       tags:
@@ -2827,6 +2941,24 @@ paths:
       operationId: get_order_history
 components:
   schemas:
+    AccountLimits:
+      type: object
+      properties:
+        borrowLimit:
+          type: string
+          format: decimal
+          description: The maximum amount of assets that can be borrowed.
+        positionLimit:
+          type: string
+          format: decimal
+          description: The maximum amount of assets that can be used as a margin position.
+        leverageLimit:
+          type: string
+          format: decimal
+          description: |-
+            If true then automatically borrows if needed during
+            collateral reconciliation and automatically repays borrows if needed
+            during balance increases.
     AccountPositionSummary:
       type: object
       required:
@@ -4536,6 +4668,15 @@ components:
         isBuyerMaker:
           type: boolean
           description: Whether the buyer was the maker order.
+    UpdateAccountLimitsRequest:
+      type: object
+      properties:
+        leverageLimit:
+          type: string
+          format: decimal
+          description: |-
+            Determines the maximum leverage allowed for the main account or
+            subaccount.
     Withdrawal:
       type: object
       required:
