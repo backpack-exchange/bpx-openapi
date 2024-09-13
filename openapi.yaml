@@ -8,8 +8,10 @@ servers:
 tags:
 - name: Account
   description: Account settings.
-- name: BorrowLend
-  description: Borrow lending
+- name: Borrow Lend
+  description: Borrowing and lending.
+- name: Borrow Lend Markets
+  description: Borrowing and lending.
 - name: Capital
   description: Capital management.
 - name: Funding
@@ -312,11 +314,11 @@ tags:
 - name: Trades
   description: Public trade data.
 paths:
-  /api/v1/account:
+  /api/v1/account/limits:
     get:
       tags:
       - Account
-      summary: Get account settings.
+      summary: Get account limits.
       parameters:
       - name: X-API-KEY
         schema:
@@ -367,8 +369,8 @@ paths:
     patch:
       tags:
       - Account
-      summary: Update account leverage limit settings.
-      description: '**Instruction:** `updateAccountLimits`'
+      summary: Update account limits.
+      description: '**Instruction:** `accountLimitsUpdate`'
       parameters:
       - name: X-API-KEY
         schema:
@@ -426,11 +428,11 @@ paths:
         '503':
           description: System under maintenance.
       operationId: update_account_settings
-  /api/v1/borrow:
+  /api/v1/borrowLend/borrow:
     post:
       tags:
-      - BorrowLend
-      summary: Create a borrow.
+      - Borrow Lend
+      summary: Create borrow.
       description: '**Instruction:** `borrowCreate`'
       parameters:
       - name: X-API-KEY
@@ -487,14 +489,16 @@ paths:
         '503':
           description: System under maintenance.
       operationId: create_borrow
-  /api/v1/borrow/close:
+  /api/v1/borrowLend/borrow/close:
     post:
       tags:
-      - BorrowLend
-      summary: |-
-        Repay a borrow of an asset from the lending book. If the borrow is being
-        repaid using USDC, a market order will be executed.
-      description: '**Instruction:** `marketCloseBorrow`'
+      - Borrow Lend
+      summary: Repay borrow.
+      description: |-
+        If the borrow is being repaid using USDC, a market order will be
+        executed.
+
+        **Instruction:** `marketCloseBorrow`
       parameters:
       - name: X-API-KEY
         schema:
@@ -550,15 +554,15 @@ paths:
         '503':
           description: System under maintenance.
       operationId: close_borrow
-  /api/v1/borrow/positions:
+  /api/v1/borrowLend/positions:
     get:
       tags:
-      - BorrowLend
+      - Borrow Lend
       summary: Get positions.
       description: |-
         Retrieves all the open borrow lending positions for the account.
 
-        **Instruction:** `borrowPositionQuery`
+        **Instruction:** `borrowLendPositionQuery`
       parameters:
       - name: X-API-KEY
         schema:
@@ -611,12 +615,12 @@ paths:
                 type: string
         '500':
           description: Internal server error.
-      operationId: get_borrow_lends
-  /api/v1/lend:
+      operationId: get_borrow_lend_positions
+  /api/v1/borrowLend/lend:
     post:
       tags:
-      - BorrowLend
-      summary: Create a lend.
+      - Borrow Lend
+      summary: Create lend.
       description: |-
         Loans an asset from the account to the borrow lend book.
 
@@ -676,11 +680,11 @@ paths:
         '503':
           description: System under maintenance.
       operationId: create_lend
-  /api/v1/lend/redeem:
+  /api/v1/borrowLend/lend/redeem:
     post:
       tags:
-      - BorrowLend
-      summary: Redeem a lend.
+      - Borrow Lend
+      summary: Redeem lend.
       description: |-
         Returns an asset to the account from the borrow lend book.
 
@@ -740,11 +744,11 @@ paths:
         '503':
           description: System under maintenance.
       operationId: redeem_lend
-  /api/v1/lending/summary:
+  /api/v1/borrowLend/markets:
     get:
       tags:
-      - BorrowLend
-      summary: Get borrow lending books summary.
+      - Borrow Lend Markets
+      summary: Get markets.
       responses:
         '200':
           description: Success.
@@ -753,20 +757,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BorrowLendSummary'
+                  $ref: '#/components/schemas/BorrowLendMarket'
         '500':
           description: Internal server error.
-      operationId: get_lending_summary
-  /api/v1/lending/summary/history:
+      operationId: get_borrow_lend_markets
+  /api/v1/borrowLend/markets/history:
     get:
       tags:
-      - BorrowLend
-      summary: Get borrow lend book history.
+      - Borrow Lend Markets
+      summary: Get market history.
       parameters:
       - name: interval
         schema:
-          $ref: '#/components/schemas/HistoricalBorrowLendSummaryInterval'
+          $ref: '#/components/schemas/BorrowLendMarketHistoryInterval'
         in: query
+        description: Filter for an interval.
         required: true
         deprecated: false
         explode: true
@@ -786,10 +791,10 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BorrowLendSummary'
+                  $ref: '#/components/schemas/BorrowLendMarket'
         '500':
           description: Internal server error.
-      operationId: get_historical_lending_summaries
+      operationId: get_borrow_lend_markets_history
   /api/v1/capital:
     get:
       tags:
@@ -2390,7 +2395,7 @@ paths:
         '503':
           description: System under maintenance.
       operationId: request_withdrawal
-  /wapi/v1/history/borrow:
+  /wapi/v1/history/borrowLend:
     get:
       tags:
       - History
@@ -2533,6 +2538,126 @@ paths:
         '500':
           description: ''
       operationId: get_borrow_lend_history
+  /wapi/v1/history/interest:
+    get:
+      tags:
+      - History
+      summary: Get interest history.
+      description: |-
+        History of the account interest payments for borrows and lends.
+
+        **Instruction:** `interestHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InterestPayment'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: ''
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '401':
+          description: ''
+        '500':
+          description: ''
+      operationId: get_interest_history
   /wapi/v1/history/fills:
     get:
       tags:
@@ -2688,126 +2813,6 @@ paths:
         '500':
           description: Internal server error.
       operationId: get_fills
-  /wapi/v1/history/interest:
-    get:
-      tags:
-      - History
-      summary: Get interest history.
-      description: |-
-        History of the account interest payments for borrow lending.
-
-        **Instruction:** `interestHistoryQueryAll`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      - name: symbol
-        schema:
-          type: string
-        in: query
-        description: Market symbol to query. If not set, all markets are returned.
-        required: false
-        deprecated: false
-        explode: true
-      - name: limit
-        schema:
-          type: integer
-          format: uint64
-        in: query
-        description: Maximum number to return. Default `100`, maximum `1000`.
-        required: false
-        deprecated: false
-        explode: true
-      - name: offset
-        schema:
-          type: integer
-          format: uint64
-        in: query
-        description: Offset for pagination. Default `0`.
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InterestPayment'
-          headers:
-            ACCESS-CONTROL-EXPOSE-HEADERS:
-              required: true
-              deprecated: false
-              schema:
-                type: string
-            X-PAGE-COUNT:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-            X-CURRENT-PAGE:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-            X-PAGE-SIZE:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-            X-TOTAL:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-        '400':
-          description: ''
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-        '401':
-          description: ''
-        '500':
-          description: ''
-      operationId: get_interest_history
   /wapi/v1/history/orders:
     get:
       tags:
@@ -3113,6 +3118,98 @@ components:
       enum:
       - increase
       - decrease
+    BorrowLendMarket:
+      type: object
+      description: Borrow Lending book summary.
+      required:
+      - symbol
+      - timestamp
+      - lentQuantity
+      - borrowedQuantity
+      - utilization
+      - borrowInterestRate
+      - lendInterestRate
+      - assetMarkPrice
+      - fee
+      - throttleUtilizationThreshold
+      - throttleUtilizationBound
+      - throttleUpdateFraction
+      - maxUtilization
+      - openBorrowLendLimit
+      properties:
+        symbol:
+          type: string
+          description: Uniquely identifies the token.
+        timestamp:
+          type: string
+          format: date-time
+          description: Optional timestamp of the summary.
+        lentQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets lent to the pool.
+        borrowedQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets borrowed from the pool.
+        utilization:
+          type: string
+          format: decimal
+          description: Utilisation.
+        borrowInterestRate:
+          type: string
+          format: decimal
+          description: The rate borrowers pay.
+        lendInterestRate:
+          type: string
+          format: decimal
+          description: The APY rate lenders receive.
+        assetMarkPrice:
+          type: string
+          format: decimal
+          description: Mark price of spot instrument.
+        fee:
+          type: string
+          format: decimal
+          description: The fee that the exchange takes on borrow lend yield.
+        throttleUtilizationThreshold:
+          type: string
+          format: decimal
+          description: The threshold that triggers borrow throttling.
+        throttleUtilizationBound:
+          type: string
+          format: decimal
+          description: |-
+            The max utilization threhsold for any given timestep. Any borrow
+            or lend redemption should fail if it puts utilization above this
+            (with the exception of liquidations).
+        throttleUpdateFraction:
+          type: string
+          format: decimal
+          description: |-
+            Hyper-param determining the max utilization can increase during any
+            timestep.
+        maxUtilization:
+          type: string
+          format: decimal
+          description: |-
+            The max amount of utilization that can be used by borrowing or redeeming
+            lend, irrespsective of the throttle.
+        openBorrowLendLimit:
+          type: string
+          format: decimal
+          description: |-
+            Can't increase borrows or lends pass this threshold. It's possible
+            this is less than the outstanding amount. If that's the case, then
+            it simply prevents new borrow or lends from being created.
+    BorrowLendMarketHistoryInterval:
+      type: string
+      enum:
+      - 1d
+      - 1w
+      - 1month
+      - 1year
+      - allTime
     BorrowLendMovement:
       type: object
       required:
@@ -3250,90 +3347,6 @@ components:
       - liquidation
       - liquidationAdl
       - liquidationBackstop
-    BorrowLendSummary:
-      type: object
-      description: Borrow Lending book summary.
-      required:
-      - symbol
-      - timestamp
-      - lentQuantity
-      - borrowedQuantity
-      - utilization
-      - borrowInterestRate
-      - lendInterestRate
-      - assetMarkPrice
-      - fee
-      - throttleUtilizationThreshold
-      - throttleUtilizationBound
-      - throttleUpdateFraction
-      - maxUtilization
-      - openBorrowLendLimit
-      properties:
-        symbol:
-          type: string
-          description: Uniquely identifies the token.
-        timestamp:
-          type: string
-          format: date-time
-          description: Optional timestamp of the summary.
-        lentQuantity:
-          type: string
-          format: decimal
-          description: The amount of assets lent to the pool.
-        borrowedQuantity:
-          type: string
-          format: decimal
-          description: The amount of assets borrowed from the pool.
-        utilization:
-          type: string
-          format: decimal
-          description: Utilisation.
-        borrowInterestRate:
-          type: string
-          format: decimal
-          description: The rate borrowers pay.
-        lendInterestRate:
-          type: string
-          format: decimal
-          description: The APY rate lenders receive.
-        assetMarkPrice:
-          type: string
-          format: decimal
-          description: Mark price of spot instrument.
-        fee:
-          type: string
-          format: decimal
-          description: The fee that the exchange takes on borrow lend yield.
-        throttleUtilizationThreshold:
-          type: string
-          format: decimal
-          description: The threshold that triggers borrow throttling.
-        throttleUtilizationBound:
-          type: string
-          format: decimal
-          description: |-
-            The max utilization threhsold for any given timestep. Any borrow
-            or lend redemption should fail if it puts utilization above this
-            (with the exception of liquidations).
-        throttleUpdateFraction:
-          type: string
-          format: decimal
-          description: |-
-            Hyper-param determining the max utilization can increase during any
-            timestep.
-        maxUtilization:
-          type: string
-          format: decimal
-          description: |-
-            The max amount of utilization that can be used by borrowing or redeeming
-            lend, irrespsective of the throttle.
-        openBorrowLendLimit:
-          type: string
-          format: decimal
-          description: |-
-            Can't increase borrows or lends pass this threshold. It's possible
-            this is less than the outstanding amount. If that's the case, then
-            it simply prevents new borrow or lends from being created.
     BorrowRepayPayload:
       type: object
       required:
@@ -3563,14 +3576,6 @@ components:
           type: string
           format: naive-date-time
           description: The end of the funding interval for the payment.
-    HistoricalBorrowLendSummaryInterval:
-      type: string
-      enum:
-      - 1d
-      - 1w
-      - 1month
-      - 1year
-      - allTime
     InterestPayment:
       type: object
       required:
@@ -4745,12 +4750,14 @@ components:
 x-tagGroups:
 - name: Public Endpoints
   tags:
+  - Borrow Lend Markets
   - Markets
   - System
   - Trades
 - name: Authenticated Endpoints
   tags:
   - Account
+  - Borrow Lend
   - Capital
   - History
   - Order
