@@ -18,6 +18,8 @@ tags:
   description: Futures funding.
 - name: History
   description: Historical account data.
+- name: Insurance
+  description: Insurance fund.
 - name: Markets
   description: Public market data.
 - name: Order
@@ -1162,6 +1164,22 @@ paths:
         '500':
           description: Internal server error.
       operationId: get_funding_payments
+  /wapi/v1/insurance:
+    get:
+      tags:
+      - Insurance
+      summary: Get insurance balance..
+      description: Retrieves the current balance of the insurance fund account.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/Balance'
+      operationId: get_insurance_fund_balance
   /api/v1/collateralSummary:
     get:
       tags:
@@ -1228,22 +1246,6 @@ paths:
               schema:
                 type: string
       operationId: get_collateral_summary
-  /api/v1/insuranceFundBalance:
-    get:
-      tags:
-      - Capital
-      summary: Get insurance fund balance.
-      description: Retrieves the current balance of the insurance fund account
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: '#/components/schemas/Balance'
-      operationId: get_insurance_fund_balance
   /api/v1/assets:
     get:
       tags:
