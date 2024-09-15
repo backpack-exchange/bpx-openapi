@@ -1167,8 +1167,8 @@ paths:
   /wapi/v1/insurance:
     get:
       tags:
-      - Insurance
-      summary: Get insurance balance..
+      - Markets
+      summary: Get insurance fund.
       description: Retrieves the current balance of the insurance fund account.
       responses:
         '200':
@@ -1890,10 +1890,11 @@ paths:
   /api/v1/position:
     get:
       tags:
-      - Position
-      summary: Get account positions.
+      - Order
+      summary: Get open positions.
       description: |-
         Retrieves account position summary.
+
         **Instruction:** `positionQuery`
       parameters:
       - name: X-API-KEY
@@ -1951,7 +1952,7 @@ paths:
   /api/v1/capital/pnl:
     get:
       tags:
-      - Position
+      - Order
       summary: Get pnl payments.
       description: |-
         Users pnl payment history for futures.
