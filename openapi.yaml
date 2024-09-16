@@ -18,8 +18,6 @@ tags:
   description: Futures funding.
 - name: History
   description: Historical account data.
-- name: Insurance
-  description: Insurance fund.
 - name: Markets
   description: Public market data.
 - name: Order
@@ -290,7 +288,7 @@ tags:
         ]
       ],
       "U": 94978271,          // First update ID in event
-      "u": 94978271,          // Final update ID in event
+      "u": 94978271,          // Last update ID in event
       "T": 1694687965940999   // Engine timestamp in microseconds
     }
     ```
@@ -309,6 +307,21 @@ tags:
       "B": "2.000",               // Inside bid quantity
       "u": "111063070525358080",  // Update ID of event
       "T": 1694687965940999       // Engine timestamp in microseconds
+    }
+    ```
+
+    ## Mark price stream
+
+    Stream name format: `markPrice.<symbol>`
+    ```
+    {
+      "e": "markPrice",           // Event type
+      "E": 1694687965941000,      // Event time in microseconds
+      "s": "SOL_USDC",            // Symbol
+      "p": "18.70",               // Mark price
+      "f": "1.70",                // Estimated funding rate
+      "i": "19.70",               // Index price
+      "n": 1694687965941000,      // Next funding timestamp in microseconds
     }
     ```
 - name: System
