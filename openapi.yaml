@@ -509,11 +509,7 @@ paths:
       tags:
       - Borrow Lend
       summary: Repay borrow.
-      description: |-
-        If the borrow is being repaid using USDC, a market order will be
-        executed.
-
-        **Instruction:** `marketCloseBorrow`
+      description: '**Instruction:** `borrowRepay`'
       parameters:
       - name: X-API-KEY
         schema:
@@ -3366,29 +3362,16 @@ components:
     BorrowRepayPayload:
       type: object
       required:
-      - inSymbol
-      - borrowSymbol
+      - symbol
+      - quantity
       properties:
-        inSymbol:
+        symbol:
           type: string
-          description: The asset to pay off the borrow with.
-        inQuantity:
-          type: string
-          format: decimal
-          description: |-
-            The maximum amount of the `in_symbol` that can be spent to pay the
-            borrow. If not given, uses the available balance. At least one of
-            in_quantity and borrow_quantity must be provided.
-        borrowSymbol:
-          type: string
-          description: The borrow to pay off.
-        borrowQuantity:
+          description: The asset to repay.
+        quantity:
           type: string
           format: decimal
-          description: |-
-            The maximum amount of the borrow to pay off. If not given, uses
-            the borrowed balance. At least one of
-            in_quantity and borrow_quantity must be provided.
+          description: The quantity of the asset to repay.
     Collateral:
       type: object
       required:
