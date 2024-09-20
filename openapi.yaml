@@ -4194,12 +4194,6 @@ components:
           type: string
           format: decimal
           description: Trigger price if this is a conditional order.
-        reduceOnly:
-          type: boolean
-          description: If true then the order can only reduce the positon. Futures only.
-        autoBorrow:
-          type: boolean
-          description: If true then the order can borrow. Spot margin only.
     OrderFill:
       type: object
       required:
