@@ -504,7 +504,7 @@ paths:
         '503':
           description: System under maintenance.
       operationId: create_borrow
-  /api/v1/borrowLend/borrow/close:
+  /api/v1/borrowLend/borrow/repay:
     post:
       tags:
       - Borrow Lend
@@ -564,7 +564,7 @@ paths:
           description: ''
         '503':
           description: System under maintenance.
-      operationId: close_borrow
+      operationId: repay_borrow
   /api/v1/borrowLend/positions:
     get:
       tags:
