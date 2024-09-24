@@ -2972,10 +2972,7 @@ components:
         leverageLimit:
           type: string
           format: decimal
-          description: |-
-            If true then automatically borrows if needed during
-            collateral reconciliation and automatically repays borrows if needed
-            during balance increases.
+          description: The maximum amount of leverage this account is allowed.
     AccountPositionSummary:
       type: object
       required:
