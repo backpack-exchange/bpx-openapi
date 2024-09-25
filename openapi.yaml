@@ -3081,6 +3081,8 @@ components:
       - CLOUD
       - MAX
       - POL
+      - TRUMP
+      - HARRIS
     Balance:
       type: object
       required:
