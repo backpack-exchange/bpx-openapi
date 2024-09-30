@@ -3156,58 +3156,62 @@ components:
       - decrease
     BorrowLendMarket:
       type: object
-      description: Borrow Lending book summary.
+      description: Borrow Lending market summary.
       required:
-      - symbol
-      - timestamp
-      - lentQuantity
-      - borrowedQuantity
-      - utilization
-      - borrowInterestRate
-      - lendInterestRate
       - assetMarkPrice
+      - borrowInterestRate
+      - borrowedQuantity
       - fee
+      - lendInterestRate
+      - lentQuantity
+      - maxUtilization
+      - openBorrowLendLimit
+      - symbol
       - throttleUtilizationThreshold
       - throttleUtilizationBound
       - throttleUpdateFraction
-      - maxUtilization
-      - openBorrowLendLimit
+      - utilization
       properties:
-        symbol:
-          type: string
-          description: Uniquely identifies the token.
-        timestamp:
-          type: string
-          format: date-time
-          description: Optional timestamp of the summary.
-        lentQuantity:
-          type: string
-          format: decimal
-          description: The amount of assets lent to the pool.
-        borrowedQuantity:
-          type: string
-          format: decimal
-          description: The amount of assets borrowed from the pool.
-        utilization:
-          type: string
-          format: decimal
-          description: Utilisation.
-        borrowInterestRate:
-          type: string
-          format: decimal
-          description: The rate borrowers pay.
-        lendInterestRate:
-          type: string
-          format: decimal
-          description: The APY rate lenders receive.
         assetMarkPrice:
           type: string
           format: decimal
           description: Mark price of spot instrument.
+        borrowInterestRate:
+          type: string
+          format: decimal
+          description: The rate borrowers pay.
+        borrowedQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets borrowed from the pool.
         fee:
           type: string
           format: decimal
           description: The fee that the exchange takes on borrow lend yield.
+        lendInterestRate:
+          type: string
+          format: decimal
+          description: The APY rate lenders receive.
+        lentQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets lent to the pool.
+        maxUtilization:
+          type: string
+          format: decimal
+          description: |-
+            The max amount of utilization that can be used by borrowing or redeeming
+            lend, irrespsective of the throttle.
+        openBorrowLendLimit:
+          type: string
+          format: decimal
+          description: |-
+            Can't increase borrows or lends pass this threshold. It's possible
+            this is less than the outstanding amount. If that's the case, then
+            it simply prevents new borrow or lends from being created.
+        symbol:
+          type: string
+          description: Uniquely identifies the token.
         throttleUtilizationThreshold:
           type: string
           format: decimal
@@ -3225,19 +3229,10 @@ components:
           description: |-
             Hyper-param determining the max utilization can increase during any
             timestep.
-        maxUtilization:
+        utilization:
           type: string
           format: decimal
-          description: |-
-            The max amount of utilization that can be used by borrowing or redeeming
-            lend, irrespsective of the throttle.
-        openBorrowLendLimit:
-          type: string
-          format: decimal
-          description: |-
-            Can't increase borrows or lends pass this threshold. It's possible
-            this is less than the outstanding amount. If that's the case, then
-            it simply prevents new borrow or lends from being created.
+          description: Utilisation.
     BorrowLendMarketHistoryInterval:
       type: string
       enum:
@@ -3245,7 +3240,6 @@ components:
       - 1w
       - 1month
       - 1year
-      - allTime
     BorrowLendMovement:
       type: object
       required:
@@ -3330,16 +3324,16 @@ components:
     BorrowRepayPayload:
       type: object
       required:
-      - symbol
       - quantity
+      - symbol
       properties:
-        symbol:
-          type: string
-          description: The asset to repay.
         quantity:
           type: string
           format: decimal
           description: The quantity of the asset to repay.
+        symbol:
+          type: string
+          description: The asset to repay.
     Collateral:
       type: object
       required:
