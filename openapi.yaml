@@ -1941,7 +1941,7 @@ paths:
   /api/v1/position:
     get:
       tags:
-      - Order
+      - Position
       summary: Get open positions.
       description: |-
         Retrieves account position summary.
@@ -4249,19 +4249,10 @@ components:
     PnlPayment:
       type: object
       required:
-      - userId
       - symbol
       - pnlRealized
       - timestamp
       properties:
-        userId:
-          type: integer
-          format: int32
-          description: User id of the account the payment is associated with.
-        subaccountId:
-          type: integer
-          format: uint16
-          description: Id of the subaccount the payment is associated with, if any.
         symbol:
           type: string
           description: The symbol of the market the payment is associated with.
@@ -4715,6 +4706,7 @@ x-tagGroups:
   - Capital
   - History
   - Order
+  - Position
 - name: Websocket
   tags:
   - Streams
