@@ -329,11 +329,12 @@ tags:
 - name: Trades
   description: Public trade data.
 paths:
-  /api/v1/account/limits:
+  /api/v1/account:
     get:
       tags:
       - Account
-      summary: Get account limits.
+      summary: Get account.
+      description: '**Instruction:** `accountQuery`'
       parameters:
       - name: X-API-KEY
         schema:
@@ -375,12 +376,17 @@ paths:
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/AccountLimits'
-        '401':
-          description: Unauthorized.
+                $ref: '#/components/schemas/AccountSummary'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
         '500':
           description: Internal server error.
-      operationId: get_account_limits
+      operationId: get_account
+  /api/v1/account/limits:
     patch:
       tags:
       - Account
@@ -871,6 +877,74 @@ paths:
         '500':
           description: Internal server error.
       operationId: get_balances
+  /api/v1/collateral:
+    get:
+      tags:
+      - Capital
+      summary: Get collateral.
+      description: |-
+        Retrieves collateral information for an account.
+
+        **Instruction:** `collateralSummaryQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MarginAccountSummary'
+        '400':
+          description: Bad request.
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+        '500':
+          description: Internal server error.
+      operationId: get_collateral
   /wapi/v1/capital/deposits:
     get:
       tags:
@@ -1189,72 +1263,6 @@ paths:
                 additionalProperties:
                   $ref: '#/components/schemas/Balance'
       operationId: get_insurance_fund_balance
-  /api/v1/collateralSummary:
-    get:
-      tags:
-      - Capital
-      summary: Get collateral summary.
-      description: |-
-        Retrieves collateral information for an account.
-
-        **Instruction:** `collateralSummaryQuery`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      - name: subaccountId
-        schema:
-          type: integer
-          format: uint16
-        in: query
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/MarginAccountSummary'
-        '400':
-          description: Bad request.
-          content:
-            text/plain; charset=utf-8:
-              schema:
-                type: string
-      operationId: get_collateral_summary
   /api/v1/assets:
     get:
       tags:
@@ -1942,11 +1950,13 @@ paths:
         explode: true
       responses:
         '200':
-          description: Returns account position summary
+          description: Success.
           content:
             application/json; charset=utf-8:
               schema:
-                $ref: '#/components/schemas/AccountPositionSummary'
+                type: array
+                items:
+                  $ref: '#/components/schemas/PositionWithMargin'
         '400':
           description: Bad request.
           content:
@@ -2958,44 +2968,59 @@ paths:
       operationId: get_order_history
 components:
   schemas:
-    AccountLimits:
+    AccountSummary:
       type: object
+      required:
+      - borrowLimit
+      - futuresMakerFee
+      - futuresTakerFee
+      - leverageLimit
+      - limitOrders
+      - liquidating
+      - positionLimit
+      - spotMakerFee
+      - spotTakerFee
+      - triggerOrders
       properties:
         borrowLimit:
           type: string
           format: decimal
-          description: The maximum amount of assets that can be borrowed.
-        positionLimit:
+          description: Borrow limit.
+        futuresMakerFee:
           type: string
           format: decimal
-          description: The maximum amount of assets that can be used as a margin position.
+          description: Futures maker fee in basis points.
+        futuresTakerFee:
+          type: string
+          format: decimal
+          description: Futures taker fee in basis points.
         leverageLimit:
           type: string
           format: decimal
-          description: The maximum amount of leverage this account is allowed.
-    AccountPositionSummary:
-      type: object
-      required:
-      - isLiquidating
-      - positions
-      - positionNotionalWeighted
-      properties:
-        isLiquidating:
+          description: Leverage limit of the account.
+        limitOrders:
+          type: integer
+          format: uint64
+          description: Number of open limit orders.
+        liquidating:
           type: boolean
-          description: True if the account is being liquidated.
-        positions:
-          type: array
-          description: Open positions summary.
-          items:
-            $ref: '#/components/schemas/PositionWithMargin'
+          description: Whether the account is liquidating.
         positionLimit:
           type: string
           format: decimal
-          description: If None, uses the global default position limit.
-        positionNotionalWeighted:
+          description: Position limit.
+        spotMakerFee:
           type: string
           format: decimal
-          description: The total weighted notional value of all positions.
+          description: Spot maker fee in basis points.
+        spotTakerFee:
+          type: string
+          format: decimal
+          description: Spot taker fee in basis points.
+        triggerOrders:
+          type: integer
+          format: uint64
+          description: Number of open trigger orders.
     AccountWithdrawalPayload:
       type: object
       required:
@@ -3081,8 +3106,8 @@ components:
       - CLOUD
       - MAX
       - POL
-      - TRUMP
-      - HARRIS
+      - TRUMPWIN
+      - HARRISWIN
     Balance:
       type: object
       required:
@@ -3289,62 +3314,6 @@ components:
         symbol:
           type: string
           description: Symbol of the asset.
-    BorrowLendPositionWithMargin:
-      type: object
-      required:
-      - imf
-      - imfBase
-      - imfFactor
-      - netQuantity
-      - markPrice
-      - mmf
-      - mmfBase
-      - mmfFactor
-      - netExposureQuantity
-      - netExposureNotional
-      - symbol
-      properties:
-        imf:
-          type: string
-          format: decimal
-          description: Initial margin fraction for this position.
-        imfBase:
-          type: string
-          format: decimal
-        imfFactor:
-          type: string
-          format: decimal
-        netQuantity:
-          type: string
-          format: decimal
-          description: Net quantity of the position, positive if long, negative if short.
-        markPrice:
-          type: string
-          format: decimal
-          description: Mark price of the underlying asset.
-        mmf:
-          type: string
-          format: decimal
-          description: Maintenance margin fraction for this position.
-        mmfBase:
-          type: string
-          format: decimal
-        mmfFactor:
-          type: string
-          format: decimal
-        netExposureQuantity:
-          type: string
-          format: decimal
-          description: |-
-            Net exposure of the position, positive if long, negative if short. Lends
-            have no exposure.
-        netExposureNotional:
-          type: string
-          format: decimal
-          description: Notional value of the position.
-        symbol:
-          type: string
-          description: Symbol of the underlying asset.
     BorrowLendSide:
       type: string
       enum:
@@ -3783,12 +3752,10 @@ components:
       type: object
       required:
       - assetsValue
-      - borrows
       - borrowLiability
       - collaterals
       - imf
       - insuranceFundEquity
-      - isLiquidating
       - liabilitiesValue
       - mmf
       - netEquity
@@ -3796,26 +3763,15 @@ components:
       - netEquityLocked
       - netExposureFutures
       - pnlUnrealized
-      - positions
-      - userId
       properties:
         assetsValue:
           type: string
           format: decimal
           description: Notional value of assets
-        borrows:
-          type: array
-          description: All borrows for the account.
-          items:
-            $ref: '#/components/schemas/BorrowLendPositionWithMargin'
         borrowLiability:
           type: string
           format: decimal
           description: Total borrow notional.
-        borrowLimit:
-          type: string
-          format: decimal
-          description: Borrow limit.
         collaterals:
           type: array
           description: Collateral held for a given spot asset.
@@ -3829,9 +3785,6 @@ components:
           type: string
           format: decimal
           description: Unsettled claim on the insurance fund.
-        isLiquidating:
-          type: boolean
-          description: True if the account is currently being liquidated.
         liabilitiesValue:
           type: string
           format: decimal
@@ -3864,23 +3817,6 @@ components:
           type: string
           format: decimal
           description: Unrealised PnL.
-        positions:
-          type: array
-          description: All futures positions for the account.
-          items:
-            $ref: '#/components/schemas/PositionWithMargin'
-        positionLimit:
-          type: string
-          format: decimal
-          description: Futures position limit.
-        subaccountId:
-          type: integer
-          format: int32
-          description: Subaccount id.
-        userId:
-          type: integer
-          format: int32
-          description: Id of the user.
     MarkPrice:
       type: object
       required:
