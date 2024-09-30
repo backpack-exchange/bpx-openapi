@@ -3147,13 +3147,14 @@ components:
           format: decimal
           description: The borrow quantity
         symbol:
-          type: string
-          description: The asset for the borrow.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The asset for the borrow.
     BorrowLendDirection:
       type: string
       enum:
-      - increase
-      - decrease
+      - Increase
+      - Decrease
     BorrowLendMarket:
       type: object
       description: Borrow Lending market summary.
@@ -3210,8 +3211,9 @@ components:
             this is less than the outstanding amount. If that's the case, then
             it simply prevents new borrow or lends from being created.
         symbol:
-          type: string
-          description: Uniquely identifies the token.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: Uniquely identifies the token.
         throttleUtilizationThreshold:
           type: string
           format: decimal
@@ -3311,16 +3313,16 @@ components:
     BorrowLendSide:
       type: string
       enum:
-      - borrow
-      - lend
+      - Borrow
+      - Lend
     BorrowLendSource:
       type: string
       enum:
-      - manual
-      - auto
-      - liquidation
-      - liquidationAdl
-      - liquidationBackstop
+      - Manual
+      - Auto
+      - Liquidation
+      - LiquidationAdl
+      - LiquidationBackstop
     BorrowRepayPayload:
       type: object
       required:
@@ -3332,8 +3334,9 @@ components:
           format: decimal
           description: The quantity of the asset to repay.
         symbol:
-          type: string
-          description: The asset to repay.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The asset to repay.
     Collateral:
       type: object
       required:
@@ -3444,24 +3447,25 @@ components:
     DepositSource:
       type: string
       enum:
-      - administrator
-      - solana
-      - ethereum
-      - bitcoin
-      - nuvei
-      - banxa
-      - ioFinnet
-      - internal
+      - Administrator
+      - Solana
+      - Ethereum
+      - Bitcoin
+      - Nuvei
+      - Banxa
+      - IoFinnet
+      - Internal
     DepositStatus:
       type: string
       enum:
-      - cancelled
-      - confirmed
-      - declined
-      - expired
-      - initiated
+      - Cancelled
+      - Confirmed
+      - Declined
+      - Expired
+      - Initiated
+      - Pending
+      - Refunded
       - pending
-      - refunded
     Depth:
       type: object
       required:
@@ -3555,8 +3559,9 @@ components:
           format: int32
           description: Id of the subaccount the payment is associated with, if any.
         symbol:
-          type: string
-          description: The symbol of the market the payment is associated with.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The symbol of the market the payment is associated with.
         quantity:
           type: string
           format: decimal
@@ -3633,8 +3638,9 @@ components:
           format: decimal
           description: The lend quantity.
         symbol:
-          type: string
-          description: The asset to be lent.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The asset to be lent.
     LendRedeemPayload:
       type: object
       required:
@@ -3646,8 +3652,9 @@ components:
           format: decimal
           description: The lend quantity to be redeemed.
         symbol:
-          type: string
-          description: The lent asset to be redeemed.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The lent asset to be redeemed.
     LeverageFilter:
       type: object
       required:
@@ -4636,9 +4643,6 @@ components:
         clientId:
           type: string
           description: Custom client id.
-        identifier:
-          type: string
-          description: Transaction hash of the withdrawal, if it has been sent.
         quantity:
           type: string
           format: decimal
@@ -4675,8 +4679,9 @@ components:
     WithdrawalStatus:
       type: string
       enum:
-      - confirmed
-      - pending
+      - Confirmed
+      - Pending
+      - Void
 x-tagGroups:
 - name: Public Endpoints
   tags:
