@@ -3493,7 +3493,6 @@ components:
       - Initiated
       - Pending
       - Refunded
-      - pending
     Depth:
       type: object
       required:
