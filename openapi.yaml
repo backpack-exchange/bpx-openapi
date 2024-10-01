@@ -3205,6 +3205,7 @@ components:
       - maxUtilization
       - openBorrowLendLimit
       - symbol
+      - timestamp
       - throttleUtilizationThreshold
       - throttleUtilizationBound
       - throttleUpdateFraction
@@ -3251,6 +3252,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Uniquely identifies the token.
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the summary.
         throttleUtilizationThreshold:
           type: string
           format: decimal
