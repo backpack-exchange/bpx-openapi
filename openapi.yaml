@@ -3187,6 +3187,13 @@ components:
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The asset for the borrow.
+    BorrowLendBookState:
+      type: string
+      description: Borrow lend book state
+      enum:
+      - Open
+      - Closed
+      - RepayOnly
     BorrowLendDirection:
       type: string
       enum:
@@ -3196,6 +3203,7 @@ components:
       type: object
       description: Borrow Lending market summary.
       required:
+      - state
       - assetMarkPrice
       - borrowInterestRate
       - borrowedQuantity
@@ -3211,6 +3219,10 @@ components:
       - throttleUpdateFraction
       - utilization
       properties:
+        state:
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendBookState'
+          - description: State of the borrow lend market.
         assetMarkPrice:
           type: string
           format: decimal
