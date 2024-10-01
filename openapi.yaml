@@ -2878,7 +2878,7 @@ paths:
     get:
       tags:
       - History
-      summary: Get PNL history.
+      summary: Get PnL history.
       description: |-
         History of PNL realization for an account.
 
