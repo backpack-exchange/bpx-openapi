@@ -657,7 +657,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BorrowLendPosition'
+                  $ref: '#/components/schemas/BorrowLendPositionWithMargin'
         '400':
           description: Bad request.
           content:
@@ -3317,32 +3317,63 @@ components:
           type: string
           format: naive-date-time
           description: The timestamp for the movement.
-    BorrowLendPosition:
+    BorrowLendPositionWithMargin:
       type: object
       required:
+      - imf
+      - imfBase
+      - imfFactor
       - netQuantity
-      - mmfFactor
+      - markPrice
+      - mmf
       - mmfBase
+      - mmfFactor
+      - netExposureQuantity
+      - netExposureNotional
       - symbol
       properties:
+        imf:
+          type: string
+          format: decimal
+          description: Initial margin fraction for this position.
+        imfBase:
+          type: string
+          format: decimal
+        imfFactor:
+          type: string
+          format: decimal
         netQuantity:
           type: string
           format: decimal
-          description: |-
-            Funds in/from the borrow-lending-book.
-
-            Negative if borrow. Positive if lend.
-        mmfFactor:
+          description: Net quantity of the position, positive if long, negative if short.
+        markPrice:
           type: string
           format: decimal
-          description: The MMF factor used for the position.
+          description: Mark price of the underlying asset.
+        mmf:
+          type: string
+          format: decimal
+          description: Maintenance margin fraction for this position.
         mmfBase:
           type: string
           format: decimal
-          description: Lower bound for the MMF for this position.
-        symbol:
+        mmfFactor:
           type: string
-          description: Symbol of the asset.
+          format: decimal
+        netExposureQuantity:
+          type: string
+          format: decimal
+          description: |-
+            Net exposure of the position, positive if long, negative if short. Lends
+            have no exposure.
+        netExposureNotional:
+          type: string
+          format: decimal
+          description: Notional value of the position.
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: Symbol of the underlying asset.
     BorrowLendSide:
       type: string
       enum:
