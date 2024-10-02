@@ -3523,24 +3523,24 @@ components:
     DepositSource:
       type: string
       enum:
-      - Administrator
-      - Solana
-      - Ethereum
-      - Bitcoin
-      - Nuvei
-      - Banxa
-      - IoFinnet
-      - Internal
+      - administrator
+      - solana
+      - ethereum
+      - bitcoin
+      - nuvei
+      - banxa
+      - ioFinnet
+      - internal
     DepositStatus:
       type: string
       enum:
-      - Cancelled
-      - Confirmed
-      - Declined
-      - Expired
-      - Initiated
-      - Pending
-      - Refunded
+      - cancelled
+      - confirmed
+      - declined
+      - expired
+      - initiated
+      - pending
+      - refunded
     Depth:
       type: object
       required:
@@ -4700,6 +4700,9 @@ components:
         clientId:
           type: string
           description: Custom client id.
+        identifier:
+          type: string
+          description: Transaction hash of the withdrawal, if it has been sent.
         quantity:
           type: string
           format: decimal
@@ -4736,9 +4739,8 @@ components:
     WithdrawalStatus:
       type: string
       enum:
-      - Confirmed
-      - Pending
-      - Void
+      - confirmed
+      - pending
 x-tagGroups:
 - name: Public Endpoints
   tags:
