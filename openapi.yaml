@@ -4320,7 +4320,6 @@ components:
       - breakEvenPrice
       - entryPrice
       - estLiquidationPrice
-      - fundingPayments
       - imf
       - imfBase
       - imfFactor
@@ -4333,7 +4332,6 @@ components:
       - netExposureQuantity
       - netExposureNotional
       - pnlRealized
-      - pnlCulled
       - pnlUnrealized
       - symbol
       - userId
@@ -4350,10 +4348,6 @@ components:
           type: string
           format: decimal
           description: Estimated liquidation price for this position.
-        fundingPayments:
-          type: string
-          format: decimal
-          description: The total amount of funding payments paid out to this position.
         imf:
           type: string
           format: decimal
@@ -4402,10 +4396,6 @@ components:
           type: string
           format: decimal
           description: Aggregates the amount of pnl realized on this position since opening.
-        pnlCulled:
-          type: string
-          format: decimal
-          description: The total amount of pnl culled from this position.
         pnlUnrealized:
           type: string
           format: decimal
