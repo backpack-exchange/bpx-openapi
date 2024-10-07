@@ -3147,6 +3147,7 @@ components:
       - POL
       - TRUMPWIN
       - HARRISWIN
+      - MOODENG
     Balance:
       type: object
       required:
