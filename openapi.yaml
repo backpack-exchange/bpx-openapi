@@ -4736,15 +4736,18 @@ components:
 x-tagGroups:
 - name: Public Endpoints
   tags:
+  - Borrow Lend Markets
   - Markets
   - System
   - Trades
 - name: Authenticated Endpoints
   tags:
   - Account
+  - Borrow Lend
   - Capital
   - History
   - Order
+  - Position
 - name: Websocket
   tags:
   - Streams
