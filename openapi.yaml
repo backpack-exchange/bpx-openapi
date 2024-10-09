@@ -3622,18 +3622,23 @@ components:
     InterestPayment:
       type: object
       required:
-      - intervalEndTimestamp
+      - timestamp
       - paymentType
       - quantity
       - symbol
       properties:
-        intervalEndTimestamp:
+        timestamp:
           type: string
           format: naive-date-time
-          description: The timestamp for the borrow lending interest payment.
+          description: |-
+            The timestamp for the borrow lending interest payment. For interest
+            payments of type `EntryFee`, this will correspond to the creation time
+            of the borrow lend. For interest payments of type `Borrow` or `Lend`,
+            this will correspond to the end of the interest payment interval.
         paymentType:
-          type: string
-          description: Type of payment.
+          allOf:
+          - $ref: '#/components/schemas/PaymentType'
+          - description: Type of payment.
         quantity:
           type: string
           format: decimal
@@ -4296,6 +4301,14 @@ components:
             - Market
             example: Market
       - $ref: '#/components/schemas/MarketOrder'
+    PaymentType:
+      type: string
+      enum:
+      - EntryFee
+      - Borrow
+      - Lend
+      - UnrealizedPositivePnl
+      - UnrealizedNegativePnl
     PnlPayment:
       type: object
       required:
