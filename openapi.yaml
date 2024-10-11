@@ -3215,6 +3215,7 @@ components:
       - lentQuantity
       - maxUtilization
       - openBorrowLendLimit
+      - optimalUtilization
       - symbol
       - timestamp
       - throttleUtilizationThreshold
@@ -3263,6 +3264,10 @@ components:
             Can't increase borrows or lends pass this threshold. It's possible
             this is less than the outstanding amount. If that's the case, then
             it simply prevents new borrow or lends from being created.
+        optimalUtilization:
+          type: string
+          format: decimal
+          description: The optimal utilization rate for the interest rate model.
         symbol:
           allOf:
           - $ref: '#/components/schemas/Asset'
@@ -3625,6 +3630,8 @@ components:
       - timestamp
       - paymentType
       - quantity
+      - interestRate
+      - interval
       - symbol
       properties:
         timestamp:
@@ -3643,6 +3650,14 @@ components:
           type: string
           format: decimal
           description: Amount of the payment.
+        interestRate:
+          type: string
+          format: decimal
+          description: The rate of interest.
+        interval:
+          type: integer
+          format: uint64
+          description: The interval duration of the payment.
         symbol:
           allOf:
           - $ref: '#/components/schemas/Asset'
