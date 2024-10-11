@@ -465,7 +465,7 @@ paths:
         content:
           application/json; charset=utf-8:
             schema:
-              $ref: '#/components/schemas/UpdateAccountLimitsRequest'
+              $ref: '#/components/schemas/UpdateAccountSettingsRequest'
         required: true
       responses:
         '200':
@@ -3020,6 +3020,7 @@ components:
       - spotMakerFee
       - spotTakerFee
       - triggerOrders
+      - continuousPnlRealization
       properties:
         borrowLimit:
           type: string
@@ -3060,6 +3061,9 @@ components:
           type: integer
           format: uint64
           description: Number of open trigger orders.
+        continuousPnlRealization:
+          type: boolean
+          description: Determines if the account should have continuous PnL realization.
     AccountWithdrawalPayload:
       type: object
       required:
@@ -4688,7 +4692,7 @@ components:
         isBuyerMaker:
           type: boolean
           description: Whether the buyer was the maker order.
-    UpdateAccountLimitsRequest:
+    UpdateAccountSettingsRequest:
       type: object
       properties:
         leverageLimit:
@@ -4697,6 +4701,9 @@ components:
           description: |-
             Determines the maximum leverage allowed for the main account or
             subaccount.
+        continuousPnlRealization:
+          type: boolean
+          description: Determines if the account should have continuous PnL realization.
     Withdrawal:
       type: object
       required:
