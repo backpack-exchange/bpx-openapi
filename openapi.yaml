@@ -414,11 +414,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_account
   /api/v1/account/limits:
     patch:
@@ -473,15 +477,27 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: update_account_settings
   /api/v1/borrowLend/borrow:
     post:
@@ -536,13 +552,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: create_borrow
   /api/v1/borrowLend/borrow/repay:
     post:
@@ -597,13 +621,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: repay_borrow
   /api/v1/borrowLend/positions:
     get:
@@ -661,11 +693,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_borrow_lend_positions
   /api/v1/borrowLend/lend:
     post:
@@ -723,13 +759,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: create_lend
   /api/v1/borrowLend/lend/redeem:
     post:
@@ -787,13 +831,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: redeem_lend
   /api/v1/borrowLend/markets:
     get:
@@ -811,6 +863,10 @@ paths:
                   $ref: '#/components/schemas/BorrowLendMarket'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_borrow_lend_markets
   /api/v1/borrowLend/markets/history:
     get:
@@ -845,6 +901,10 @@ paths:
                   $ref: '#/components/schemas/BorrowLendMarket'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_borrow_lend_markets_history
   /api/v1/capital:
     get:
@@ -905,11 +965,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_balances
   /api/v1/collateral:
     get:
@@ -973,11 +1037,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_collateral
   /wapi/v1/capital/deposits:
     get:
@@ -1071,13 +1139,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_deposits
   /wapi/v1/capital/deposit/address:
     get:
@@ -1142,15 +1218,27 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '403':
           description: Forbidden.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_deposit_address
   /api/v1/capital/funding:
     get:
@@ -1273,13 +1361,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_funding_payments
   /wapi/v1/insurance:
     get:
@@ -1296,6 +1392,12 @@ paths:
                 type: object
                 additionalProperties:
                   $ref: '#/components/schemas/Balance'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_insurance_fund_balance
   /api/v1/assets:
     get:
@@ -1314,6 +1416,10 @@ paths:
                   $ref: '#/components/schemas/MarketAsset'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_assets
   /api/v1/markets:
     get:
@@ -1332,6 +1438,10 @@ paths:
                   $ref: '#/components/schemas/Market'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_markets
   /api/v1/market:
     get:
@@ -1357,11 +1467,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_market
   /api/v1/ticker:
     get:
@@ -1391,11 +1505,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_ticker
   /api/v1/tickers:
     get:
@@ -1416,6 +1534,10 @@ paths:
                   $ref: '#/components/schemas/Ticker'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_tickers
   /api/v1/depth:
     get:
@@ -1441,11 +1563,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_depth
   /api/v1/klines:
     get:
@@ -1502,11 +1628,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_klines
   /api/v1/markPrice:
     get:
@@ -1534,11 +1664,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_mark_price
   /api/v1/openInterest:
     get:
@@ -1564,9 +1698,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_open_interest
   /api/v1/order:
     get:
@@ -1652,11 +1792,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '404':
           description: Order not found.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_order
     post:
       tags:
@@ -1723,11 +1873,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: execute_order
     delete:
       tags:
@@ -1793,11 +1953,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: cancel_order
   /api/v1/orders:
     get:
@@ -1865,9 +2035,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_open_orders
     delete:
       tags:
@@ -1932,11 +2108,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: cancel_open_orders
   /api/v1/position:
     get:
@@ -1994,13 +2180,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_positions
   /api/v1/status:
     get:
@@ -2085,9 +2279,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_recent_trades
   /api/v1/trades/history:
     get:
@@ -2135,9 +2335,15 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_historical_trades
   /wapi/v1/capital/withdrawals:
     get:
@@ -2231,13 +2437,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
-          description: Internal server error.
+          description: Internal Server Error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_withdrawals
     post:
       tags:
@@ -2302,27 +2516,39 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '403':
           description: Forbidden.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '429':
           description: Too many requests.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '503':
           description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: request_withdrawal
   /wapi/v1/history/borrowLend:
     get:
@@ -2462,13 +2688,21 @@ paths:
         '400':
           description: ''
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_borrow_lend_history
   /wapi/v1/history/interest:
     get:
@@ -2582,13 +2816,21 @@ paths:
         '400':
           description: ''
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: ''
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_interest_history
   /wapi/v1/history/fills:
     get:
@@ -2737,13 +2979,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_fills
   /wapi/v1/history/orders:
     get:
@@ -2868,13 +3118,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_order_history
   /wapi/v1/history/pnl:
     get:
@@ -2997,13 +3255,21 @@ paths:
         '400':
           description: Bad request.
           content:
-            text/plain; charset=utf-8:
+            application/json; charset=utf-8:
               schema:
-                type: string
+                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
         '500':
           description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_pnl_payments
 components:
   schemas:
@@ -3093,6 +3359,46 @@ components:
         twoFactorToken:
           type: string
           description: Issued two factor token.
+    ApiErrorCode:
+      type: string
+      enum:
+      - FORBIDDEN
+      - INVALID_CLIENT_REQUEST
+      - INVALID_SIGNATURE
+      - SERVER_ERROR
+      - UNAUTHORIZED
+      - TIMEOUT
+      - TOO_MANY_REQUESTS
+      - RESOURCE_NOT_FOUND
+      - MAINTENANCE
+      - INVALID_QUANTITY
+      - ORDER_LIMIT
+      - INVALID_ORDER
+      - INVALID_PRICE
+      - INVALID_MARKET
+      - INSUFFICIENT_FUNDS
+      - INSUFFICIENT_MARGIN
+      - POSITION_LIMIT
+      - ACCOUNT_LIQUIDATING
+      - TRADING_PAUSED
+      - INVALID_ASSET
+      - INVALID_SYMBOL
+      - CANNOT_BORROW_WHILE_LENDING
+      - CANNOT_LEND_WHILE_BORROWING
+      - INSUFFICIENT_SUPPLY
+      - BORROW_LIMIT
+      - LEND_LIMIT
+      - MAX_LEVERAGE_REACHED
+    ApiErrorResponse:
+      type: object
+      required:
+      - code
+      - message
+      properties:
+        code:
+          $ref: '#/components/schemas/ApiErrorCode'
+        message:
+          type: string
     Asset:
       type: string
       enum:
