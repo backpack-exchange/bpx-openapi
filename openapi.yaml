@@ -1377,28 +1377,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_funding_payments
-  /wapi/v1/insurance:
-    get:
-      tags:
-      - Markets
-      summary: Get insurance fund.
-      description: Retrieves the current balance of the insurance fund account.
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: object
-                additionalProperties:
-                  $ref: '#/components/schemas/Balance'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_insurance_fund_balance
   /api/v1/assets:
     get:
       tags:
