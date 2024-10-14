@@ -3510,6 +3510,7 @@ components:
       - throttleUtilizationBound
       - throttleUpdateFraction
       - utilization
+      - stepSize
       properties:
         state:
           allOf:
@@ -3585,6 +3586,10 @@ components:
           type: string
           format: decimal
           description: Utilisation.
+        stepSize:
+          type: string
+          format: decimal
+          description: Step Size.
     BorrowLendMarketHistoryInterval:
       type: string
       enum:
