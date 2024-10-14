@@ -3899,6 +3899,7 @@ components:
       - symbol
       - quantity
       - intervalEndTimestamp
+      - fundingRate
       properties:
         userId:
           type: integer
@@ -3919,6 +3920,10 @@ components:
           type: string
           format: naive-date-time
           description: The end of the funding interval for the payment.
+        fundingRate:
+          type: string
+          format: decimal
+          description: The funding rate for the payment.
     InterestPayment:
       type: object
       required:
