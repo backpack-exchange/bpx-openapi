@@ -32,6 +32,8 @@ tags:
   description: Keypair management.
 - name: Know Your Customer
   description: KYC management.
+- name: MarketData
+  description: Market data.
 - name: Markets
   description: Public market data.
 - name: Order
