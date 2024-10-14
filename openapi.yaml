@@ -3438,6 +3438,7 @@ components:
       - TRUMPWIN
       - HARRISWIN
       - MOODENG
+      - DBR
     Balance:
       type: object
       required:
