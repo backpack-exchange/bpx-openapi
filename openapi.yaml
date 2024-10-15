@@ -3699,7 +3699,8 @@ components:
       type: string
       enum:
       - Manual
-      - Auto
+      - SpotMargin
+      - Settlement
       - Liquidation
       - LiquidationAdl
       - LiquidationBackstop
