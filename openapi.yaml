@@ -3275,6 +3275,7 @@ components:
       - spotTakerFee
       - triggerOrders
       - continuousPnlRealization
+      - reconciliationAutoBorrow
       properties:
         borrowLimit:
           type: string
@@ -3318,6 +3319,9 @@ components:
         continuousPnlRealization:
           type: boolean
           description: Determines if the account should have continuous PnL realization.
+        reconciliationAutoBorrow:
+          type: boolean
+          description: If true, then tries to borrow during collateral reconciliation.
     AccountWithdrawalPayload:
       type: object
       required:
@@ -5010,6 +5014,12 @@ components:
         continuousPnlRealization:
           type: boolean
           description: Determines if the account should have continuous PnL realization.
+        reconciliationAutoBorrow:
+          type: boolean
+          description: |-
+            If true, then tries to borrow during collateral reconciliation.
+            Collateral reconciliation is a process in which the system reconciles
+            the negative account debt or positive account equity.
     Withdrawal:
       type: object
       required:
