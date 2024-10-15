@@ -3700,7 +3700,7 @@ components:
       enum:
       - Manual
       - SpotMargin
-      - Settlement
+      - Reconciliation
       - Liquidation
       - LiquidationAdl
       - LiquidationBackstop
