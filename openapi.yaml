@@ -486,7 +486,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Account leverage limit updated.
+          description: Success.
         '400':
           description: Bad request.
           content:
@@ -500,7 +500,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
         '500':
-          description: ''
+          description: Internal server error.
           content:
             application/json; charset=utf-8:
               schema:
@@ -996,7 +996,7 @@ paths:
       description: |-
         Retrieves collateral information for an account.
 
-        **Instruction:** `collateralSummaryQuery`
+        **Instruction:** `collateralQuery`
       parameters:
       - name: X-API-KEY
         schema:
@@ -4160,7 +4160,7 @@ components:
       required:
       - assetsValue
       - borrowLiability
-      - collaterals
+      - collateral
       - imf
       - insuranceFundEquity
       - liabilitiesValue
@@ -4170,6 +4170,7 @@ components:
       - netEquityLocked
       - netExposureFutures
       - pnlUnrealized
+      - userId
       properties:
         assetsValue:
           type: string
@@ -4179,7 +4180,7 @@ components:
           type: string
           format: decimal
           description: Total borrow notional.
-        collaterals:
+        collateral:
           type: array
           description: Collateral held for a given spot asset.
           items:
@@ -4224,6 +4225,14 @@ components:
           type: string
           format: decimal
           description: Unrealised PnL.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Subaccount id.
+        userId:
+          type: integer
+          format: int32
+          description: Id of the user.
     MarkPrice:
       type: object
       required:
