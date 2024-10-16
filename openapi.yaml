@@ -438,8 +438,11 @@ paths:
     patch:
       tags:
       - Account
-      summary: Update account limits.
-      description: '**Instruction:** `accountLimitsUpdate`'
+      summary: Update account.
+      description: |-
+        Update account settings.
+
+        **Instruction:** `accountUpdate`
       parameters:
       - name: X-API-KEY
         schema:
