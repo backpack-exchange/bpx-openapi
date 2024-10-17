@@ -5450,6 +5450,7 @@ components:
 x-tagGroups:
 - name: Public Endpoints
   tags:
+  - Assets
   - Borrow Lend Markets
   - Markets
   - System
