@@ -12,6 +12,8 @@ tags:
   description: Account settings.
 - name: Address
   description: Saved addresses.
+- name: Assets
+  description: Assets and collateral data.
 - name: Borrow Lend
   description: Borrowing and lending.
 - name: Borrow Lend Markets
@@ -512,6 +514,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: update_account_settings
+  /api/v1/assets:
+    get:
+      tags:
+      - Assets
+      summary: Get assets.
+      description: Retrieves all the assets that are supported by the exchange.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketAsset'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_assets
+  /api/v1/collateral:
+    get:
+      tags:
+      - Assets
+      summary: Get collateral.
+      description: Get collateral parameters for assets.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollateralSummary'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_collateral_parameters
   /api/v1/borrowLend/borrow:
     post:
       tags:
@@ -988,7 +1034,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_balances
-  /api/v1/collateral:
+  /api/v1/capital/collateral:
     get:
       tags:
       - Capital
@@ -1390,28 +1436,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_funding_payments
-  /api/v1/assets:
-    get:
-      tags:
-      - Markets
-      summary: Get assets.
-      description: Retrieves all the assets that are supported by the exchange.
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/MarketAsset'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_assets
   /api/v1/markets:
     get:
       tags:
@@ -4039,6 +4063,49 @@ components:
           type: string
           format: naive-date-time
           description: The timestamp for the movement.
+    CollateralSummary:
+      type: object
+      required:
+      - symbol
+      - imfBase
+      - imfFactor
+      - mmfBase
+      - mmfFactor
+      - positiveBase
+      - positiveCurvePenalty
+      - weight
+      properties:
+        symbol:
+          type: string
+          description: Symbol of the collateral.
+        imfBase:
+          type: string
+          format: decimal
+          description: Lower bound for the imf for a borrow.
+        imfFactor:
+          type: string
+          format: decimal
+          description: IMF factor.
+        mmfBase:
+          type: string
+          format: decimal
+          description: Lower bound for the mmf for a borrow.
+        mmfFactor:
+          type: string
+          format: decimal
+          description: MMF factor.
+        positiveBase:
+          type: string
+          format: decimal
+          description: Y-intercept for the collateral curve for positive balances.
+        positiveCurvePenalty:
+          type: string
+          format: decimal
+          description: Hyperparameter for collateral haircut ratios.
+        weight:
+          type: string
+          format: decimal
+          description: Collateral weight of the asset. Currently only 0 or 1.
     Deposit:
       type: object
       required:
