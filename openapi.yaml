@@ -2789,6 +2789,17 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: source
+        schema:
+          $ref: '#/components/schemas/InterestPaymentSource'
+        in: query
+        description: |-
+          Filter to return interest payments of a particular source. Borrow
+          interest payments through two mechanisms: borrow lend
+          positions; interest paid on unrealized pnl.
+        required: false
+        deprecated: false
+        explode: true
       responses:
         '200':
           description: Success.
@@ -4300,6 +4311,11 @@ components:
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The symbol of the market the payment is associated with.
+    InterestPaymentSource:
+      type: string
+      enum:
+      - UnrealizedPnl
+      - BorrowLend
     Kline:
       type: object
       required:
