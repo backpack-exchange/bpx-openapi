@@ -436,7 +436,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_account
-  /api/v1/account/limits:
     patch:
       tags:
       - Account
