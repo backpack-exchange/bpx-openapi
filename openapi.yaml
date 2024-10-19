@@ -3297,15 +3297,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_pnl_payments
-  /wapi/v1/history/reconciliation/unsettled:
+  /wapi/v1/history/settlement:
     get:
       tags:
       - History
-      summary: Get unsettled reconciliation history.
+      summary: Get settlement history.
       description: |-
-        History of unsettled reconciliation operations for the account.
+        History of settlement operations for the account.
 
-        **Instruction:** `unsettledReconciliationHistoryQueryAll`
+        **Instruction:** `settlementHistoryQueryAll`
       parameters:
       - name: X-API-KEY
         schema:
@@ -3367,7 +3367,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UnsettledReconciliation'
+                  $ref: '#/components/schemas/Settlement'
           headers:
             ACCESS-CONTROL-EXPOSE-HEADERS:
               required: true
@@ -3416,7 +3416,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_unsettled_reconciliation_history
+      operationId: get_settlement_history
 components:
   schemas:
     AccountSummary:
@@ -5075,6 +5075,35 @@ components:
       - RejectMaker
       - RejectBoth
       - Allow
+    Settlement:
+      type: object
+      required:
+      - quantity
+      - source
+      - timestamp
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          description: Amount of the movement.
+        source:
+          allOf:
+          - $ref: '#/components/schemas/SettlementSource'
+          - description: The source of the movement.
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: The timestamp for the movement.
+    SettlementSource:
+      type: string
+      enum:
+      - TradingFees
+      - TradingFeesSystem
+      - FundingPayment
+      - CulledBorrowInterest
+      - CulledRealizePnl
+      - RealizePnl
+      - BackstopLiquidation
     Side:
       type: string
       enum:
@@ -5217,35 +5246,6 @@ components:
         isBuyerMaker:
           type: boolean
           description: Whether the buyer was the maker order.
-    UnsettledReconciliation:
-      type: object
-      required:
-      - quantity
-      - source
-      - timestamp
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          description: Amount of the movement.
-        source:
-          allOf:
-          - $ref: '#/components/schemas/UnsettledReconciliationSource'
-          - description: The source of the movement.
-        timestamp:
-          type: string
-          format: naive-date-time
-          description: The timestamp for the movement.
-    UnsettledReconciliationSource:
-      type: string
-      enum:
-      - TradingFees
-      - TradingFeesSystem
-      - FundingPayment
-      - CulledBorrowInterest
-      - CulledRealizePnl
-      - RealizePnl
-      - BackstopLiquidation
     UpdateAccountSettingsRequest:
       type: object
       properties:
