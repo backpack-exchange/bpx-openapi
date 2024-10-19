@@ -28,6 +28,8 @@ tags:
   description: Entity operations.
 - name: Funding
   description: Futures funding.
+- name: Futures
+  description: Futures data.
 - name: History
   description: Historical account data.
 - name: Keypair
@@ -40,8 +42,6 @@ tags:
   description: Public market data.
 - name: Order
   description: Order management.
-- name: Position
-  description: Exchange system status.
 - name: Preferences
   description: User preferences.
 - name: Rewards
@@ -2142,7 +2142,7 @@ paths:
   /api/v1/position:
     get:
       tags:
-      - Position
+      - Futures
       summary: Get open positions.
       description: |-
         Retrieves account position summary.
@@ -5342,9 +5342,9 @@ x-tagGroups:
   - Account
   - Borrow Lend
   - Capital
+  - Futures
   - History
   - Order
-  - Position
 - name: Websocket
   tags:
   - Streams
