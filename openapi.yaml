@@ -4365,7 +4365,7 @@ components:
       - borrowLiability
       - collateral
       - imf
-      - insuranceFundEquity
+      - unsettledEquity
       - liabilitiesValue
       - mmf
       - netEquity
@@ -4392,7 +4392,7 @@ components:
           type: string
           format: decimal
           description: Initial margin fraction.
-        insuranceFundEquity:
+        unsettledEquity:
           type: string
           format: decimal
           description: Unsettled claim on the insurance fund.
