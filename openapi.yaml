@@ -3358,6 +3358,13 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: source
+        schema:
+          $ref: '#/components/schemas/SettlementSource'
+        in: query
+        required: false
+        deprecated: false
+        explode: true
       responses:
         '200':
           description: Success.
