@@ -4154,6 +4154,7 @@ components:
       - interestRate
       - interval
       - symbol
+      - marketSymbol
       properties:
         timestamp:
           type: string
@@ -4182,7 +4183,14 @@ components:
         symbol:
           allOf:
           - $ref: '#/components/schemas/Asset'
-          - description: The symbol of the market the payment is associated with.
+          - description: The symbol of the market asset the payment is associated with.
+        marketSymbol:
+          type: string
+          description: |-
+            The market symbol for which the interest payment can be attributed. For
+            interest payments corresponding to borrow lend positions, this is
+            the spot market symbol. For interest payments corresponding to
+            unrealized pnl on futures markets, this will be the futures market symbol.
     InterestPaymentSource:
       type: string
       enum:
