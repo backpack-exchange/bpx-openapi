@@ -4190,7 +4190,8 @@ components:
             The market symbol for which the interest payment can be attributed. For
             interest payments corresponding to borrow lend positions, this is
             the spot market symbol. For interest payments corresponding to
-            unrealized pnl on futures markets, this will be the futures market symbol.
+            unrealized pnl on futures markets, this will be the futures market
+            symbol.
     InterestPaymentSource:
       type: string
       enum:
