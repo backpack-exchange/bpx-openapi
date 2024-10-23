@@ -374,6 +374,8 @@ tags:
   description: Public trade data.
 - name: User
   description: User operations.
+- name: Vasp
+  description: VASP data.
 - name: WalletLinks
   description: Wallet links.
 paths:
