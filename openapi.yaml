@@ -3428,23 +3428,36 @@ components:
     AccountSummary:
       type: object
       required:
+      - autoLend
+      - autoRepayBorrows
       - borrowLimit
+      - continuousPnlRealization
       - futuresMakerFee
       - futuresTakerFee
       - leverageLimit
       - limitOrders
       - liquidating
       - positionLimit
+      - reconciliationAutoBorrow
       - spotMakerFee
       - spotTakerFee
       - triggerOrders
-      - continuousPnlRealization
-      - reconciliationAutoBorrow
       properties:
+        autoLend:
+          type: boolean
+          description: If true, then tries to automatically lend with available balance.
+        autoRepayBorrows:
+          type: boolean
+          description: |-
+            If true, then tries to automatically repay borrows with available
+            balance.
         borrowLimit:
           type: string
           format: decimal
           description: Borrow limit.
+        continuousPnlRealization:
+          type: boolean
+          description: Determines if the account should have continuous PnL realization.
         futuresMakerFee:
           type: string
           format: decimal
@@ -3468,6 +3481,9 @@ components:
           type: string
           format: decimal
           description: Position limit.
+        reconciliationAutoBorrow:
+          type: boolean
+          description: If true, then tries to borrow during collateral reconciliation.
         spotMakerFee:
           type: string
           format: decimal
@@ -3480,12 +3496,6 @@ components:
           type: integer
           format: uint64
           description: Number of open trigger orders.
-        continuousPnlRealization:
-          type: boolean
-          description: Determines if the account should have continuous PnL realization.
-        reconciliationAutoBorrow:
-          type: boolean
-          description: If true, then tries to borrow during collateral reconciliation.
     AccountWithdrawalPayload:
       type: object
       required:
@@ -5267,15 +5277,23 @@ components:
     UpdateAccountSettingsRequest:
       type: object
       properties:
+        autoLend:
+          type: boolean
+          description: Determines if the account should automatically lend.
+        autoRepayBorrows:
+          type: boolean
+          description: |-
+            Determines if the account should automatically repay borrows with
+            available balance.
+        continuousPnlRealization:
+          type: boolean
+          description: Determines if the account should have continuous PnL realization.
         leverageLimit:
           type: string
           format: decimal
           description: |-
             Determines the maximum leverage allowed for the main account or
             subaccount.
-        continuousPnlRealization:
-          type: boolean
-          description: Determines if the account should have continuous PnL realization.
         reconciliationAutoBorrow:
           type: boolean
           description: |-
