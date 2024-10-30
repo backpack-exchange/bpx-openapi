@@ -212,7 +212,42 @@ tags:
 
     ## Position update
 
-    Coming soon!
+    On any mutation to a position the position will be pushed to the
+    position update stream. The event type of the position update will
+    be one of the following:
+
+    - `positionAdjusted`
+    - `positionOpened`
+    - `positionClosed`
+
+    Stream name format for all markets: `account.positionUpdate`
+    Stream name format for single market: `account.positionUpdate.<symbol>`
+
+    ```
+    {
+      "e": "positionOpened",  // Event type
+      "E": 1694687692980000,  // Event time in microseconds
+      "s": "SOL_USD",         // Symbol
+      "b": 123,               // Break event price
+      "B": 122,               // Entry price
+      "l": 50,                // Estimated liquidation price
+      "i": 0.5,               // Initial margin fraction
+      "M": 122,               // Mark price
+      "m": 0.01,              // Maintenance margin fraction
+      "q": 5,                 // Net quantity
+      "Q": 6,                 // Net exposure quantity
+      "n": 732 ,              // Net exposure notional
+      "p": -1,                // PnL realized
+      "P": 0,                 // PnL unrealized
+      "T": 1694687692989999   // Engine timestamp in microseconds
+    }
+    ```
+
+    The net quantity field will be positive if the position is long and
+    negative if the position is short.
+
+    The net exposure quantity field includes exposure from the open position, as well as any
+    open orders.
 
     # Public
 
