@@ -247,8 +247,8 @@ tags:
     The net quantity field will be positive if the position is long and
     negative if the position is short.
 
-    The net exposure quantity field includes exposure from the open position, as well as any
-    open orders.
+    The net exposure quantity field includes exposure from the open
+    position, as well as any open orders.
 
     # Public
 
