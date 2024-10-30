@@ -3931,6 +3931,7 @@ components:
       - LiquidationAdl
       - LiquidationBackstop
       - AutoLend
+      - AutoBorrowRepay
     BorrowRepayPayload:
       type: object
       required:
