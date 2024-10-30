@@ -227,16 +227,17 @@ tags:
     {
       "e": "positionOpened",  // Event type
       "E": 1694687692980000,  // Event time in microseconds
-      "s": "SOL_USD",         // Symbol
+      "s": "SOL_USD_PERP",    // Symbol
       "b": 123,               // Break event price
       "B": 122,               // Entry price
       "l": 50,                // Estimated liquidation price
-      "i": 0.5,               // Initial margin fraction
+      "f": 0.5,               // Initial margin fraction
       "M": 122,               // Mark price
       "m": 0.01,              // Maintenance margin fraction
       "q": 5,                 // Net quantity
       "Q": 6,                 // Net exposure quantity
       "n": 732 ,              // Net exposure notional
+      "i": "1111343026172067" // Position ID
       "p": -1,                // PnL realized
       "P": 0,                 // PnL unrealized
       "T": 1694687692989999   // Engine timestamp in microseconds
