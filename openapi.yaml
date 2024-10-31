@@ -3665,6 +3665,9 @@ components:
       - HARRISWIN
       - MOODENG
       - DBR
+      - BTCVOL
+      - SOLVOL
+      - ETHVOL
     Balance:
       type: object
       required:
