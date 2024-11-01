@@ -3565,6 +3565,9 @@ components:
         twoFactorToken:
           type: string
           description: Issued two factor token.
+        autoBorrow:
+          type: boolean
+          description: Auto borrow to withdraw if required.
     ApiErrorCode:
       type: string
       enum:
