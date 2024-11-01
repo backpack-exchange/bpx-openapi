@@ -12,6 +12,8 @@ tags:
   description: API key Management.
 - name: Account
   description: Account settings.
+- name: AccountLimits
+  description: Account Limits.
 - name: Address
   description: Saved addresses.
 - name: Assets
