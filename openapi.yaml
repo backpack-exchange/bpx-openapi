@@ -346,11 +346,23 @@ tags:
 
     ## Liquidation
 
-    Coming soon!
+    Stream name format: `liquidation.<symbol>`
+
+    ```
+    {
+      "e": "liquidation",           // Event type
+      "E": 1694688638091000,      // Event time in microseconds
+      "q": "10",                  // Quantity
+      "p": "18.70",               // Price
+      "s": "SOL_USDC",            // Symbol
+      "T": 567,                   // Engine timestamp in microseconds
+    }
+    ```
 
     ## Mark price
 
     Stream name format: `markPrice.<symbol>`
+
     ```
     {
       "e": "markPrice",           // Event type
