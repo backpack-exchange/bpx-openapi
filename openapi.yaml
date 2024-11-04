@@ -346,11 +346,11 @@ tags:
 
     ## Liquidation
 
-    Stream name format: `liquidation.<symbol>`
+    Stream name format: `liquidation`
 
     ```
     {
-      "e": "liquidation",           // Event type
+      "e": "liquidation",         // Event type
       "E": 1694688638091000,      // Event time in microseconds
       "q": "10",                  // Quantity
       "p": "18.70",               // Price
