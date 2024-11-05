@@ -1641,6 +1641,91 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_open_interest
+  /api/v1/fundingRates:
+    get:
+      tags:
+      - Markets
+      summary: Get funding interval rates.
+      description: Funding interval rate history for futures.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query
+        required: true
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FundingIntervalRate'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_funding_interval_rates
   /api/v1/order:
     get:
       tags:
@@ -4184,6 +4269,24 @@ components:
       - collateralConversion
       - adl
       - allLiquidation
+    FundingIntervalRate:
+      type: object
+      required:
+      - symbol
+      - intervalEndTimestamp
+      - fundingRate
+      properties:
+        symbol:
+          type: string
+          description: The symbol of the market associated to the funding interval.
+        intervalEndTimestamp:
+          type: string
+          format: naive-date-time
+          description: The end of the funding interval.
+        fundingRate:
+          type: string
+          format: decimal
+          description: The funding rate for the interval.
     FundingPayment:
       type: object
       required:
