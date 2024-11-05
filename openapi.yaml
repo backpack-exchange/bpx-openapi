@@ -617,7 +617,7 @@ paths:
     post:
       tags:
       - Borrow Lend
-      summary: Create borrow.
+      summary: Execute borrow lend.
       description: '**Instruction:** `borrowLendExecute`'
       parameters:
       - name: X-API-KEY
@@ -686,7 +686,7 @@ paths:
     get:
       tags:
       - Borrow Lend
-      summary: Get positions.
+      summary: Get borrow lend positions.
       description: |-
         Retrieves all the open borrow lending positions for the account.
 
@@ -752,7 +752,7 @@ paths:
     get:
       tags:
       - Borrow Lend Markets
-      summary: Get markets.
+      summary: Get borrow lend markets.
       responses:
         '200':
           description: Success.
@@ -773,7 +773,7 @@ paths:
     get:
       tags:
       - Borrow Lend Markets
-      summary: Get market history.
+      summary: Get borrow lend market history.
       parameters:
       - name: interval
         schema:
