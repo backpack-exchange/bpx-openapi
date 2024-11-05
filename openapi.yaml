@@ -1354,143 +1354,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_deposit_address
-  /api/v1/capital/funding:
-    get:
-      tags:
-      - Funding
-      summary: Get funding payments.
-      description: |-
-        Users funding payment history for futures.
-
-        **Instruction:** `fundingHistoryQueryAll`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      - name: subaccountId
-        schema:
-          type: integer
-          format: uint16
-        in: query
-        description: Filter for a subaccount.
-        required: false
-        deprecated: false
-        explode: true
-      - name: symbol
-        schema:
-          type: string
-        in: query
-        description: Market symbol to query. If not set, all markets are returned.
-        required: false
-        deprecated: false
-        explode: true
-      - name: limit
-        schema:
-          type: integer
-          format: uint64
-        in: query
-        description: Maximum number to return. Default `100`, maximum `1000`.
-        required: false
-        deprecated: false
-        explode: true
-      - name: offset
-        schema:
-          type: integer
-          format: uint64
-        in: query
-        description: Offset for pagination. Default `0`.
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/FundingPayment'
-          headers:
-            ACCESS-CONTROL-EXPOSE-HEADERS:
-              required: true
-              deprecated: false
-              schema:
-                type: string
-            X-PAGE-COUNT:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-            X-CURRENT-PAGE:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-            X-PAGE-SIZE:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-            X-TOTAL:
-              required: true
-              deprecated: false
-              schema:
-                type: integer
-                format: uint64
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '401':
-          description: Unauthorized.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_funding_payments
   /api/v1/markets:
     get:
       tags:
@@ -3076,6 +2939,143 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_fills
+  /wapi/v1/history/funding:
+    get:
+      tags:
+      - History
+      summary: Get funding payments.
+      description: |-
+        Users funding payment history for futures.
+
+        **Instruction:** `fundingHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: subaccountId
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        description: Filter for a subaccount.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FundingPayment'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_funding_payments
   /wapi/v1/history/orders:
     get:
       tags:
@@ -3219,7 +3219,7 @@ paths:
     get:
       tags:
       - History
-      summary: Get PnL history.
+      summary: Get PNL history.
       description: |-
         History of PNL realization for an account.
 
