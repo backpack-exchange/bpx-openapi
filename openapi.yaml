@@ -613,12 +613,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_collateral_parameters
-  /api/v1/borrowLend/borrow:
+  /api/v1/borrowLend:
     post:
       tags:
       - Borrow Lend
       summary: Create borrow.
-      description: '**Instruction:** `borrowCreate`'
+      description: '**Instruction:** `borrowLendExecute`'
       parameters:
       - name: X-API-KEY
         schema:
@@ -658,7 +658,7 @@ paths:
         content:
           application/json; charset=utf-8:
             schema:
-              $ref: '#/components/schemas/BorrowCreatePayload'
+              $ref: '#/components/schemas/BorrowLendExecutePayload'
         required: true
       responses:
         '200':
@@ -681,76 +681,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: create_borrow
-  /api/v1/borrowLend/borrow/repay:
-    post:
-      tags:
-      - Borrow Lend
-      summary: Repay borrow.
-      description: '**Instruction:** `borrowRepay`'
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      requestBody:
-        content:
-          application/json; charset=utf-8:
-            schema:
-              $ref: '#/components/schemas/BorrowRepayPayload'
-        required: true
-      responses:
-        '200':
-          description: Borrow repay created.
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '503':
-          description: System under maintenance.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: repay_borrow
+      operationId: execute_borrow_lend
   /api/v1/borrowLend/positions:
     get:
       tags:
@@ -817,150 +748,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_borrow_lend_positions
-  /api/v1/borrowLend/lend:
-    post:
-      tags:
-      - Borrow Lend
-      summary: Create lend.
-      description: |-
-        Loans an asset from the account to the borrow lend book.
-
-        **Instruction:** `lendCreate`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      requestBody:
-        content:
-          application/json; charset=utf-8:
-            schema:
-              $ref: '#/components/schemas/LendCreatePayload'
-        required: true
-      responses:
-        '200':
-          description: Lend created.
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '503':
-          description: System under maintenance.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: create_lend
-  /api/v1/borrowLend/lend/redeem:
-    post:
-      tags:
-      - Borrow Lend
-      summary: Redeem lend.
-      description: |-
-        Returns an asset to the account from the borrow lend book.
-
-        **Instruction:** `lendRedeem`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      requestBody:
-        content:
-          application/json; charset=utf-8:
-            schema:
-              $ref: '#/components/schemas/LendRedeemPayload'
-        required: true
-      responses:
-        '200':
-          description: Lend redeem created.
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '503':
-          description: System under maintenance.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: redeem_lend
   /api/v1/borrowLend/markets:
     get:
       tags:
@@ -3797,20 +3584,6 @@ components:
       - Ethereum
       - Polygon
       - Bitcoin
-    BorrowCreatePayload:
-      type: object
-      required:
-      - quantity
-      - symbol
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          description: The borrow quantity
-        symbol:
-          allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: The asset for the borrow.
     BorrowLendBookState:
       type: string
       description: Borrow lend book state
@@ -3823,6 +3596,25 @@ components:
       enum:
       - Increase
       - Decrease
+    BorrowLendExecutePayload:
+      type: object
+      required:
+      - quantity
+      - side
+      - symbol
+      properties:
+        quantity:
+          type: string
+          format: decimal
+          description: The quantity of the asset to repay.
+        side:
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendSide'
+          - description: Side of the borrow lend.
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The asset to repay.
     BorrowLendMarket:
       type: object
       description: Borrow Lending market summary.
@@ -4036,20 +3828,6 @@ components:
       - LiquidationBackstop
       - AutoLend
       - AutoBorrowRepay
-    BorrowRepayPayload:
-      type: object
-      required:
-      - quantity
-      - symbol
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          description: The quantity of the asset to repay.
-        symbol:
-          allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: The asset to repay.
     Collateral:
       type: object
       required:
@@ -4425,34 +4203,6 @@ components:
       - 3d
       - 1w
       - 1month
-    LendCreatePayload:
-      type: object
-      required:
-      - quantity
-      - symbol
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          description: The lend quantity.
-        symbol:
-          allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: The asset to be lent.
-    LendRedeemPayload:
-      type: object
-      required:
-      - quantity
-      - symbol
-      properties:
-        quantity:
-          type: string
-          format: decimal
-          description: The lend quantity to be redeemed.
-        symbol:
-          allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: The lent asset to be redeemed.
     LeverageFilter:
       type: object
       required:
