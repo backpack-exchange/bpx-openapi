@@ -2401,7 +2401,7 @@ paths:
         explode: true
       - name: type
         schema:
-          $ref: '#/components/schemas/BorrowLendSide'
+          $ref: '#/components/schemas/BorrowLendEventType'
         in: query
         description: Filter to history for either borrows or lends.
         required: false
@@ -3597,6 +3597,15 @@ components:
       - Open
       - Closed
       - RepayOnly
+    BorrowLendEventType:
+      type: string
+      enum:
+      - Borrow
+      - BorrowBackstopLiquidation
+      - BorrowRepay
+      - Lend
+      - LendBackstopLiquidation
+      - LendRedeem
     BorrowLendExecutePayload:
       type: object
       required:
@@ -3768,7 +3777,7 @@ components:
       properties:
         eventType:
           allOf:
-          - $ref: '#/components/schemas/BorrowLendSide'
+          - $ref: '#/components/schemas/BorrowLendEventType'
           - description: Type of movement.
         quantity:
           type: string
