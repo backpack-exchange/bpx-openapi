@@ -2399,6 +2399,30 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: type
+        schema:
+          $ref: '#/components/schemas/BorrowLendSide'
+        in: query
+        description: Filter to history for either borrows or lends.
+        required: false
+        deprecated: false
+        explode: true
+      - name: source
+        schema:
+          $ref: '#/components/schemas/BorrowLendSource'
+        in: query
+        description: Filter to return history for a particular source.
+        required: false
+        deprecated: false
+        explode: true
+      - name: positionId
+        schema:
+          type: string
+        in: query
+        description: Filter to return history for a particular position.
+        required: false
+        deprecated: false
+        explode: true
       - name: symbol
         schema:
           type: string
@@ -2422,32 +2446,6 @@ paths:
           format: uint64
         in: query
         description: Offset for pagination. Default `0`.
-        required: false
-        deprecated: false
-        explode: true
-      - name: type
-        schema:
-          $ref: '#/components/schemas/BorrowLendSide'
-        in: query
-        description: Filter to return movements for either borrows or lends.
-        required: false
-        deprecated: false
-        explode: true
-      - name: direction
-        schema:
-          $ref: '#/components/schemas/BorrowLendDirection'
-        in: query
-        description: |-
-          Filter to return movements associated to creations or
-          repayments/redemptions.
-        required: false
-        deprecated: false
-        explode: true
-      - name: source
-        schema:
-          $ref: '#/components/schemas/BorrowLendSource'
-        in: query
-        description: Filter to return movements of a particular source.
         required: false
         deprecated: false
         explode: true
@@ -2550,6 +2548,13 @@ paths:
           format: uint64
         in: header
         description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: positionId
+        schema:
+          type: string
+        in: query
         required: false
         deprecated: false
         explode: true
@@ -3091,9 +3096,9 @@ paths:
     get:
       tags:
       - History
-      summary: Get PNL history.
+      summary: Get profit and loss history.
       description: |-
-        History of PNL realization for an account.
+        History of profit and loss realization for an account.
 
         **Instruction:** `pnlHistoryQueryAll`
       parameters:
@@ -3480,6 +3485,7 @@ components:
       - TRADING_PAUSED
       - INVALID_ASSET
       - INVALID_SYMBOL
+      - INVALID_POSITION_ID
       - CANNOT_BORROW_WHILE_LENDING
       - CANNOT_LEND_WHILE_BORROWING
       - INSUFFICIENT_SUPPLY
@@ -3591,11 +3597,6 @@ components:
       - Open
       - Closed
       - RepayOnly
-    BorrowLendDirection:
-      type: string
-      enum:
-      - Increase
-      - Decrease
     BorrowLendExecutePayload:
       type: object
       required:
@@ -3725,17 +3726,12 @@ components:
     BorrowLendMovement:
       type: object
       required:
-      - direction
       - eventType
       - quantity
       - source
       - symbol
       - timestamp
       properties:
-        direction:
-          allOf:
-          - $ref: '#/components/schemas/BorrowLendDirection'
-          - description: Direction of the movement.
         eventType:
           allOf:
           - $ref: '#/components/schemas/BorrowLendSide'
