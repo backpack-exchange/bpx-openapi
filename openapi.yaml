@@ -799,7 +799,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BorrowLendMarket'
+                  $ref: '#/components/schemas/BorrowLendHistory'
         '500':
           description: Internal server error.
           content:
@@ -3616,6 +3616,40 @@ components:
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The asset to repay.
+    BorrowLendHistory:
+      type: object
+      required:
+      - borrowInterestRate
+      - borrowedQuantity
+      - lendInterestRate
+      - lentQuantity
+      - timestamp
+      - utilization
+      properties:
+        borrowInterestRate:
+          type: string
+          format: decimal
+          description: The rate borrowers pay.
+        borrowedQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets borrowed from the pool.
+        lendInterestRate:
+          type: string
+          format: decimal
+          description: The APY rate lenders receive.
+        lentQuantity:
+          type: string
+          format: decimal
+          description: The amount of assets lent to the pool.
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the summary.
+        utilization:
+          type: string
+          format: decimal
+          description: Utilisation.
     BorrowLendMarket:
       type: object
       description: Borrow Lending market summary.
