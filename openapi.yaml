@@ -1981,7 +1981,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PositionWithMargin'
+                  $ref: '#/components/schemas/FuturePositionWithMargin'
         '400':
           description: Bad request.
           content:
@@ -4136,6 +4136,104 @@ components:
           type: string
           format: decimal
           description: The funding rate for the payment.
+    FuturePositionWithMargin:
+      type: object
+      description: User position model
+      required:
+      - breakEvenPrice
+      - entryPrice
+      - estLiquidationPrice
+      - imf
+      - imfBase
+      - imfFactor
+      - markPrice
+      - mmf
+      - mmfBase
+      - mmfFactor
+      - netCost
+      - netQuantity
+      - netExposureQuantity
+      - netExposureNotional
+      - pnlRealized
+      - pnlUnrealized
+      - symbol
+      - userId
+      properties:
+        breakEvenPrice:
+          type: string
+          format: decimal
+          description: Break-even price for this position.
+        entryPrice:
+          type: string
+          format: decimal
+          description: Entry price for this position.
+        estLiquidationPrice:
+          type: string
+          format: decimal
+          description: Estimated liquidation price for this position.
+        imf:
+          type: string
+          format: decimal
+          description: Initial margin fraction for this position.
+        imfBase:
+          type: string
+          format: decimal
+        imfFactor:
+          type: string
+          format: decimal
+        markPrice:
+          type: string
+          format: decimal
+          description: Mark price for this position's market.
+        mmf:
+          type: string
+          format: decimal
+          description: Maintenance margin fraction for this position.
+        mmfBase:
+          type: string
+          format: decimal
+        mmfFactor:
+          type: string
+          format: decimal
+        netCost:
+          type: string
+          format: decimal
+          description: |-
+            Positive if long. Negative if short.
+
+            The net cost to enter into the position,i.e., price*quantity for
+            all orders adjusting this position.
+        netQuantity:
+          type: string
+          format: decimal
+          description: Positive if long. Negative if short.
+        netExposureQuantity:
+          type: string
+          format: decimal
+          description: Quantity of this futures position including worst case open orders.
+        netExposureNotional:
+          type: string
+          format: decimal
+          description: Notional value of the futures position including worst case open orders.
+        pnlRealized:
+          type: string
+          format: decimal
+          description: Aggregates the amount of pnl realized on this position since opening.
+        pnlUnrealized:
+          type: string
+          format: decimal
+          description: Unrealized profit and loss for this position.
+        subaccountId:
+          type: integer
+          format: uint16
+          description: ID of the user subaccount that the position is for.
+        symbol:
+          type: string
+          description: Future to which this position belongs.
+        userId:
+          type: integer
+          format: int32
+          description: Id of the user.
     InterestPayment:
       type: object
       required:
@@ -4849,104 +4947,6 @@ components:
           type: string
           format: naive-date-time
           description: The end of the funding interval for the payment.
-    PositionWithMargin:
-      type: object
-      description: User position model
-      required:
-      - breakEvenPrice
-      - entryPrice
-      - estLiquidationPrice
-      - imf
-      - imfBase
-      - imfFactor
-      - markPrice
-      - mmf
-      - mmfBase
-      - mmfFactor
-      - netCost
-      - netQuantity
-      - netExposureQuantity
-      - netExposureNotional
-      - pnlRealized
-      - pnlUnrealized
-      - symbol
-      - userId
-      properties:
-        breakEvenPrice:
-          type: string
-          format: decimal
-          description: Break-even price for this position.
-        entryPrice:
-          type: string
-          format: decimal
-          description: Entry price for this position.
-        estLiquidationPrice:
-          type: string
-          format: decimal
-          description: Estimated liquidation price for this position.
-        imf:
-          type: string
-          format: decimal
-          description: Initial margin fraction for this position.
-        imfBase:
-          type: string
-          format: decimal
-        imfFactor:
-          type: string
-          format: decimal
-        markPrice:
-          type: string
-          format: decimal
-          description: Mark price for this position's market.
-        mmf:
-          type: string
-          format: decimal
-          description: Maintenance margin fraction for this position.
-        mmfBase:
-          type: string
-          format: decimal
-        mmfFactor:
-          type: string
-          format: decimal
-        netCost:
-          type: string
-          format: decimal
-          description: |-
-            Positive if long. Negative if short.
-
-            The net cost to enter into the position,i.e., price*quantity for
-            all orders adjusting this position.
-        netQuantity:
-          type: string
-          format: decimal
-          description: Positive if long. Negative if short.
-        netExposureQuantity:
-          type: string
-          format: decimal
-          description: Quantity of this futures position including worst case open orders.
-        netExposureNotional:
-          type: string
-          format: decimal
-          description: Notional value of the futures position including worst case open orders.
-        pnlRealized:
-          type: string
-          format: decimal
-          description: Aggregates the amount of pnl realized on this position since opening.
-        pnlUnrealized:
-          type: string
-          format: decimal
-          description: Unrealized profit and loss for this position.
-        subaccountId:
-          type: integer
-          format: uint16
-          description: ID of the user subaccount that the position is for.
-        symbol:
-          type: string
-          description: Future to which this position belongs.
-        userId:
-          type: integer
-          format: int32
-          description: Id of the user.
     PriceBandMarkPrice:
       type: object
       required:
