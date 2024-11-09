@@ -3798,13 +3798,11 @@ components:
       type: object
       required:
       - imf
-      - imfBase
-      - imfFactor
+      - imfFunction
       - netQuantity
       - markPrice
       - mmf
-      - mmfBase
-      - mmfFactor
+      - mmfFunction
       - netExposureQuantity
       - netExposureNotional
       - symbol
@@ -3813,12 +3811,10 @@ components:
           type: string
           format: decimal
           description: Initial margin fraction for this position.
-        imfBase:
-          type: string
-          format: decimal
-        imfFactor:
-          type: string
-          format: decimal
+        imfFunction:
+          allOf:
+          - $ref: '#/components/schemas/PositionImfFunction'
+          - description: IMF function.
         netQuantity:
           type: string
           format: decimal
@@ -3831,12 +3827,10 @@ components:
           type: string
           format: decimal
           description: Maintenance margin fraction for this position.
-        mmfBase:
-          type: string
-          format: decimal
-        mmfFactor:
-          type: string
-          format: decimal
+        mmfFunction:
+          allOf:
+          - $ref: '#/components/schemas/PositionImfFunction'
+          - description: MMF function.
         netExposureQuantity:
           type: string
           format: decimal
@@ -3919,49 +3913,74 @@ components:
           type: string
           format: decimal
           description: The amount of freely available assets.
+    CollateralFunction:
+      type: object
+      required:
+      - weight
+      - kind
+      properties:
+        weight:
+          type: string
+          format: decimal
+        kind:
+          $ref: '#/components/schemas/CollateralFunctionKind'
+    CollateralFunctionKind:
+      type: object
+      anyOf:
+      - $ref: '#/components/schemas/CollateralFunctionKind_IdentityFunction'
+      - $ref: '#/components/schemas/CollateralFunctionKind_InverseSqrtFunction'
+      discriminator:
+        propertyName: type
+        mapping:
+          identity: '#/components/schemas/CollateralFunctionKind_IdentityFunction'
+          inverseSqrt: '#/components/schemas/CollateralFunctionKind_InverseSqrtFunction'
+    CollateralFunctionKind_IdentityFunction:
+      allOf:
+      - type: object
+        required:
+        - type
+        properties:
+          type:
+            type: string
+            enum:
+            - identity
+            example: identity
+      - $ref: '#/components/schemas/IdentityFunction'
+    CollateralFunctionKind_InverseSqrtFunction:
+      allOf:
+      - type: object
+        required:
+        - type
+        properties:
+          type:
+            type: string
+            enum:
+            - inverseSqrt
+            example: inverseSqrt
+      - $ref: '#/components/schemas/InverseSqrtFunction'
     CollateralSummary:
       type: object
       required:
       - symbol
-      - imfBase
-      - imfFactor
-      - mmfBase
-      - mmfFactor
-      - positiveBase
-      - positiveCurvePenalty
-      - weight
+      - imfFunction
+      - mmfFunction
+      - haircutFunction
       properties:
         symbol:
           type: string
           description: Symbol of the collateral.
-        imfBase:
-          type: string
-          format: decimal
-          description: Lower bound for the imf for a borrow.
-        imfFactor:
-          type: string
-          format: decimal
-          description: IMF factor.
-        mmfBase:
-          type: string
-          format: decimal
-          description: Lower bound for the mmf for a borrow.
-        mmfFactor:
-          type: string
-          format: decimal
-          description: MMF factor.
-        positiveBase:
-          type: string
-          format: decimal
-          description: Y-intercept for the collateral curve for positive balances.
-        positiveCurvePenalty:
-          type: string
-          format: decimal
-          description: Hyperparameter for collateral haircut ratios.
-        weight:
-          type: string
-          format: decimal
-          description: Collateral weight of the asset. Currently only 0 or 1.
+        imfFunction:
+          allOf:
+          - $ref: '#/components/schemas/PositionImfFunction'
+          - description: IMF function.
+        mmfFunction:
+          allOf:
+          - $ref: '#/components/schemas/PositionImfFunction'
+          - description: MMF function.
+        haircutFunction:
+          allOf:
+          - $ref: '#/components/schemas/CollateralFunction'
+          - description: Calculates the haircut for collateral value.
     Deposit:
       type: object
       required:
@@ -4144,12 +4163,10 @@ components:
       - entryPrice
       - estLiquidationPrice
       - imf
-      - imfBase
-      - imfFactor
+      - imfFunction
       - markPrice
       - mmf
-      - mmfBase
-      - mmfFactor
+      - mmfFunction
       - netCost
       - netQuantity
       - netExposureQuantity
@@ -4175,12 +4192,10 @@ components:
           type: string
           format: decimal
           description: Initial margin fraction for this position.
-        imfBase:
-          type: string
-          format: decimal
-        imfFactor:
-          type: string
-          format: decimal
+        imfFunction:
+          allOf:
+          - $ref: '#/components/schemas/PositionImfFunction'
+          - description: IMF function.
         markPrice:
           type: string
           format: decimal
@@ -4189,12 +4204,10 @@ components:
           type: string
           format: decimal
           description: Maintenance margin fraction for this position.
-        mmfBase:
-          type: string
-          format: decimal
-        mmfFactor:
-          type: string
-          format: decimal
+        mmfFunction:
+          allOf:
+          - $ref: '#/components/schemas/PositionImfFunction'
+          - description: MMF function.
         netCost:
           type: string
           format: decimal
@@ -4234,6 +4247,8 @@ components:
           type: integer
           format: int32
           description: Id of the user.
+    IdentityFunction:
+      type: object
     InterestPayment:
       type: object
       required:
@@ -4286,6 +4301,18 @@ components:
       enum:
       - UnrealizedPnl
       - BorrowLend
+    InverseSqrtFunction:
+      type: object
+      required:
+      - base
+      - positiveCurvePenalty
+      properties:
+        base:
+          type: string
+          format: decimal
+        positiveCurvePenalty:
+          type: string
+          format: decimal
     Kline:
       type: object
       required:
@@ -4947,6 +4974,26 @@ components:
           type: string
           format: naive-date-time
           description: The end of the funding interval for the payment.
+    PositionImfFunction:
+      type: object
+      anyOf:
+      - $ref: '#/components/schemas/PositionImfFunction_SqrtFunction'
+      discriminator:
+        propertyName: type
+        mapping:
+          sqrt: '#/components/schemas/PositionImfFunction_SqrtFunction'
+    PositionImfFunction_SqrtFunction:
+      allOf:
+      - type: object
+        required:
+        - type
+        properties:
+          type:
+            type: string
+            enum:
+            - sqrt
+            example: sqrt
+      - $ref: '#/components/schemas/SqrtFunction'
     PriceBandMarkPrice:
       type: object
       required:
@@ -5087,6 +5134,18 @@ components:
       enum:
       - Bid
       - Ask
+    SqrtFunction:
+      type: object
+      required:
+      - base
+      - factor
+      properties:
+        base:
+          type: string
+          format: decimal
+        factor:
+          type: string
+          format: decimal
     Status:
       type: string
       enum:
