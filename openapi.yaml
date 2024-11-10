@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: Backpack Exchange API
-  description: "\n# Introduction\n\nWelcome to the Backpack Exchange API. This API is for programmatic trade execution. All of the endpoints require requests to be signed with an ED25519 keypair for authentication.\n\nThe API is hosted at `https://api.backpack.exchange/` and the WS API is hosted at `wss://ws.backpack.exchange/`.\n\n# Authentication\n\n\n## Signing requests\n\nSigned requests are required for any API calls that mutate state. Additionally, some read only requests can be performed by signing or via session authentication.\n\nSigned requests require the following additional headers:\n\n- `X-Timestamp` - Unix time in milliseconds that the request was sent.\n- `X-Window` - Time window in milliseconds that the request is valid for, default is `5000` and maximum is `60000`.\n- `X-API-Key` - Base64 encoded verifying key of the ED25519 keypair.\n- `X-Signature` - Base64 encoded signature generated according to the instructions below.\n\nTo generate a signature perform the following:\n\n1) The key/values of the request body or query parameters should be ordered alphabetically and then turned into query string format.\n\n2) Append the header values for the timestamp and receive window to the above generated string in the format `&timestamp=<timestamp>&window=<window>`. If no `X-Window` header is passed the default value of `5000` still needs to be added to the signing string.\n\nEach request also has an instruction type, valid instructions are:\n\n```\naccountQuery\nbalanceQuery\nborrowHistoryQueryAll\ncollateralQuery\ndepositAddressQuery\ndepositQueryAll\nfillHistoryQueryAll\nfundingHistoryQueryAll\ninterestHistoryQueryAll\norderCancel\norderCancelAll\norderExecute\norderHistoryQueryAll\norderQuery\norderQueryAll\npnlHistoryQueryAll\npositionQuery\nwithdraw\nwithdrawalQueryAll\n```\n\nThe correct instruction type should be prefixed to the signing string. The instruction types for each request are documented alongside the request.\n\nFor example, an API request to cancel an order with the following body:\n\n```json\n{\n    \"orderId\": 28\n    \"symbol\": \"BTC_USDT\",\n}\n```\n\nWould require the following to be signed:\n\n```text\ninstruction=orderCancel&orderId=28&symbol=BTC_USDT&timestamp=1614550000000&window=5000\n```\n\nIf the API endpoint requires query parameters instead of a request body, the same procedure should be used on the query parameters. If the API endpoint does not have a request body or query parameters, only the timestamp and receive window need to be signed.\n\nThis message should be signed using the private key of the ED25519 keypair that corresponds to the public key in the `X-API-Key` header. The signature should then be base64 encoded and submitted in the `X-Signature` header.\n\n\n<br /><br />\n\n---\n\n# Changelog\n\n## 2024-10-15\n\n- Convert all error responses to JSON and add a error code.\n\n## 2024-05-14\n\n- Add `executedQuantity` and `executedQuoteQuantity` to order history endpoint.\n\n## 2024-05-03\n\n- Add single market order update stream `account.orderUpdate.<symbol>`.\n\n## 2024-05-02\n\n- Add optional `from` and `to` timestamp to get withdrawals endpoint.\n\n## 2024-05-01\n\n- Add optional `from` and `to` timestamp to get deposits endpoint.\n\n## 2024-03-14\n\n- Add optional `orderId` filter to order history endpoint.\n- Add optional `from` and `to` timestamp to order fills endpoint.\n\n## 2024-02-28\n\n- Return the withdrawal in request withdrawal response.\n\n## 2024-02-24\n\n- An additional field `t` was added to the private order update stream. It is the `trade_id` of the fill that generated the order update.\n- Added a maximum value for the `X-Window` header of `60000`.\n\n## 2024-01-16\n\n### Breaking\n\n- A new websocket API is available at `wss://ws.backpack.exchange`. Please see the documentation. The previous API remains on the same endpoint and will be deprecated after a migration period. The new API changes the following:\n  - Subscription endpoint is now `wss://ws.backpack.exchange` instead of `wss://ws.backpack.exchange/stream`.\n  - Can subscribe and unsubscribe to/from multiple streams by passing more than one in the `params` field.\n  - Signature should now be sent in a separate `signature` field.\n  - Signature instruction changed from `accountQuery` to `subscribe`.\n  - Event and engine timestamps are now in `microseconds` instead of `milliseconds`.\n  - Add engine timestamp to `bookTicker`, `depth`, and `order` streams.\n  - Add quote asset volume to ticker stream.\n  - Add sequential trade id to trade stream.\n  - Rename the event type in the depth stream from `depthEvent` to `depth`.\n  - Change the format of streams from `<symbol>@<type>` to `<type>.<symbol>` or `kline.<interval>.<symbol>` for K-lines.\n  - Flatten the K-Line in the K-line stream so its not nested.\n\n## 2024-01-11\n\n### Breaking\n\n- Replaced `identifier` field on deposits with `transaction_hash` and `provider_id`.\n  This aims to provide clearer representation of the field, particularly for fiat deposits.\n- Removed duplicate `pending` values from the `WithdrawalStatus` and `DepositStatus` spec enum.\n\n\n<br /><br />\n\n---\n    "
+  description: "\n# Introduction\n\nWelcome to the Backpack Exchange API. This API is for programmatic trade execution. All of the endpoints require requests to be signed with an ED25519 keypair for authentication.\n\nThe API is hosted at `https://api.backpack.exchange/` and the WS API is hosted at `wss://ws.backpack.exchange/`.\n\n# Authentication\n\n\n## Signing requests\n\nSigned requests are required for any API calls that mutate state. Additionally, some read only requests can be performed by signing or via session authentication.\n\nSigned requests require the following additional headers:\n\n- `X-Timestamp` - Unix time in milliseconds that the request was sent.\n- `X-Window` - Time window in milliseconds that the request is valid for, default is `5000` and maximum is `60000`.\n- `X-API-Key` - Base64 encoded verifying key of the ED25519 keypair.\n- `X-Signature` - Base64 encoded signature generated according to the instructions below.\n\nTo generate a signature perform the following:\n\n1) The key/values of the request body or query parameters should be ordered alphabetically and then turned into query string format.\n\n2) Append the header values for the timestamp and receive window to the above generated string in the format `&timestamp=<timestamp>&window=<window>`. If no `X-Window` header is passed the default value of `5000` still needs to be added to the signing string.\n\nEach request also has an instruction type, valid instructions are:\n\n```\naccountQuery\nbalanceQuery\nborrowLendExecute\nborrowHistoryQueryAll\ncollateralQuery\ndepositAddressQuery\ndepositQueryAll\nfillHistoryQueryAll\nfundingHistoryQueryAll\ninterestHistoryQueryAll\norderCancel\norderCancelAll\norderExecute\norderHistoryQueryAll\norderQuery\norderQueryAll\npnlHistoryQueryAll\npositionQuery\nwithdraw\nwithdrawalQueryAll\n```\n\nThe correct instruction type should be prefixed to the signing string. The instruction types for each request are documented alongside the request.\n\nFor example, an API request to cancel an order with the following body:\n\n```json\n{\n    \"orderId\": 28\n    \"symbol\": \"BTC_USDT\",\n}\n```\n\nWould require the following to be signed:\n\n```text\ninstruction=orderCancel&orderId=28&symbol=BTC_USDT&timestamp=1614550000000&window=5000\n```\n\nIf the API endpoint requires query parameters instead of a request body, the same procedure should be used on the query parameters. If the API endpoint does not have a request body or query parameters, only the timestamp and receive window need to be signed.\n\nThis message should be signed using the private key of the ED25519 keypair that corresponds to the public key in the `X-API-Key` header. The signature should then be base64 encoded and submitted in the `X-Signature` header.\n\n\n<br /><br />\n\n---\n\n# Changelog\n\n## 2024-10-15\n\n- Convert all error responses to JSON and add a error code.\n\n## 2024-05-14\n\n- Add `executedQuantity` and `executedQuoteQuantity` to order history endpoint.\n\n## 2024-05-03\n\n- Add single market order update stream `account.orderUpdate.<symbol>`.\n\n## 2024-05-02\n\n- Add optional `from` and `to` timestamp to get withdrawals endpoint.\n\n## 2024-05-01\n\n- Add optional `from` and `to` timestamp to get deposits endpoint.\n\n## 2024-03-14\n\n- Add optional `orderId` filter to order history endpoint.\n- Add optional `from` and `to` timestamp to order fills endpoint.\n\n## 2024-02-28\n\n- Return the withdrawal in request withdrawal response.\n\n## 2024-02-24\n\n- An additional field `t` was added to the private order update stream. It is the `trade_id` of the fill that generated the order update.\n- Added a maximum value for the `X-Window` header of `60000`.\n\n## 2024-01-16\n\n### Breaking\n\n- A new websocket API is available at `wss://ws.backpack.exchange`. Please see the documentation. The previous API remains on the same endpoint and will be deprecated after a migration period. The new API changes the following:\n  - Subscription endpoint is now `wss://ws.backpack.exchange` instead of `wss://ws.backpack.exchange/stream`.\n  - Can subscribe and unsubscribe to/from multiple streams by passing more than one in the `params` field.\n  - Signature should now be sent in a separate `signature` field.\n  - Signature instruction changed from `accountQuery` to `subscribe`.\n  - Event and engine timestamps are now in `microseconds` instead of `milliseconds`.\n  - Add engine timestamp to `bookTicker`, `depth`, and `order` streams.\n  - Add quote asset volume to ticker stream.\n  - Add sequential trade id to trade stream.\n  - Rename the event type in the depth stream from `depthEvent` to `depth`.\n  - Change the format of streams from `<symbol>@<type>` to `<type>.<symbol>` or `kline.<interval>.<symbol>` for K-lines.\n  - Flatten the K-Line in the K-line stream so its not nested.\n\n## 2024-01-11\n\n### Breaking\n\n- Replaced `identifier` field on deposits with `transaction_hash` and `provider_id`.\n  This aims to provide clearer representation of the field, particularly for fiat deposits.\n- Removed duplicate `pending` values from the `WithdrawalStatus` and `DepositStatus` spec enum.\n\n\n<br /><br />\n\n---\n    "
   version: '1.0'
   x-logo:
     url: https://github.com/coral-xyz/backpack/blob/master/assets/backpack.png?raw=true
@@ -662,7 +662,7 @@ paths:
         required: true
       responses:
         '200':
-          description: Borrow created.
+          description: Success.
         '400':
           description: Bad request.
           content:
@@ -3778,22 +3778,22 @@ components:
         eventType:
           allOf:
           - $ref: '#/components/schemas/BorrowLendEventType'
-          - description: Type of movement.
+          - description: Type of event.
         quantity:
           type: string
           format: decimal
-          description: Amount of the movement.
+          description: Quantity of the borrow lend event.
         source:
           allOf:
           - $ref: '#/components/schemas/BorrowLendSource'
-          - description: Source of the movement.
+          - description: Source of the borrow lend event.
         symbol:
           type: string
-          description: The symbol of the market the event is associated with.
+          description: Symbol of the asset the borrow lend is for.
         timestamp:
           type: string
           format: naive-date-time
-          description: The timestamp for the movement.
+          description: The timestamp of the borrow lend event (UTC).
     BorrowLendPositionWithMargin:
       type: object
       required:
@@ -4252,30 +4252,18 @@ components:
     InterestPayment:
       type: object
       required:
-      - timestamp
       - paymentType
-      - quantity
       - interestRate
       - interval
-      - symbol
       - marketSymbol
+      - quantity
+      - symbol
+      - timestamp
       properties:
-        timestamp:
-          type: string
-          format: naive-date-time
-          description: |-
-            The timestamp for the borrow lending interest payment. For interest
-            payments of type `EntryFee`, this will correspond to the creation time
-            of the borrow lend. For interest payments of type `Borrow` or `Lend`,
-            this will correspond to the end of the interest payment interval.
         paymentType:
           allOf:
           - $ref: '#/components/schemas/PaymentType'
           - description: Type of payment.
-        quantity:
-          type: string
-          format: decimal
-          description: Amount of the payment.
         interestRate:
           type: string
           format: decimal
@@ -4284,10 +4272,6 @@ components:
           type: integer
           format: uint64
           description: The interval duration of the payment.
-        symbol:
-          allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: The symbol of the market asset the payment is associated with.
         marketSymbol:
           type: string
           description: |-
@@ -4296,6 +4280,18 @@ components:
             the spot market symbol. For interest payments corresponding to
             unrealized pnl on futures markets, this will be the futures market
             symbol.
+        quantity:
+          type: string
+          format: decimal
+          description: Amount of the payment.
+        symbol:
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The symbol of the market asset the payment is associated with.
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: The timestamp for the borrow lending interest payment (UTC).
     InterestPaymentSource:
       type: string
       enum:
@@ -4710,38 +4706,57 @@ components:
       properties:
         id:
           type: string
+          description: Unique ID of the order.
         orderType:
-          $ref: '#/components/schemas/OrderTypeEnum'
+          allOf:
+          - $ref: '#/components/schemas/OrderTypeEnum'
+          - description: Type of order.
         symbol:
           type: string
+          description: Market symbol of the order.
         side:
-          $ref: '#/components/schemas/Side'
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: Side of the order.
         price:
           type: string
           format: decimal
+          description: Price that the order was submitted at (if `orderType` is `Limit`)
         triggerPrice:
           type: string
           format: decimal
+          description: Price the order was set to trigger at.
         quantity:
           type: string
           format: decimal
+          description: Quantity of the order.
         quoteQuantity:
           type: string
           format: decimal
+          description: Quantity of the order in quote the quote asset.
         executedQuantity:
           type: string
           format: decimal
+          description: Quantity of the order that has been filled.
         executedQuoteQuantity:
           type: string
           format: decimal
+          description: Quantity of the order that has been filled in the quote asset.
         timeInForce:
-          $ref: '#/components/schemas/TimeInForce'
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: Time in force of the order.
         selfTradePrevention:
-          $ref: '#/components/schemas/SelfTradePrevention'
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: Self trade prevention setting of the order.
         postOnly:
           type: boolean
+          description: Whether the order was post only or not.
         status:
-          $ref: '#/components/schemas/OrderStatus'
+          allOf:
+          - $ref: '#/components/schemas/OrderStatus'
+          - description: Status of the order.
     OrderAck:
       type: object
       description: Response for order execute when the order is accepted but not yet executed.
@@ -4862,44 +4877,56 @@ components:
     OrderFill:
       type: object
       required:
-      - timestamp
-      - orderId
-      - symbol
-      - side
-      - price
-      - quantity
       - fee
       - feeSymbol
       - isMaker
-      - systemOrderType
+      - orderId
+      - price
+      - quantity
+      - side
+      - symbol
+      - timestamp
       properties:
-        timestamp:
-          type: string
-          format: naive-date-time
-        tradeId:
-          type: integer
-          format: int64
-        orderId:
-          type: string
-        symbol:
-          type: string
-        side:
-          $ref: '#/components/schemas/Side'
-        price:
-          type: string
-          format: decimal
-        quantity:
-          type: string
-          format: decimal
         fee:
           type: string
           format: decimal
+          description: The fee charged on the fill.
         feeSymbol:
           type: string
+          description: The asset that is charged as a fee.
         isMaker:
           type: boolean
-        systemOrderType:
+          description: Whether the fill was made by the maker.
+        orderId:
           type: string
+          description: The order ID of the fill.
+        price:
+          type: string
+          format: decimal
+          description: The price of the fill.
+        quantity:
+          type: string
+          format: decimal
+          description: The quantity of the fill.
+        side:
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: The side of the fill.
+        symbol:
+          type: string
+          description: The market symbol of the fill.
+        systemOrderType:
+          allOf:
+          - $ref: '#/components/schemas/SystemOrderType'
+          - description: The type of system order that triggered the fill.
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: The timestamp of the fill (UTC).
+        tradeId:
+          type: integer
+          format: int64
+          description: The trade ID of the fill.
     OrderStatus:
       type: string
       enum:
@@ -4959,21 +4986,21 @@ components:
     PnlPayment:
       type: object
       required:
-      - symbol
       - pnlRealized
+      - symbol
       - timestamp
       properties:
-        symbol:
-          type: string
-          description: The symbol of the market the payment is associated with.
         pnlRealized:
           type: string
           format: decimal
-          description: Quantity of the payment
+          description: Quantity of the payment (`USDC`).
+        symbol:
+          type: string
+          description: The market symbol the payment is associated with.
         timestamp:
           type: string
           format: naive-date-time
-          description: The end of the funding interval for the payment.
+          description: The timestamp of the payment (UTC).
     PositionImfFunction:
       type: object
       anyOf:
@@ -5110,15 +5137,15 @@ components:
         quantity:
           type: string
           format: decimal
-          description: Amount of the movement.
+          description: Quantity of the settlement.
         source:
           allOf:
           - $ref: '#/components/schemas/SettlementSource'
-          - description: The source of the movement.
+          - description: Source of the settlement.
         timestamp:
           type: string
           format: naive-date-time
-          description: The timestamp for the movement.
+          description: The timestamp of the settlement (UTC).
     SettlementSource:
       type: string
       enum:
@@ -5163,6 +5190,14 @@ components:
         message:
           type: string
           description: Status message, if any.
+    SystemOrderType:
+      type: string
+      enum:
+      - LiquidatePositionOnBook
+      - LiquidatePositionOnBackstop
+      - LiquidatePositionOnAdl
+      - CollateralConversion
+      - FutureExpiry
     Ticker:
       type: object
       required:
