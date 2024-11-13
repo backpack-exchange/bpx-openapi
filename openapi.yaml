@@ -305,7 +305,6 @@ tags:
     "E": 1730225420369829,         // Event time in microseconds
     "R": 113392053149171712,       // RFQ ID
     "s": "SOL_USDC",               // Symbol
-    "S": "Bid",                    // Side (Bid or Ask)
     "q": "10",                     // Quantity
     "w": 1730225480368,            // Submission time in milliseconds
     "W": 1730225540368,            // Expiry time in milliseconds
