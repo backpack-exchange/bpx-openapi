@@ -56,6 +56,8 @@ tags:
   description: Rewards.
 - name: RiskDashboard
   description: Risk Dashboard.
+- name: Safe
+  description: Safe data.
 - name: Service
   description: Service tokens.
 - name: Session
@@ -549,8 +551,6 @@ tags:
   description: User operations.
 - name: Vasp
   description: VASP data.
-- name: Vault
-  description: Vault data.
 - name: WalletLinks
   description: Wallet links.
 paths:
