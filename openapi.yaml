@@ -3763,6 +3763,8 @@ components:
       - HARRISWIN
       - MOODENG
       - DBR
+      - GOAT
+      - ACT
     Balance:
       type: object
       required:
