@@ -171,8 +171,9 @@ tags:
     - `orderExpired`
     - `orderFill`
 
-    Stream name format for all markets: `account.orderUpdate`
-    Stream name format for single market: `account.orderUpdate.<symbol>`
+    ### Stream Name Format
+    - For all markets: `account.orderUpdate`
+    - For single market: `account.orderUpdate.<symbol>`
 
     ```
     {
@@ -230,8 +231,9 @@ tags:
     open positions, if any. The `e` field will not be present in the
     message.
 
-    Stream name format for all markets: `account.positionUpdate`
-    Stream name format for single market: `account.positionUpdate.<symbol>`
+    ### Stream Name Format
+    - For all markets: `account.positionUpdate`
+    - For single market: `account.positionUpdate.<symbol>`
 
     ```
     {
@@ -293,83 +295,83 @@ tags:
     renewed quoting periods for ongoing RFQs.
 
     ### Stream Name Format
-    - Stream name format for all markets: `account.rfqUpdate`
-    - Stream name format for single market: `account.rfqUpdate.<symbol>`
+    - For all markets: `account.rfqUpdate`
+    - For single market: `account.rfqUpdate.<symbol>`
 
     ### Example Messages
 
     **RFQ Active**
-    ```json
+    ```
     {
-    "e": "rfqActive",              // Event type
-    "E": 1730225420369829,         // Event time in microseconds
-    "R": 113392053149171712,       // RFQ ID
-    "s": "SOL_USDC",               // Symbol
-    "q": "10",                     // Quantity
-    "w": 1730225480368,            // Submission time in milliseconds
-    "W": 1730225540368,            // Expiry time in milliseconds
-    "X": "New",                    // RFQ status
-    "T": 1730225420368765          // Engine timestamp in microseconds
+      "e": "rfqActive",              // Event type
+      "E": 1730225420369829,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "s": "SOL_USDC",               // Symbol
+      "q": "10",                     // Quantity
+      "w": 1730225480368500,         // Submission time in milliseconds
+      "W": 1730225540368500,         // Expiry time in milliseconds
+      "X": "New",                    // RFQ status
+      "T": 1730225420368765          // Engine timestamp in microseconds
     }
     ```
 
     **Quote Accepted**
-    ```json
+    ```
     {
-    "e": "quoteAccepted",          // Event type
-    "E": 1730225434631394,         // Event time in microseconds
-    "R": 113392053149171712,       // RFQ ID
-    "Q": 113392054083780608,       // Quote ID
-    "C": "quote123",               // Client Quote ID (optional)
-    "X": "New",                    // Quote status
-    "T": 1730225434629778          // Engine timestamp in microseconds
+      "e": "quoteAccepted",          // Event type
+      "E": 1730225434631394,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "Q": 113392054083780608,       // Quote ID
+      "C": "quote123",               // Client Quote ID (optional)
+      "X": "New",                    // Quote status
+      "T": 1730225434629778          // Engine timestamp in microseconds
     }
     ```
 
     **Quote Cancelled**
-    ```json
+    ```
     {
-    "e": "quoteCancelled",          // Event type
-    "E": 1730225583761963,         // Event time in microseconds
-    "R": 113392061354344448,       // RFQ ID
-    "Q": 113392062870847488,       // Quote ID
-    "C": "quote123",               // Client Quote ID (optional)
-    "X": "Cancelled",              // Quote status
-    "T": 1730225583753811          // Engine timestamp in microseconds
+      "e": "quoteCancelled",         // Event type
+      "E": 1730225583761963,         // Event time in microseconds
+      "R": 113392061354344448,       // RFQ ID
+      "Q": 113392062870847488,       // Quote ID
+      "C": "quote123",               // Client Quote ID (optional)
+      "X": "Cancelled",              // Quote status
+      "T": 1730225583753811          // Engine timestamp in microseconds
     }
     ```
 
     **RFQ Filled**
-    ```json
+    ```
     {
-    "e": "rfqFilled",              // Event type
-    "E": 1730225497648996,         // Event time in microseconds
-    "R": 113392053149171712,       // RFQ ID
-    "Q": 113392054083780608,       // Quote ID
-    "C": "quote123",               // Client Quote ID (optional)
-    "S": "Bid",                    // RFQ side (Bid or Ask)
-    "p": "21",                     // Fill price
-    "X": "Filled",                 // Quote status
-    "T": 1730225497647080          // Engine timestamp in microseconds
+      "e": "rfqFilled",              // Event type
+      "E": 1730225497648996,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "Q": 113392054083780608,       // Quote ID
+      "C": "quote123",               // Client Quote ID (optional)
+      "S": "Bid",                    // RFQ side (Bid or Ask)
+      "p": "21",                     // Fill price
+      "X": "Filled",                 // Quote status
+      "T": 1730225497647080          // Engine timestamp in microseconds
     }
     ```
 
     ### Field Descriptions
 
-    - **e** - Event type (e.g., "rfqActive", "quoteAccepted",
-    "quoteCancelled", "rfqFilled").
-    - **E** - Event time in microseconds.
-    - **R** - RFQ ID, identifying the request for quote.
-    - **Q** - Quote ID, identifying the specific quote.
-    - **C** - Client Quote ID.
-    - **s** - Symbol associated with the RFQ.
-    - **q** - Quantity for the RFQ.
-    - **S** - Side of the RFQ, either "Bid" or "Ask".
-    - **p** - Price associated with the fill event.
-    - **w** - Submission time for the RFQ in milliseconds.
-    - **W** - Expiry time for the RFQ in milliseconds.
-    - **X** - Order status (e.g., "New", "Cancelled", "Filled").
-    - **T** - Engine timestamp in microseconds.
+    - `e` - Event type (e.g., `rfqActive`, `quoteAccepted`,
+    `quoteCancelled`, `rfqFilled`).
+    - `E` - Event time in microseconds.
+    - `R` - RFQ ID, identifying the request for quote.
+    - `Q` - Quote ID, identifying the specific quote.
+    - `C` - Client Quote ID.
+    - `s` - Symbol associated with the RFQ.
+    - `q` - Quantity for the RFQ.
+    - `S` - Side of the RFQ, either "Bid" or "Ask".
+    - `p` - Price associated with the fill event.
+    - `w` - Submission time for the RFQ in milliseconds.
+    - `W` - Expiry time for the RFQ in milliseconds.
+    - `X` - Order status (e.g., `New`, `Cancelled`, `Filled`).
+    - `T` - Engine timestamp in microseconds.
 
     Some fields are conditional and may be present only in specific events.
 
