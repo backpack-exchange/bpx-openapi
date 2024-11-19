@@ -4002,6 +4002,11 @@ components:
           type: string
           format: naive-date-time
           description: The timestamp of the borrow lend event (UTC).
+        spotMarginOrderId:
+          type: string
+          description: |-
+            The order id associated with the borrow lend event created through spot
+            margin.
     BorrowLendPositionWithMargin:
       type: object
       required:
