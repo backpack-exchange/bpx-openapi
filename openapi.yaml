@@ -736,6 +736,72 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_collateral_parameters
+  /api/v1/borrowLend/positions:
+    get:
+      tags:
+      - Borrow Lend
+      summary: Get borrow lend positions.
+      description: |-
+        Retrieves all the open borrow lending positions for the account.
+
+        **Instruction:** `borrowLendPositionQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowLendPositionWithMargin'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_borrow_lend_positions
   /api/v1/borrowLend:
     post:
       tags:
@@ -805,72 +871,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: execute_borrow_lend
-  /api/v1/borrowLend/positions:
-    get:
-      tags:
-      - Borrow Lend
-      summary: Get borrow lend positions.
-      description: |-
-        Retrieves all the open borrow lending positions for the account.
-
-        **Instruction:** `borrowLendPositionQuery`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: false
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Success.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BorrowLendPositionWithMargin'
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_borrow_lend_positions
   /api/v1/borrowLend/markets:
     get:
       tags:
@@ -2620,7 +2620,7 @@ paths:
         schema:
           type: string
         in: query
-        description: Filter to return history for a particular position.
+        description: Filter to return history for a borrow lend position.
         required: false
         deprecated: false
         explode: true
@@ -2752,18 +2752,19 @@ paths:
         required: false
         deprecated: false
         explode: true
-      - name: positionId
-        schema:
-          type: string
-        in: query
-        required: false
-        deprecated: false
-        explode: true
       - name: symbol
         schema:
           type: string
         in: query
         description: Market symbol to query. If not set, all markets are returned.
+        required: false
+        deprecated: false
+        explode: true
+      - name: positionId
+        schema:
+          type: string
+        in: query
+        description: Filter to return history for a borrow lend position.
         required: false
         deprecated: false
         explode: true
@@ -3973,6 +3974,7 @@ components:
       type: object
       required:
       - eventType
+      - positionId
       - quantity
       - source
       - symbol
@@ -3982,6 +3984,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/BorrowLendEventType'
           - description: Type of event.
+        positionId:
+          type: string
+          description: ID of the borrow lend position the event is associated with.
         quantity:
           type: string
           format: decimal
@@ -4000,6 +4005,7 @@ components:
     BorrowLendPositionWithMargin:
       type: object
       required:
+      - id
       - imf
       - imfFunction
       - netQuantity
@@ -4010,6 +4016,9 @@ components:
       - netExposureNotional
       - symbol
       properties:
+        id:
+          type: string
+          description: Uniquely identifies the position.
         imf:
           type: string
           format: decimal
@@ -4366,7 +4375,6 @@ components:
           description: The funding rate for the payment.
     FuturePositionWithMargin:
       type: object
-      description: User position model
       required:
       - breakEvenPrice
       - entryPrice
@@ -4424,7 +4432,7 @@ components:
             Positive if long. Negative if short.
 
             The net cost to enter into the position,i.e., price*quantity for
-            all orders adjusting this position.
+            all positions adjusting this position.
         netQuantity:
           type: string
           format: decimal
@@ -4432,11 +4440,13 @@ components:
         netExposureQuantity:
           type: string
           format: decimal
-          description: Quantity of this futures position including worst case open orders.
+          description: Quantity of this futures position including worst case open positions.
         netExposureNotional:
           type: string
           format: decimal
-          description: Notional value of the futures position including worst case open orders.
+          description: |-
+            Notional value of the futures position including worst case open
+            positions.
         pnlRealized:
           type: string
           format: decimal
@@ -4465,6 +4475,7 @@ components:
       - interestRate
       - interval
       - marketSymbol
+      - positionId
       - quantity
       - symbol
       - timestamp
@@ -4489,6 +4500,9 @@ components:
             the spot market symbol. For interest payments corresponding to
             unrealized pnl on futures markets, this will be the futures market
             symbol.
+        positionId:
+          type: string
+          description: ID of the borrow lend position the interest payment is for.
         quantity:
           type: string
           format: decimal
