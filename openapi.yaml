@@ -3766,6 +3766,9 @@ components:
       - DBR
       - GOAT
       - ACT
+      - DOGE
+      - BCH
+      - LTC
     Balance:
       type: object
       required:
@@ -3794,6 +3797,9 @@ components:
       - Ethereum
       - Polygon
       - Bitcoin
+      - Dogecoin
+      - BitcoinCash
+      - Litecoin
     BorrowLendBookState:
       type: string
       description: Borrow lend book state
@@ -4260,6 +4266,9 @@ components:
       - solana
       - ethereum
       - bitcoin
+      - dogecoin
+      - bitcoinCash
+      - litecoin
       - nuvei
       - banxa
       - ioFinnet
