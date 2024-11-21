@@ -4076,14 +4076,15 @@ components:
     BorrowLendSource:
       type: string
       enum:
-      - Manual
-      - SpotMargin
-      - Reconciliation
+      - AutoBorrowRepay
+      - AutoLend
+      - Interest
       - Liquidation
       - LiquidationAdl
       - LiquidationBackstop
-      - AutoLend
-      - AutoBorrowRepay
+      - Manual
+      - Reconciliation
+      - SpotMargin
     Collateral:
       type: object
       required:
