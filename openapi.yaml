@@ -4333,11 +4333,11 @@ components:
     FillType:
       type: string
       enum:
-      - user
-      - liquidation
-      - collateralConversion
-      - adl
-      - allLiquidation
+      - User
+      - Liquidation
+      - CollateralConversion
+      - Adl
+      - AllLiquidation
     FundingIntervalRate:
       type: object
       required:
