@@ -4732,7 +4732,7 @@ components:
         unsettledEquity:
           type: string
           format: decimal
-          description: Unsettled claim on the insurance fund.
+          description: Unsettled claim on the liquidity fund.
         liabilitiesValue:
           type: string
           format: decimal
