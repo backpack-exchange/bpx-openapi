@@ -2650,6 +2650,14 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: liquidations_only
+        schema:
+          type: boolean
+        in: query
+        description: Filter to liquidation events only.
+        required: false
+        deprecated: false
+        explode: true
       responses:
         '200':
           description: Success.
