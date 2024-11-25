@@ -3574,14 +3574,14 @@ components:
       - autoLend
       - autoRepayBorrows
       - borrowLimit
-      - continuousPnlRealization
+      - autoRealizePnl
       - futuresMakerFee
       - futuresTakerFee
       - leverageLimit
       - limitOrders
       - liquidating
       - positionLimit
-      - reconciliationAutoBorrow
+      - autoBorrowSettlements
       - spotMakerFee
       - spotTakerFee
       - triggerOrders
@@ -3598,7 +3598,7 @@ components:
           type: string
           format: decimal
           description: Borrow limit.
-        continuousPnlRealization:
+        autoRealizePnl:
           type: boolean
           description: Determines if the account should have continuous PnL realization.
         futuresMakerFee:
@@ -3624,7 +3624,7 @@ components:
           type: string
           format: decimal
           description: Position limit.
-        reconciliationAutoBorrow:
+        autoBorrowSettlements:
           type: boolean
           description: If true, then tries to borrow during collateral reconciliation.
         spotMakerFee:
@@ -5623,7 +5623,7 @@ components:
           description: |-
             Determines if the account should automatically repay borrows with
             available balance.
-        continuousPnlRealization:
+        autoRealizePnl:
           type: boolean
           description: Determines if the account should have continuous PnL realization.
         leverageLimit:
@@ -5632,7 +5632,7 @@ components:
           description: |-
             Determines the maximum leverage allowed for the main account or
             subaccount.
-        reconciliationAutoBorrow:
+        autoBorrowSettlements:
           type: boolean
           description: |-
             If true, then tries to borrow during collateral reconciliation.
