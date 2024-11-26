@@ -3777,6 +3777,7 @@ components:
       - DOGE
       - BCH
       - LTC
+      - PYUSD
     Balance:
       type: object
       required:
