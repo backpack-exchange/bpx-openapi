@@ -5003,6 +5003,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
+        expiryReason:
+          allOf:
+          - $ref: '#/components/schemas/OrderExpiryReason'
+          - description: Order expiry reason.
     OrderAck:
       type: object
       description: Response for order execute when the order is accepted but not yet executed.
@@ -5120,6 +5124,19 @@ components:
           type: boolean
           description: If true then the order can borrow. Spot margin only.
           default: null
+    OrderExpiryReason:
+      type: string
+      enum:
+      - AccountTradingSuspended
+      - FillOrKill
+      - ImmediateOrCancel
+      - InsufficientFunds
+      - InsufficientLiquidity
+      - Liquidation
+      - PostOnlyTaker
+      - SelfTradePrevention
+      - PriceImpact
+      - Unknown
     OrderFill:
       type: object
       required:
