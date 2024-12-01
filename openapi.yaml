@@ -3651,6 +3651,7 @@ components:
           type: string
           description: Address to withdraw to.
         blockchain:
+          description: Blockchain to withdraw on.
           allOf:
           - $ref: '#/components/schemas/Blockchain'
           - description: Blockchain to withdraw on.
@@ -3662,6 +3663,7 @@ components:
           format: decimal
           description: Quantity to withdraw.
         symbol:
+          description: Symbol of the asset to withdraw.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the asset to withdraw.
@@ -3836,10 +3838,12 @@ components:
           format: decimal
           description: The quantity of the asset to repay.
         side:
+          description: Side of the borrow lend.
           allOf:
           - $ref: '#/components/schemas/BorrowLendSide'
           - description: Side of the borrow lend.
         symbol:
+          description: The asset to repay.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The asset to repay.
@@ -3900,6 +3904,7 @@ components:
       - stepSize
       properties:
         state:
+          description: State of the borrow lend market.
           allOf:
           - $ref: '#/components/schemas/BorrowLendBookState'
           - description: State of the borrow lend market.
@@ -3945,6 +3950,7 @@ components:
           format: decimal
           description: The optimal utilization rate for the interest rate model.
         symbol:
+          description: Uniquely identifies the token.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Uniquely identifies the token.
@@ -3995,6 +4001,7 @@ components:
       - timestamp
       properties:
         eventType:
+          description: Type of event.
           allOf:
           - $ref: '#/components/schemas/BorrowLendEventType'
           - description: Type of event.
@@ -4006,6 +4013,7 @@ components:
           format: decimal
           description: Quantity of the borrow lend event.
         source:
+          description: Source of the borrow lend event.
           allOf:
           - $ref: '#/components/schemas/BorrowLendSource'
           - description: Source of the borrow lend event.
@@ -4043,6 +4051,7 @@ components:
           format: decimal
           description: Initial margin fraction for this position.
         imfFunction:
+          description: IMF function.
           allOf:
           - $ref: '#/components/schemas/PositionImfFunction'
           - description: IMF function.
@@ -4059,6 +4068,7 @@ components:
           format: decimal
           description: Maintenance margin fraction for this position.
         mmfFunction:
+          description: MMF function.
           allOf:
           - $ref: '#/components/schemas/PositionImfFunction'
           - description: MMF function.
@@ -4073,6 +4083,7 @@ components:
           format: decimal
           description: Notional value of the position.
         symbol:
+          description: Symbol of the underlying asset.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the underlying asset.
@@ -4202,14 +4213,17 @@ components:
           type: string
           description: Symbol of the collateral.
         imfFunction:
+          description: IMF function.
           allOf:
           - $ref: '#/components/schemas/PositionImfFunction'
           - description: IMF function.
         mmfFunction:
+          description: MMF function.
           allOf:
           - $ref: '#/components/schemas/PositionImfFunction'
           - description: MMF function.
         haircutFunction:
+          description: Calculates the haircut for collateral value.
           allOf:
           - $ref: '#/components/schemas/CollateralFunction'
           - description: Calculates the haircut for collateral value.
@@ -4238,10 +4252,12 @@ components:
           format: int64
           description: Confirmation status, if this is a blockchain deposit.
         source:
+          description: Source of the deposit, blockchain or a payment processor.
           allOf:
           - $ref: '#/components/schemas/DepositSource'
           - description: Source of the deposit, blockchain or a payment processor.
         status:
+          description: Status of the deposit.
           allOf:
           - $ref: '#/components/schemas/DepositStatus'
           - description: Status of the deposit.
@@ -4249,6 +4265,7 @@ components:
           type: string
           description: Transaction hash of the blockchain transfer.
         symbol:
+          description: Symbol of the asset to be deposited.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the asset to be deposited.
@@ -4433,6 +4450,7 @@ components:
           format: decimal
           description: Initial margin fraction for this position.
         imfFunction:
+          description: IMF function.
           allOf:
           - $ref: '#/components/schemas/PositionImfFunction'
           - description: IMF function.
@@ -4445,6 +4463,7 @@ components:
           format: decimal
           description: Maintenance margin fraction for this position.
         mmfFunction:
+          description: MMF function.
           allOf:
           - $ref: '#/components/schemas/PositionImfFunction'
           - description: MMF function.
@@ -4504,6 +4523,7 @@ components:
       - timestamp
       properties:
         paymentType:
+          description: Type of payment.
           allOf:
           - $ref: '#/components/schemas/PaymentType'
           - description: Type of payment.
@@ -4531,6 +4551,7 @@ components:
           format: decimal
           description: Amount of the payment.
         symbol:
+          description: The symbol of the market asset the payment is associated with.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The symbol of the market asset the payment is associated with.
@@ -4655,6 +4676,9 @@ components:
           type: string
           description: Market symbol.
         side:
+          description: |-
+            The order side. It will be matched against the resting orders on the
+            other side of the order book.
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: |-
@@ -4683,10 +4707,14 @@ components:
           format: decimal
           description: Price the order should trigger at, if any.
         timeInForce:
+          description: How long the order is good for.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: How long the order is good for.
         selfTradePrevention:
+          description: |-
+            Action to take in the event the user crosses themselves in the
+            order book.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
           - description: |-
@@ -4696,6 +4724,7 @@ components:
           type: boolean
           description: Whether the order is post only or not
         status:
+          description: Status of the order.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
@@ -4823,14 +4852,17 @@ components:
           type: string
           description: Symbol of the market, e.g. ETH_USDC
         baseSymbol:
+          description: The base asset of the market.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The base asset of the market.
         quoteSymbol:
+          description: The quote asset of the market.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: The quote asset of the market.
         filters:
+          description: Price, lot and leverage rules.
           allOf:
           - $ref: '#/components/schemas/OrderBookFilters'
           - description: Price, lot and leverage rules.
@@ -4845,6 +4877,7 @@ components:
       - tokens
       properties:
         symbol:
+          description: Symbol of the asset, e.g. ETH.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the asset, e.g. ETH.
@@ -4879,6 +4912,9 @@ components:
           type: string
           description: Market symbol.
         side:
+          description: |-
+            The order side. It will be matched against the resting orders on the
+            other side of the order book.
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: |-
@@ -4905,16 +4941,21 @@ components:
           format: decimal
           description: Price the order should trigger at, if any.
         timeInForce:
+          description: How long the order is good for.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: How long the order is good for.
         selfTradePrevention:
+          description: |-
+            Action to take in the event the user crosses themselves in the
+            order book.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
           - description: |-
               Action to take in the event the user crosses themselves in the
               order book.
         status:
+          description: Status of the order.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
@@ -4954,6 +4995,7 @@ components:
           type: string
           description: Unique ID of the order.
         orderType:
+          description: Type of order.
           allOf:
           - $ref: '#/components/schemas/OrderTypeEnum'
           - description: Type of order.
@@ -4961,6 +5003,7 @@ components:
           type: string
           description: Market symbol of the order.
         side:
+          description: Side of the order.
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: Side of the order.
@@ -4989,10 +5032,12 @@ components:
           format: decimal
           description: Quantity of the order that has been filled in the quote asset.
         timeInForce:
+          description: Time in force of the order.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: Time in force of the order.
         selfTradePrevention:
+          description: Self trade prevention setting of the order.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
           - description: Self trade prevention setting of the order.
@@ -5000,10 +5045,12 @@ components:
           type: boolean
           description: Whether the order was post only or not.
         status:
+          description: Status of the order.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
         expiryReason:
+          description: Order expiry reason.
           allOf:
           - $ref: '#/components/schemas/OrderExpiryReason'
           - description: Order expiry reason.
@@ -5023,14 +5070,17 @@ components:
       - quantity
       properties:
         price:
+          description: Defines the price rules for the order book.
           allOf:
           - $ref: '#/components/schemas/PriceFilter'
           - description: Defines the price rules for the order book.
         quantity:
+          description: Defines the quantity rules for the order book.
           allOf:
           - $ref: '#/components/schemas/QuantityFilter'
           - description: Defines the quantity rules for the order book.
         leverage:
+          description: Defines the leverage rules for the order book.
           allOf:
           - $ref: '#/components/schemas/LeverageFilter'
           - description: Defines the leverage rules for the order book.
@@ -5069,6 +5119,7 @@ components:
           format: uint32
           description: Custom order id.
         orderType:
+          description: Order type, market or limit.
           allOf:
           - $ref: '#/components/schemas/OrderTypeEnum'
           - description: Order type, market or limit.
@@ -5094,12 +5145,18 @@ components:
             order book will execute a `quantity` as close as possible to the
             notional value of `quote_quantity`.
         selfTradePrevention:
+          description: |-
+            Action to take in the event the user crosses themselves in the
+            order book.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
           - description: |-
               Action to take in the event the user crosses themselves in the
               order book.
         side:
+          description: |-
+            The order side. It will be matched against the resting orders on the
+            other side of the order book.
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: |-
@@ -5109,6 +5166,7 @@ components:
           type: string
           description: The market for the order.
         timeInForce:
+          description: How long the order is good for.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: How long the order is good for.
@@ -5172,6 +5230,7 @@ components:
           format: decimal
           description: The quantity of the fill.
         side:
+          description: The side of the fill.
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: The side of the fill.
@@ -5179,6 +5238,7 @@ components:
           type: string
           description: The market symbol of the fill.
         systemOrderType:
+          description: The type of system order that triggered the fill.
           allOf:
           - $ref: '#/components/schemas/SystemOrderType'
           - description: The type of system order that triggered the fill.
@@ -5349,12 +5409,18 @@ components:
             Minimum allowed impact multiplier from last active price. This
             determines how far below the best bid a market sell can penetrate.
         meanMarkPriceBand:
+          description: |-
+            Futures price band. Used to determine how far the price is allowed to
+            deviate from the mean mark price.
           allOf:
           - $ref: '#/components/schemas/PriceBandMarkPrice'
           - description: |-
               Futures price band. Used to determine how far the price is allowed to
               deviate from the mean mark price.
         meanPremiumBand:
+          description: |-
+            Futures price band. Used to determine how far the premium is allowed to
+            deviate from the mean premium.
           allOf:
           - $ref: '#/components/schemas/PriceBandMeanPremium'
           - description: |-
@@ -5406,6 +5472,7 @@ components:
           format: decimal
           description: Quote price.
         status:
+          description: Status.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status.
@@ -5450,6 +5517,7 @@ components:
           format: decimal
           description: Quantity of the settlement.
         source:
+          description: Source of the settlement.
           allOf:
           - $ref: '#/components/schemas/SettlementSource'
           - description: Source of the settlement.
@@ -5495,6 +5563,7 @@ components:
       - status
       properties:
         status:
+          description: Status of the system.
           allOf:
           - $ref: '#/components/schemas/Status'
           - description: Status of the system.
@@ -5673,6 +5742,7 @@ components:
           format: int32
           description: Unique id of the withdrawal.
         blockchain:
+          description: Blockchain the withdrawal was requested for.
           allOf:
           - $ref: '#/components/schemas/Blockchain'
           - description: Blockchain the withdrawal was requested for.
@@ -5691,10 +5761,12 @@ components:
           format: decimal
           description: Fee charged.
         symbol:
+          description: Symbol of the asset to withdraw.
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the asset to withdraw.
         status:
+          description: Status of the withdrawal.
           allOf:
           - $ref: '#/components/schemas/WithdrawalStatus'
           - description: Status of the withdrawal.
