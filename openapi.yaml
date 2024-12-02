@@ -191,6 +191,7 @@ tags:
       "p": "20",              // Price
       "P": "21",              // Trigger price
       "X": "Filled",          // Order state
+     &nbspl"R": 'PRICE_BAND",      // Order expiry reason
       "i": "1111343026172067" // Order ID
       "t": 567,               // Trade ID
       "l": "1.23",            // Fill quantity
@@ -212,6 +213,7 @@ tags:
     - `Q` - Only present if the order is reverse market order.
     - `p` - Only present if the order is a limit order.
     - `P` - Only present if the order is a trigger order.
+    - `R` - Only present if the event is a `orderExpired` event.
     - `t` - Only present if the event is a `orderFill` event.
     - `l` - Only present if the event is a `orderFill` event.
     - `L` - Only present if the event is a `orderFill` event.
@@ -2863,6 +2865,105 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_interest_history
+  /wapi/v1/history/borrowLend/positions:
+    get:
+      tags:
+      - History
+      summary: Get borrow position history.
+      description: History of borrow and lend positions for the account.
+      parameters:
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+      - name: side
+        schema:
+          $ref: '#/components/schemas/BorrowLendSide'
+        in: query
+        description: Return only borrows or only lends.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BorrowLendPositionRow'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_borrow_lend_position_history
   /wapi/v1/history/fills:
     get:
       tags:
@@ -4029,6 +4130,39 @@ components:
           description: |-
             The order id associated with the borrow lend event created through spot
             margin.
+    BorrowLendPositionRow:
+      type: object
+      required:
+      - positionId
+      - quantity
+      - symbol
+      - cumulativeInterest
+      - side
+      - createdAt
+      properties:
+        positionId:
+          type: string
+          description: ID of the borrow lend position the event is associated with.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity of the borrow lend event.
+        symbol:
+          type: string
+          description: Symbol of the asset the borrow lend is for.
+        cumulativeInterest:
+          type: string
+          format: decimal
+          description: Cumulative interest payments quantity.
+        side:
+          description: Borrow or lend.
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendSide'
+          - description: Borrow or lend.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: The timestamp the borrow lend event was created at (UTC).
     BorrowLendPositionWithMargin:
       type: object
       required:
