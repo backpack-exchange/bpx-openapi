@@ -4137,6 +4137,7 @@ components:
       - quantity
       - symbol
       - cumulativeInterest
+      - avgInterestRate
       - side
       - createdAt
       properties:
@@ -4154,6 +4155,10 @@ components:
           type: string
           format: decimal
           description: Cumulative interest payments quantity.
+        avgInterestRate:
+          type: string
+          format: decimal
+          description: Average interest rate over the time this position was open.
         side:
           description: Borrow or lend.
           allOf:
