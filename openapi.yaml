@@ -191,7 +191,7 @@ tags:
       "p": "20",              // Price
       "P": "21",              // Trigger price
       "X": "Filled",          // Order state
-     &nbspl"R": 'PRICE_BAND",      // Order expiry reason
+      "R": "PRICE_BAND",      // Order expiry reason
       "i": "1111343026172067" // Order ID
       "t": 567,               // Trade ID
       "l": "1.23",            // Fill quantity
