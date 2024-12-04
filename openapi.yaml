@@ -5547,13 +5547,13 @@ components:
           type: string
           format: decimal
           description: |-
-            Maximum allowed impact multiplier from last active price. This
+            Maximum allowed impact multiplier from best offer. This
             determines how far above the best ask a market buy can penetrate.
         minImpactMultiplier:
           type: string
           format: decimal
           description: |-
-            Minimum allowed impact multiplier from last active price. This
+            Minimum allowed impact multiplier from best bid. This
             determines how far below the best bid a market sell can penetrate.
         meanMarkPriceBand:
           description: |-
