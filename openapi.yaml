@@ -4112,6 +4112,10 @@ components:
         positionId:
           type: string
           description: ID of the borrow lend position the event is associated with.
+        positionQuantity:
+          type: string
+          format: decimal
+          description: Running total quantity of borrow lend position.
         quantity:
           type: string
           format: decimal
