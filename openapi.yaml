@@ -4594,6 +4594,7 @@ components:
       - netExposureNotional
       - pnlRealized
       - pnlUnrealized
+      - cumulativeFundingPayment
       - symbol
       - userId
       properties:
@@ -4661,6 +4662,10 @@ components:
           type: string
           format: decimal
           description: Unrealized profit and loss for this position.
+        cumulativeFundingPayment:
+          type: string
+          format: decimal
+          description: Cumulative funding payment for this position.
         subaccountId:
           type: integer
           format: uint16
