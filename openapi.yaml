@@ -2888,6 +2888,14 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: state
+        schema:
+          $ref: '#/components/schemas/BorrowLendPositionState'
+        in: query
+        description: Return only open positions or closed positions.
+        required: false
+        deprecated: false
+        explode: true
       - name: limit
         schema:
           type: integer
@@ -4175,6 +4183,11 @@ components:
           type: string
           format: naive-date-time
           description: The timestamp the borrow lend event was created at (UTC).
+    BorrowLendPositionState:
+      type: string
+      enum:
+      - Open
+      - Closed
     BorrowLendPositionWithMargin:
       type: object
       required:
