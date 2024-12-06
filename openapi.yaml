@@ -3891,6 +3891,7 @@ components:
       - APE
       - ENA
       - ME
+      - EIGEN
     Balance:
       type: object
       required:
