@@ -3612,7 +3612,7 @@ paths:
         explode: true
       - name: source
         schema:
-          $ref: '#/components/schemas/SettlementSource'
+          $ref: '#/components/schemas/SettlementSourceFilter'
         in: query
         required: false
         deprecated: false
@@ -5696,6 +5696,21 @@ components:
           format: naive-date-time
           description: The timestamp of the settlement (UTC).
     SettlementSource:
+      type: string
+      enum:
+      - TradingFees
+      - TradingFeesSystem
+      - FundingPayment
+      - CulledBorrowInterest
+      - CulledRealizePnlAuto
+      - CulledRealizePnlBookUtilisation
+      - CulledRealizePnlAccountThreshold
+      - CulledRealizePnlSystemThreshold
+      - RealizePnl
+      - BackstopProviderLiquidation
+      - BackstopAdlLiquidation
+      - BackstopLiquidityFundProceeds
+    SettlementSourceFilter:
       type: string
       enum:
       - TradingFees
