@@ -4269,7 +4269,6 @@ components:
       - AutoBorrowRepay
       - AutoLend
       - Interest
-      - InterestCull
       - Liquidation
       - LiquidationAdl
       - LiquidationBackstop
