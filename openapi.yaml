@@ -4604,6 +4604,7 @@ components:
       - cumulativeFundingPayment
       - symbol
       - userId
+      - positionId
       properties:
         breakEvenPrice:
           type: string
@@ -4684,6 +4685,9 @@ components:
           type: integer
           format: int32
           description: Id of the user.
+        positionId:
+          type: string
+          description: Id of the position.
     IdentityFunction:
       type: object
     InterestPayment:
