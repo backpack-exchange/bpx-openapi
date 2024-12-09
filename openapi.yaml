@@ -4152,6 +4152,7 @@ components:
       - positionId
       - quantity
       - symbol
+      - source
       - cumulativeInterest
       - avgInterestRate
       - side
@@ -4167,6 +4168,11 @@ components:
         symbol:
           type: string
           description: Symbol of the asset the borrow lend is for.
+        source:
+          description: Initial source of position.
+          allOf:
+          - $ref: '#/components/schemas/BorrowLendSource'
+          - description: Initial source of position.
         cumulativeInterest:
           type: string
           format: decimal
