@@ -2610,11 +2610,13 @@ paths:
         required: false
         deprecated: false
         explode: true
-      - name: source
+      - name: sources
         schema:
-          $ref: '#/components/schemas/BorrowLendSource'
+          type: string
         in: query
-        description: Filter to return history for a particular source.
+        description: |-
+          Filter to return history for a particular source. Can be a single
+          source, or multiple sources separated by commas.
         required: false
         deprecated: false
         explode: true
@@ -2649,14 +2651,6 @@ paths:
           format: uint64
         in: query
         description: Offset for pagination. Default `0`.
-        required: false
-        deprecated: false
-        explode: true
-      - name: liquidations_only
-        schema:
-          type: boolean
-        in: query
-        description: Filter to liquidation events only.
         required: false
         deprecated: false
         explode: true
@@ -3799,6 +3793,7 @@ components:
       - INVALID_ORDER
       - INVALID_PRICE
       - INVALID_MARKET
+      - INVALID_SOURCE
       - INSUFFICIENT_FUNDS
       - INSUFFICIENT_MARGIN
       - POSITION_LIMIT
