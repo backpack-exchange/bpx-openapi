@@ -3929,10 +3929,8 @@ components:
       type: string
       enum:
       - Borrow
-      - BorrowBackstopLiquidation
       - BorrowRepay
       - Lend
-      - LendBackstopLiquidation
       - LendRedeem
     BorrowLendExecutePayload:
       type: object
@@ -4261,8 +4259,10 @@ components:
     BorrowLendSource:
       type: string
       enum:
+      - AdlProvider
       - AutoBorrowRepay
       - AutoLend
+      - BackstopProvider
       - Interest
       - Liquidation
       - LiquidationAdl
@@ -5718,13 +5718,13 @@ components:
     SettlementSourceFilter:
       type: string
       enum:
-      - TradingFees
-      - TradingFeesSystem
-      - FundingPayment
+      - BackstopLiquidation
       - CulledBorrowInterest
       - CulledRealizePnl
+      - FundingPayment
       - RealizePnl
-      - BackstopLiquidation
+      - TradingFees
+      - TradingFeesSystem
     Side:
       type: string
       enum:
