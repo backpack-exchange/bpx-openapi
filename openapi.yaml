@@ -3887,6 +3887,7 @@ components:
       - ENA
       - ME
       - EIGEN
+      - CHILLGUY
     Balance:
       type: object
       required:
