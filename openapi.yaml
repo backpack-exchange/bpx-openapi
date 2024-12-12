@@ -5722,6 +5722,7 @@ components:
       - BackstopLiquidation
       - CulledBorrowInterest
       - CulledRealizePnl
+      - CulledRealizePnlBookUtilization
       - FundingPayment
       - RealizePnl
       - TradingFees
