@@ -4526,10 +4526,12 @@ components:
       type: string
       enum:
       - User
-      - Liquidation
-      - CollateralConversion
+      - BookLiquidation
       - Adl
+      - Backstop
+      - Liquidation
       - AllLiquidation
+      - CollateralConversion
     FundingIntervalRate:
       type: object
       required:
