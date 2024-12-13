@@ -5689,6 +5689,7 @@ components:
       - quantity
       - source
       - timestamp
+      - userId
       properties:
         quantity:
           type: string
@@ -5699,10 +5700,18 @@ components:
           allOf:
           - $ref: '#/components/schemas/SettlementSource'
           - description: Source of the settlement.
+        subaccountId:
+          type: integer
+          format: int32
+          description: ID of the subaccount the event is associated with, if any.
         timestamp:
           type: string
           format: naive-date-time
           description: The timestamp of the settlement (UTC).
+        userId:
+          type: integer
+          format: int32
+          description: User ID of the account the movement is associated with.
     SettlementSource:
       type: string
       enum:
