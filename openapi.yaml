@@ -3674,24 +3674,30 @@ components:
     AccountSummary:
       type: object
       required:
+      - autoBorrowSettlements
       - autoLend
+      - autoRealizePnl
       - autoRepayBorrows
       - borrowLimit
-      - autoRealizePnl
       - futuresMakerFee
       - futuresTakerFee
       - leverageLimit
       - limitOrders
       - liquidating
       - positionLimit
-      - autoBorrowSettlements
       - spotMakerFee
       - spotTakerFee
       - triggerOrders
       properties:
+        autoBorrowSettlements:
+          type: boolean
+          description: If true, then tries to borrow during collateral reconciliation.
         autoLend:
           type: boolean
           description: If true, then tries to automatically lend with available balance.
+        autoRealizePnl:
+          type: boolean
+          description: Determines if the account should have continuous PnL realization.
         autoRepayBorrows:
           type: boolean
           description: |-
@@ -3701,9 +3707,6 @@ components:
           type: string
           format: decimal
           description: Borrow limit.
-        autoRealizePnl:
-          type: boolean
-          description: Determines if the account should have continuous PnL realization.
         futuresMakerFee:
           type: string
           format: decimal
@@ -3727,9 +3730,6 @@ components:
           type: string
           format: decimal
           description: Position limit.
-        autoBorrowSettlements:
-          type: boolean
-          description: If true, then tries to borrow during collateral reconciliation.
         spotMakerFee:
           type: string
           format: decimal
@@ -5904,29 +5904,29 @@ components:
     UpdateAccountSettingsRequest:
       type: object
       properties:
-        autoLend:
-          type: boolean
-          description: Determines if the account should automatically lend.
-        autoRepayBorrows:
-          type: boolean
-          description: |-
-            Determines if the account should automatically repay borrows with
-            available balance.
-        autoRealizePnl:
-          type: boolean
-          description: Determines if the account should have continuous PnL realization.
-        leverageLimit:
-          type: string
-          format: decimal
-          description: |-
-            Determines the maximum leverage allowed for the main account or
-            subaccount.
         autoBorrowSettlements:
           type: boolean
           description: |-
             If true, then tries to borrow during collateral reconciliation.
             Collateral reconciliation is a process in which the system reconciles
             the negative account debt or positive account equity.
+        autoLend:
+          type: boolean
+          description: Determines if the account should automatically lend.
+        autoRealizePnl:
+          type: boolean
+          description: Determines if the account should have continuous PnL realization.
+        autoRepayBorrows:
+          type: boolean
+          description: |-
+            Determines if the account should automatically repay borrows with
+            available balance.
+        leverageLimit:
+          type: string
+          format: decimal
+          description: |-
+            Determines the maximum leverage allowed for the main account or
+            subaccount.
     Withdrawal:
       type: object
       required:
