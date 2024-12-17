@@ -3888,6 +3888,7 @@ components:
       - ME
       - EIGEN
       - CHILLGUY
+      - PENGU
     Balance:
       type: object
       required:
