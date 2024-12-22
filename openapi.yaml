@@ -3776,6 +3776,9 @@ components:
         autoBorrow:
           type: boolean
           description: Auto borrow to withdraw if required.
+        autoLendRedeem:
+          type: boolean
+          description: Auto redeem a lend if required.
     ApiErrorCode:
       type: string
       enum:
@@ -3802,8 +3805,8 @@ components:
       - INVALID_ASSET
       - INVALID_SYMBOL
       - INVALID_POSITION_ID
-      - CANNOT_BORROW_WHILE_LENDING
-      - CANNOT_LEND_WHILE_BORROWING
+      - BORROW_REQUIRES_LEND_REDEEM
+      - LEND_REQUIRES_BORROW_REPAY
       - INSUFFICIENT_SUPPLY
       - BORROW_LIMIT
       - LEND_LIMIT
@@ -4272,6 +4275,7 @@ components:
       - Manual
       - Reconciliation
       - SpotMargin
+      - Withdrawal
     Collateral:
       type: object
       required:
@@ -5360,6 +5364,18 @@ components:
         autoBorrow:
           type: boolean
           description: If true then the order can borrow. Spot margin only.
+          default: null
+        autoBorrowRepay:
+          type: boolean
+          description: If true then the order can repay a borrow. Spot margin only.
+          default: null
+        autoLend:
+          type: boolean
+          description: If true then the order can lend. Spot margin only.
+          default: null
+        autoLendRedeem:
+          type: boolean
+          description: If true then the order can redeem a lend if required. Spot margin only.
           default: null
     OrderExpiryReason:
       type: string
