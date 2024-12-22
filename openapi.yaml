@@ -4608,6 +4608,7 @@ components:
       - symbol
       - userId
       - positionId
+      - cumulativeInterest
       properties:
         breakEvenPrice:
           type: string
@@ -4691,6 +4692,10 @@ components:
         positionId:
           type: string
           description: Id of the position.
+        cumulativeInterest:
+          type: string
+          format: decimal
+          description: Cumulative interest paid for this position's unrealized pnl.
     IdentityFunction:
       type: object
     InterestPayment:
