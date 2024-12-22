@@ -5073,14 +5073,14 @@ components:
       type: object
       required:
       - id
-      - symbol
-      - side
+      - createdAt
       - executedQuantity
       - executedQuoteQuantity
       - timeInForce
       - selfTradePrevention
+      - side
       - status
-      - createdAt
+      - symbol
       properties:
         id:
           type: string
@@ -5091,38 +5091,26 @@ components:
           type: integer
           format: uint32
           description: Custom order ID.
-        symbol:
-          type: string
-          description: Market symbol.
-        side:
-          description: |-
-            The order side. It will be matched against the resting orders on the
-            other side of the order book.
-          allOf:
-          - $ref: '#/components/schemas/Side'
-          - description: |-
-              The order side. It will be matched against the resting orders on the
-              other side of the order book.
-        quantity:
-          type: string
-          format: decimal
-          description: Quantity to fill.
+        createdAt:
+          type: integer
+          format: int64
+          description: Time the order was created.
         executedQuantity:
           type: string
           format: decimal
           description: Quantity that has been filled.
-        quoteQuantity:
-          type: string
-          format: decimal
-          description: Quantity of the quote asset to fill.
         executedQuoteQuantity:
           type: string
           format: decimal
           description: Quantity of the quote asset that has been filled.
-        triggerPrice:
+        quantity:
           type: string
           format: decimal
-          description: Price the order should trigger at, if any.
+          description: Quantity to fill.
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity of the quote asset to fill.
         timeInForce:
           description: How long the order is good for.
           allOf:
@@ -5137,15 +5125,27 @@ components:
           - description: |-
               Action to take in the event the user crosses themselves in the
               order book.
+        side:
+          description: |-
+            The order side. It will be matched against the resting orders on the
+            other side of the order book.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The order side. It will be matched against the resting orders on the
+              other side of the order book.
         status:
           description: Status of the order.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
-        createdAt:
-          type: integer
-          format: int64
-          description: Time the order was created.
+        symbol:
+          type: string
+          description: Market symbol.
+        triggerPrice:
+          type: string
+          format: decimal
+          description: Price the order should trigger at, if any.
     OpenInterest:
       type: object
       required:
