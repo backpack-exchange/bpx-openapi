@@ -4841,17 +4841,17 @@ components:
       type: object
       required:
       - id
-      - symbol
-      - side
-      - quantity
+      - createdAt
       - executedQuantity
       - executedQuoteQuantity
-      - price
-      - timeInForce
-      - selfTradePrevention
       - postOnly
+      - price
+      - quantity
+      - selfTradePrevention
       - status
-      - createdAt
+      - side
+      - symbol
+      - timeInForce
       properties:
         id:
           type: string
@@ -4860,22 +4860,10 @@ components:
           type: integer
           format: uint32
           description: Custom order ID.
-        symbol:
-          type: string
-          description: Market symbol.
-        side:
-          description: |-
-            The order side. It will be matched against the resting orders on the
-            other side of the order book.
-          allOf:
-          - $ref: '#/components/schemas/Side'
-          - description: |-
-              The order side. It will be matched against the resting orders on the
-              other side of the order book.
-        quantity:
-          type: string
-          format: decimal
-          description: Quantity to fill.
+        createdAt:
+          type: integer
+          format: int64
+          description: Time the order was created.
         executedQuantity:
           type: string
           format: decimal
@@ -4884,21 +4872,19 @@ components:
           type: string
           format: decimal
           description: The quantity of the quote asset that has been filled.
+        postOnly:
+          type: boolean
+          description: Whether the order is post only or not
         price:
           type: string
           format: decimal
           description: |-
             The limit price. The order book will only match this order with
             other orders at this price or better.
-        triggerPrice:
+        quantity:
           type: string
           format: decimal
-          description: Price the order should trigger at, if any.
-        timeInForce:
-          description: How long the order is good for.
-          allOf:
-          - $ref: '#/components/schemas/TimeInForce'
-          - description: How long the order is good for.
+          description: Quantity to fill.
         selfTradePrevention:
           description: |-
             Action to take in the event the user crosses themselves in the
@@ -4908,18 +4894,32 @@ components:
           - description: |-
               Action to take in the event the user crosses themselves in the
               order book.
-        postOnly:
-          type: boolean
-          description: Whether the order is post only or not
         status:
           description: Status of the order.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
-        createdAt:
-          type: integer
-          format: int64
-          description: Time the order was created.
+        side:
+          description: |-
+            The order side. It will be matched against the resting orders on the
+            other side of the order book.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The order side. It will be matched against the resting orders on the
+              other side of the order book.
+        symbol:
+          type: string
+          description: Market symbol.
+        timeInForce:
+          description: How long the order is good for.
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: How long the order is good for.
+        triggerPrice:
+          type: string
+          format: decimal
+          description: Price the order should trigger at, if any.
     MarginAccountSummary:
       type: object
       required:
@@ -5173,44 +5173,15 @@ components:
       required:
       - id
       - orderType
-      - symbol
-      - side
-      - timeInForce
       - selfTradePrevention
       - status
+      - side
+      - symbol
+      - timeInForce
       properties:
         id:
           type: string
           description: Unique ID of the order.
-        orderType:
-          description: Type of order.
-          allOf:
-          - $ref: '#/components/schemas/OrderTypeEnum'
-          - description: Type of order.
-        symbol:
-          type: string
-          description: Market symbol of the order.
-        side:
-          description: Side of the order.
-          allOf:
-          - $ref: '#/components/schemas/Side'
-          - description: Side of the order.
-        price:
-          type: string
-          format: decimal
-          description: Price that the order was submitted at (if `orderType` is `Limit`)
-        triggerPrice:
-          type: string
-          format: decimal
-          description: Price the order was set to trigger at.
-        quantity:
-          type: string
-          format: decimal
-          description: Quantity of the order.
-        quoteQuantity:
-          type: string
-          format: decimal
-          description: Quantity of the order in quote the quote asset.
         executedQuantity:
           type: string
           format: decimal
@@ -5219,29 +5190,58 @@ components:
           type: string
           format: decimal
           description: Quantity of the order that has been filled in the quote asset.
-        timeInForce:
-          description: Time in force of the order.
-          allOf:
-          - $ref: '#/components/schemas/TimeInForce'
-          - description: Time in force of the order.
-        selfTradePrevention:
-          description: Self trade prevention setting of the order.
-          allOf:
-          - $ref: '#/components/schemas/SelfTradePrevention'
-          - description: Self trade prevention setting of the order.
-        postOnly:
-          type: boolean
-          description: Whether the order was post only or not.
-        status:
-          description: Status of the order.
-          allOf:
-          - $ref: '#/components/schemas/OrderStatus'
-          - description: Status of the order.
         expiryReason:
           description: Order expiry reason.
           allOf:
           - $ref: '#/components/schemas/OrderExpiryReason'
           - description: Order expiry reason.
+        orderType:
+          description: Type of order.
+          allOf:
+          - $ref: '#/components/schemas/OrderTypeEnum'
+          - description: Type of order.
+        postOnly:
+          type: boolean
+          description: Whether the order was post only or not.
+        price:
+          type: string
+          format: decimal
+          description: Price that the order was submitted at (if `orderType` is `Limit`)
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity of the order.
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity of the order in quote the quote asset.
+        selfTradePrevention:
+          description: Self trade prevention setting of the order.
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: Self trade prevention setting of the order.
+        status:
+          description: Status of the order.
+          allOf:
+          - $ref: '#/components/schemas/OrderStatus'
+          - description: Status of the order.
+        side:
+          description: Side of the order.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: Side of the order.
+        symbol:
+          type: string
+          description: Market symbol of the order.
+        timeInForce:
+          description: Time in force of the order.
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: Time in force of the order.
+        triggerPrice:
+          type: string
+          format: decimal
+          description: Price the order was set to trigger at.
     OrderAck:
       type: object
       description: Response for order execute when the order is accepted but not yet executed.
@@ -5798,11 +5798,11 @@ components:
     SystemOrderType:
       type: string
       enum:
-      - LiquidatePositionOnBook
-      - LiquidatePositionOnBackstop
-      - LiquidatePositionOnAdl
       - CollateralConversion
       - FutureExpiry
+      - LiquidatePositionOnAdl
+      - LiquidatePositionOnBook
+      - LiquidatePositionOnBackstop
     Ticker:
       type: object
       required:
