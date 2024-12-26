@@ -3928,6 +3928,7 @@ components:
       description: Borrow lend book state
       enum:
       - Open
+      - Closed
       - RepayOnly
     BorrowLendEventType:
       type: string
