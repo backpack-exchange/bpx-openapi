@@ -30,6 +30,7 @@ tags:
   description: Disclosures
 - name: Entity
   description: Entity operations.
+- name: FtxClaims
 - name: Funding
   description: Futures funding.
 - name: Futures
@@ -3811,6 +3812,7 @@ components:
       - BORROW_LIMIT
       - LEND_LIMIT
       - MAX_LEVERAGE_REACHED
+      - NOT_IMPLEMENTED
     ApiErrorResponse:
       type: object
       required:
