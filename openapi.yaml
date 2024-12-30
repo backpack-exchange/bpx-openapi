@@ -1490,8 +1490,8 @@ paths:
       - Markets
       summary: Get mark price.
       description: |-
-        Retrieves mark price, index price and funding rate for the given
-        market symbol.
+        Retrieves mark price, index price and the funding rate for the current
+        interval for the given market symbol.
       parameters:
       - name: symbol
         schema:
@@ -1520,6 +1520,30 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_mark_price
+  /api/v1/markPrices:
+    get:
+      tags:
+      - Markets
+      summary: Get all mark prices.
+      description: |-
+        Retrieves mark price, index price and the funding rate for the current
+        interval for all symbols.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarkPrice'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_mark_prices
   /api/v1/openInterest:
     get:
       tags:
