@@ -3834,6 +3834,7 @@ components:
       - BORROW_LIMIT
       - LEND_LIMIT
       - MAX_LEVERAGE_REACHED
+      - PRECONDITION_FAILED
       - NOT_IMPLEMENTED
     ApiErrorResponse:
       type: object
