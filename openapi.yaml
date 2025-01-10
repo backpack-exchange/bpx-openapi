@@ -5678,6 +5678,18 @@ components:
           - description: |-
               Futures price band. Used to determine how far the premium is allowed to
               deviate from the mean premium.
+        borrowEntryFeeMaxMultiplier:
+          type: string
+          format: decimal
+          description: |-
+            Maximum allowed multiplier move from last active price without incurring
+            an entry fee for spot margin.
+        borrowEntryFeeMinMultiplier:
+          type: string
+          format: decimal
+          description: |-
+            Minimum allowed multiplier move from last active price without incurring
+            an entry fee for spot margin.
     QuantityFilter:
       type: object
       required:
