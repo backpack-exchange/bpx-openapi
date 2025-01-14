@@ -2759,11 +2759,23 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: asset
+        schema:
+          type: string
+        in: query
+        description: Asset to query. If not set, all assets are returned.
+        required: false
+        deprecated: false
+        explode: true
       - name: symbol
         schema:
           type: string
         in: query
-        description: Market symbol to query. If not set, all markets are returned.
+        description: |-
+          Market symbol to query. If not set, all markets are returned. If a
+          futures symbol is supplied, then interest payments on unrealized pnl
+          will be returned. Spot market symbols refer to interest payments on
+          regular borrow lend positions.
         required: false
         deprecated: false
         explode: true
