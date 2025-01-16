@@ -4962,6 +4962,9 @@ components:
           type: string
           format: decimal
           description: Price the order should trigger at, if any.
+        triggeredAt:
+          type: integer
+          format: int64
     MarginAccountSummary:
       type: object
       required:
@@ -5209,6 +5212,9 @@ components:
           type: string
           format: decimal
           description: Price the order should trigger at, if any.
+        triggeredAt:
+          type: integer
+          format: int64
     MarketType:
       type: string
       enum:
