@@ -5085,6 +5085,8 @@ components:
       - quoteSymbol
       - marketType
       - filters
+      - orderBookState
+      - createdAt
       properties:
         symbol:
           type: string
@@ -5123,6 +5125,15 @@ components:
           type: integer
           format: uint64
           description: Funding interval for perpetuals in milliseconds.
+        orderBookState:
+          description: The order book state.
+          allOf:
+          - $ref: '#/components/schemas/OrderBookState'
+          - description: The order book state.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: Market created at time.
     MarketAsset:
       type: object
       required:
@@ -5349,6 +5360,14 @@ components:
           allOf:
           - $ref: '#/components/schemas/LeverageFilter'
           - description: Defines the leverage rules for the order book.
+    OrderBookState:
+      type: string
+      enum:
+      - Open
+      - Closed
+      - CancelOnly
+      - LimitOnly
+      - PostOnly
     OrderCancelAllPayload:
       type: object
       required:
