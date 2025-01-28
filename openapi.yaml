@@ -3962,14 +3962,15 @@ components:
     Blockchain:
       type: string
       enum:
-      - Solana
-      - Ethereum
-      - Polygon
       - Bitcoin
-      - Dogecoin
       - BitcoinCash
-      - Litecoin
+      - Dogecoin
       - EqualsMoney
+      - Ethereum
+      - Litecoin
+      - Polygon
+      - SUI
+      - Solana
       - XRP
     BorrowLendBookState:
       type: string
@@ -4509,12 +4510,13 @@ components:
       type: string
       enum:
       - administrator
-      - solana
-      - ethereum
       - bitcoin
-      - dogecoin
       - bitcoinCash
+      - dogecoin
+      - ethereum
       - litecoin
+      - solana
+      - sUI
       - xRP
       - equalsMoney
       - nuvei
