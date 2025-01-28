@@ -3935,6 +3935,9 @@ components:
       - TRUMP
       - MELANIA
       - ANIME
+      - XRP
+      - SUI
+      - VINE
     Balance:
       type: object
       required:
@@ -3967,6 +3970,7 @@ components:
       - BitcoinCash
       - Litecoin
       - EqualsMoney
+      - XRP
     BorrowLendBookState:
       type: string
       description: Borrow lend book state
@@ -4511,6 +4515,7 @@ components:
       - dogecoin
       - bitcoinCash
       - litecoin
+      - xRP
       - equalsMoney
       - nuvei
       - banxa
