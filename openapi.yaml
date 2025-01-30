@@ -3938,6 +3938,8 @@ components:
       - XRP
       - SUI
       - VINE
+      - JELLYJELLY
+      - MOVE
     Balance:
       type: object
       required:
