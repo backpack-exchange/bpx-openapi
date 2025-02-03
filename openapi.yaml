@@ -5821,7 +5821,6 @@ components:
       - RejectTaker
       - RejectMaker
       - RejectBoth
-      - Allow
     Settlement:
       type: object
       required:
