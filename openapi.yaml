@@ -487,6 +487,7 @@ tags:
       "E": 1694688638091000,      // Event time in microseconds
       "q": "10",                  // Quantity
       "p": "18.70",               // Price
+      "S": "Bid",                 // Side
       "s": "SOL_USDC",            // Symbol
       "T": 567,                   // Engine timestamp in microseconds
     }
