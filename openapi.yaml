@@ -3946,6 +3946,7 @@ components:
       - VINE
       - JELLYJELLY
       - MOVE
+      - BERA
     Balance:
       type: object
       required:
@@ -3970,6 +3971,7 @@ components:
     Blockchain:
       type: string
       enum:
+      - Berachain
       - Bitcoin
       - BitcoinCash
       - Dogecoin
