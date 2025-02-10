@@ -4984,8 +4984,10 @@ components:
           - description: How long the order is good for.
         triggerPrice:
           type: string
-          format: decimal
           description: Price the order should trigger at, if any.
+        triggerQuantity:
+          type: string
+          description: Quantity for trigger orders.
         triggeredAt:
           type: integer
           format: int64
@@ -5252,8 +5254,10 @@ components:
           description: Market symbol.
         triggerPrice:
           type: string
-          format: decimal
           description: Price the order should trigger at, if any.
+        triggerQuantity:
+          type: string
+          description: Quantity for trigger orders.
         triggeredAt:
           type: integer
           format: int64
@@ -5355,8 +5359,10 @@ components:
           - description: Time in force of the order.
         triggerPrice:
           type: string
-          format: decimal
           description: Price the order was set to trigger at.
+        triggerQuantity:
+          type: string
+          description: Trigger quantity
     OrderAck:
       type: object
       description: Response for order execute when the order is accepted but not yet executed.
@@ -5483,7 +5489,6 @@ components:
           - description: How long the order is good for.
         triggerPrice:
           type: string
-          format: decimal
           description: Trigger price if this is a conditional order.
         reduceOnly:
           type: boolean
@@ -5504,6 +5509,10 @@ components:
         autoLendRedeem:
           type: boolean
           description: If true then the order can redeem a lend if required. Spot margin only.
+          default: null
+        triggerQuantity:
+          type: string
+          description: Trigger quantity type if this is a trigger order.
           default: null
     OrderExpiryReason:
       type: string
@@ -5587,16 +5596,22 @@ components:
       anyOf:
       - $ref: '#/components/schemas/OrderType_MarketOrder'
       - $ref: '#/components/schemas/OrderType_LimitOrder'
+      - $ref: '#/components/schemas/OrderType_MarketOrder'
+      - $ref: '#/components/schemas/OrderType_LimitOrder'
       discriminator:
         propertyName: orderType
         mapping:
           Market: '#/components/schemas/OrderType_MarketOrder'
           Limit: '#/components/schemas/OrderType_LimitOrder'
+          StopMarket: '#/components/schemas/OrderType_MarketOrder'
+          StopLimit: '#/components/schemas/OrderType_LimitOrder'
     OrderTypeEnum:
       type: string
       enum:
       - Market
       - Limit
+      - StopMarket
+      - StopLimit
     OrderType_LimitOrder:
       allOf:
       - type: object
@@ -5606,8 +5621,8 @@ components:
           orderType:
             type: string
             enum:
-            - Limit
-            example: Limit
+            - StopLimit
+            example: StopLimit
       - $ref: '#/components/schemas/LimitOrder'
     OrderType_MarketOrder:
       allOf:
@@ -5618,8 +5633,8 @@ components:
           orderType:
             type: string
             enum:
-            - Market
-            example: Market
+            - StopMarket
+            example: StopMarket
       - $ref: '#/components/schemas/MarketOrder'
     PaymentType:
       type: string
