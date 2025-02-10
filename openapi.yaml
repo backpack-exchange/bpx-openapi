@@ -4641,7 +4641,7 @@ components:
         quantity:
           type: string
           format: decimal
-          description: Quantity of the payment
+          description: Quantity of the payment. Positive if received, negative if paid.
         intervalEndTimestamp:
           type: string
           format: naive-date-time
