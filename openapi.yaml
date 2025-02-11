@@ -196,6 +196,7 @@ tags:
       "Q": "32123",           // Quantity in quote
       "p": "20",              // Price
       "P": "21",              // Trigger price
+      "Y": "10",              // Trigger quantity
       "X": "Filled",          // Order state
       "R": "PRICE_BAND",      // Order expiry reason
       "i": "1111343026172067" // Order ID
@@ -234,6 +235,7 @@ tags:
     - `Q` - Only present if the order is reverse market order.
     - `p` - Only present if the order is a limit order.
     - `P` - Only present if the order is a trigger order.
+    - `Y` - Only present if the order is a trigger order.
     - `R` - Only present if the event is a `orderExpired` event.
     - `t` - Only present if the event is a `orderFill` event.
     - `l` - Only present if the event is a `orderFill` event.
