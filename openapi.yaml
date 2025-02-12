@@ -3961,9 +3961,10 @@ components:
       - XRP
       - SUI
       - VINE
-      - JELLYJELLY
+      - ADA
       - MOVE
       - BERA
+      - IP
     Balance:
       type: object
       required:
@@ -3991,6 +3992,7 @@ components:
       - Berachain
       - Bitcoin
       - BitcoinCash
+      - Cardano
       - Dogecoin
       - EqualsMoney
       - Ethereum
@@ -3998,6 +4000,7 @@ components:
       - Polygon
       - SUI
       - Solana
+      - Story
       - XRP
     BorrowLendBookState:
       type: string
@@ -4539,11 +4542,13 @@ components:
       - administrator
       - bitcoin
       - bitcoinCash
+      - cardano
       - dogecoin
       - ethereum
       - litecoin
-      - solana
       - sUI
+      - solana
+      - story
       - xRP
       - equalsMoney
       - nuvei
