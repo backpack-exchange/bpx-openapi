@@ -3965,6 +3965,8 @@ components:
       - MOVE
       - BERA
       - IP
+      - HYPE
+      - BNB
     Balance:
       type: object
       required:
@@ -3992,10 +3994,12 @@ components:
       - Berachain
       - Bitcoin
       - BitcoinCash
+      - BSC
       - Cardano
       - Dogecoin
       - EqualsMoney
       - Ethereum
+      - Hyperliquid
       - Litecoin
       - Polygon
       - SUI
