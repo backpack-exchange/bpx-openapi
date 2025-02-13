@@ -5545,14 +5545,20 @@ components:
       enum:
       - AccountTradingSuspended
       - FillOrKill
-      - ImmediateOrCancel
+      - InsufficientBorrowableQuantity
       - InsufficientFunds
       - InsufficientLiquidity
+      - InvalidPrice
+      - InvalidQuantity
+      - ImmediateOrCancel
+      - InsufficientMargin
       - Liquidation
       - PostOnlyTaker
+      - ReduceOnlyNotReduced
       - SelfTradePrevention
       - PriceImpact
       - Unknown
+      - UserPermissions
     OrderFill:
       type: object
       required:
@@ -5616,7 +5622,8 @@ components:
       - Filled
       - New
       - PartiallyFilled
-      - Triggered
+      - TriggerPending
+      - TriggerFailed
     OrderType:
       type: object
       anyOf:
