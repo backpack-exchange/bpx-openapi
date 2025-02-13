@@ -174,6 +174,8 @@ tags:
     - `orderExpired`
     - `orderFill`
     - `orderModified`
+    - `triggerPlaced`
+    - `triggerFailed`
 
     An `orderModified` update will be received when a resting reduce only
     order's quantity is decreased in order to prevent position side
