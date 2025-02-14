@@ -11,7 +11,7 @@ tags:
 - name: API Keys
   description: API key Management.
 - name: Account
-  description: Account settings.
+  description: Account settings and limits.
 - name: AccountLimits
   description: Account Limits.
 - name: Address
@@ -720,6 +720,302 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: update_account_settings
+  /api/v1/account/limits/borrow:
+    get:
+      tags:
+      - Account
+      summary: Get max borrow quantity.
+      description: |-
+        Retrieves the maxmimum quantity an account can borrow
+        for a given asset based on the accounts existing exposure
+        and margin requirements
+
+        **Instruction:** `maxBorrowQuantity`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: The asset to borrow.
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MaxBorrowQuantity'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '503':
+          description: Service unavailable.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_max_borrow_quantity
+  /api/v1/account/limits/order:
+    get:
+      tags:
+      - Account
+      summary: Get max order quantity.
+      description: |-
+        Retrieves the maxmimum quantity an account can trade
+        for a given  based on the accounts existing exposure
+        and margin requirements.
+
+        **Instruction:** `maxOrderQuantity`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: The market symbol to trade.
+        required: true
+        deprecated: false
+        explode: true
+      - name: side
+        schema:
+          $ref: '#/components/schemas/Side'
+        in: query
+        description: The side of the order.
+        required: true
+        deprecated: false
+        explode: true
+      - name: price
+        schema:
+          type: string
+          format: decimal
+        in: query
+        description: The limit price of the order. Not included for market orders.
+        required: false
+        deprecated: false
+        explode: true
+      - name: reduceOnly
+        schema:
+          type: boolean
+        in: query
+        description: Whether the order is reduce only.
+        required: false
+        deprecated: false
+        explode: true
+      - name: autoBorrow
+        schema:
+          type: boolean
+        in: query
+        description: Whether the order uses auto borrow.
+        required: false
+        deprecated: false
+        explode: true
+      - name: autoBorrowRepay
+        schema:
+          type: boolean
+        in: query
+        description: Whether the order uses auto borrow repay.
+        required: false
+        deprecated: false
+        explode: true
+      - name: autoLendRedeem
+        schema:
+          type: boolean
+        in: query
+        description: Whether the order uses auto lend redeem.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MaxOrderQuantity'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_max_order_quantity
+  /api/v1/account/limits/withdrawal:
+    get:
+      tags:
+      - Account
+      summary: Get max withdrawal quantity.
+      description: |-
+        Retrieves the maxmimum quantity an account can withdraw
+        for a given asset based on the accounts existing exposure
+        and margin requirements
+        The response will include the maximum quantity that can be withdrawn
+        and whether the withdrawal is with auto borrow or auto lend redeem
+        enabled.
+
+        **Instruction:** `maxWithdrawalQuantity`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: The asset to withdraw.
+        required: true
+        deprecated: false
+        explode: true
+      - name: autoBorrow
+        schema:
+          type: boolean
+        in: query
+        description: Whether the withdrawal is with auto borrow.
+        required: false
+        deprecated: false
+        explode: true
+      - name: autoLendRedeem
+        schema:
+          type: boolean
+        in: query
+        description: Whether the withdrawal is with auto lend redeem.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/MaxWithdrawalQuantity'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_max_withdrawal_quantity
   /api/v1/assets:
     get:
       tags:
@@ -5298,6 +5594,57 @@ components:
       - DATED
       - PREDICTION
       - RFQ
+    MaxBorrowQuantity:
+      type: object
+      required:
+      - symbol
+      - maxBorrowQuantity
+      properties:
+        symbol:
+          type: string
+        maxBorrowQuantity:
+          type: string
+          format: decimal
+    MaxOrderQuantity:
+      type: object
+      required:
+      - symbol
+      - side
+      - maxOrderQuantity
+      properties:
+        symbol:
+          type: string
+        side:
+          type: string
+        price:
+          type: string
+          format: decimal
+        maxOrderQuantity:
+          type: string
+          format: decimal
+        reduceOnly:
+          type: boolean
+        autoBorrow:
+          type: boolean
+        autoBorrowRepay:
+          type: boolean
+        autoLendRedeem:
+          type: boolean
+    MaxWithdrawalQuantity:
+      type: object
+      required:
+      - maxWithdrawalQuantity
+      - symbol
+      properties:
+        autoBorrow:
+          type: boolean
+        autoLendRedeem:
+          type: boolean
+        maxWithdrawalQuantity:
+          type: string
+          format: decimal
+        symbol:
+          type: string
     OpenInterest:
       type: object
       required:
