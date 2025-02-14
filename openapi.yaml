@@ -5987,6 +5987,7 @@ components:
       - LiquidatePositionOnAdl
       - LiquidatePositionOnBook
       - LiquidatePositionOnBackstop
+      - OrderBookClosed
     Ticker:
       type: object
       required:
