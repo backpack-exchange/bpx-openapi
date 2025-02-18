@@ -807,7 +807,7 @@ paths:
       summary: Get max order quantity.
       description: |-
         Retrieves the maxmimum quantity an account can trade
-        for a given  based on the accounts existing exposure
+        for a given symbol based on the account's balances, existing exposure
         and margin requirements.
 
         **Instruction:** `maxOrderQuantity`
