@@ -4273,6 +4273,7 @@ components:
       - IP
       - HYPE
       - BNB
+      - KAITO
     Balance:
       type: object
       required:
@@ -4297,6 +4298,7 @@ components:
     Blockchain:
       type: string
       enum:
+      - Base
       - Berachain
       - Bitcoin
       - BitcoinCash
@@ -4850,6 +4852,7 @@ components:
       type: string
       enum:
       - administrator
+      - base
       - bitcoin
       - bitcoinCash
       - cardano
