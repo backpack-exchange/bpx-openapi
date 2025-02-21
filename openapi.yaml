@@ -1660,6 +1660,13 @@ paths:
         required: true
         deprecated: false
         explode: true
+      - name: interval
+        schema:
+          $ref: '#/components/schemas/TickerInterval'
+        in: query
+        required: false
+        deprecated: false
+        explode: true
       responses:
         '200':
           description: Success.
@@ -1690,6 +1697,14 @@ paths:
       description: |-
         Retrieves summarised statistics for the last 24 hours for all market
         symbols.
+      parameters:
+      - name: interval
+        schema:
+          $ref: '#/components/schemas/TickerInterval'
+        in: query
+        required: false
+        deprecated: false
+        explode: true
       responses:
         '200':
           description: Success.
@@ -6398,6 +6413,11 @@ components:
         trades:
           type: string
           description: Trades for the interval.
+    TickerInterval:
+      type: string
+      enum:
+      - 1d
+      - 1w
     TimeInForce:
       type: string
       enum:
