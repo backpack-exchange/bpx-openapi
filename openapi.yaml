@@ -268,7 +268,7 @@ tags:
     {
       "e": "positionOpened",  // Event type
       "E": 1694687692980000,  // Event time in microseconds
-      "s": "SOL_USD_PERP",    // Symbol
+      "s": "SOL_USDC_PERP",    // Symbol
       "b": 123,               // Break event price
       "B": 122,               // Entry price
       "l": 50,                // Estimated liquidation price
