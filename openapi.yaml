@@ -1021,7 +1021,7 @@ paths:
       tags:
       - Assets
       summary: Get assets.
-      description: Retrieves all the assets that are supported by the exchange.
+      description: Get all supported assets.
       responses:
         '200':
           description: Success.
@@ -4289,6 +4289,11 @@ components:
       - HYPE
       - BNB
       - KAITO
+      - kPEPE
+      - kBONK
+      - kSHIB
+      - AVAX
+      - S
     Balance:
       type: object
       required:
