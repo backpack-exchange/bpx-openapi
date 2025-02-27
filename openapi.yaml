@@ -279,8 +279,8 @@ tags:
       "Q": 6,                 // Net exposure quantity
       "n": 732 ,              // Net exposure notional
       "i": "1111343026172067" // Position ID
-      "p": -1,                // PnL realized
-      "P": 0,                 // PnL unrealized
+      "p": "-1",              // PnL realized
+      "P": "0",               // PnL unrealized
       "T": 1694687692989999   // Engine timestamp in microseconds
     }
     ```
