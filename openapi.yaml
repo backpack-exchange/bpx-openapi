@@ -4289,11 +4289,12 @@ components:
       - HYPE
       - BNB
       - KAITO
-      - kPEPE
-      - kBONK
-      - kSHIB
+      - PEPE1000
+      - BONK1000
+      - SHIB1000
       - AVAX
       - S
+      - POINTS
     Balance:
       type: object
       required:
