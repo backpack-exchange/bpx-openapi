@@ -5838,6 +5838,18 @@ components:
       - side
       - symbol
       properties:
+        autoLend:
+          type: boolean
+          description: If true then the order can lend. Spot margin only.
+        autoLendRedeem:
+          type: boolean
+          description: If true then the order can redeem a lend if required. Spot margin only.
+        autoBorrow:
+          type: boolean
+          description: If true then the order can borrow. Spot margin only.
+        autoBorrowRepay:
+          type: boolean
+          description: If true then the order can repay a borrow. Spot margin only.
         clientId:
           type: integer
           format: uint32
@@ -5868,6 +5880,9 @@ components:
             for market orders. This is used for reverse market orders. The
             order book will execute a `quantity` as close as possible to the
             notional value of `quote_quantity`.
+        reduceOnly:
+          type: boolean
+          description: If true then the order can only reduce the positon. Futures only.
         selfTradePrevention:
           description: |-
             Action to take in the event the user crosses themselves in the
@@ -5897,30 +5912,9 @@ components:
         triggerPrice:
           type: string
           description: Trigger price if this is a conditional order.
-        reduceOnly:
-          type: boolean
-          description: If true then the order can only reduce the positon. Futures only.
-          default: null
-        autoBorrow:
-          type: boolean
-          description: If true then the order can borrow. Spot margin only.
-          default: null
-        autoBorrowRepay:
-          type: boolean
-          description: If true then the order can repay a borrow. Spot margin only.
-          default: null
-        autoLend:
-          type: boolean
-          description: If true then the order can lend. Spot margin only.
-          default: null
-        autoLendRedeem:
-          type: boolean
-          description: If true then the order can redeem a lend if required. Spot margin only.
-          default: null
         triggerQuantity:
           type: string
           description: Trigger quantity type if this is a trigger order.
-          default: null
     OrderExpiryReason:
       type: string
       enum:
