@@ -1892,6 +1892,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_open_interest
+  /api/v1/openInterests:
+    get:
+      tags:
+      - Markets
+      summary: Get open interest for all markets.
+      description: Retrieves the current open interest for all markets.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OpenInterest'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_open_interests
   /api/v1/fundingRates:
     get:
       tags:
