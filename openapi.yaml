@@ -4323,6 +4323,7 @@ components:
       - AVAX
       - S
       - POINTS
+      - ROAM
     Balance:
       type: object
       required:
