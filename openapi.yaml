@@ -6530,9 +6530,6 @@ components:
         autoLend:
           type: boolean
           description: Determines if the account should automatically lend.
-        autoRealizePnl:
-          type: boolean
-          description: Determines if the account should have continuous PnL realization.
         autoRepayBorrows:
           type: boolean
           description: |-
