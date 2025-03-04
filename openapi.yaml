@@ -4348,11 +4348,12 @@ components:
     Blockchain:
       type: string
       enum:
+      - Arbitrum
       - Base
       - Berachain
       - Bitcoin
       - BitcoinCash
-      - BSC
+      - Bsc
       - Cardano
       - Dogecoin
       - EqualsMoney
@@ -4360,7 +4361,7 @@ components:
       - Hyperliquid
       - Litecoin
       - Polygon
-      - SUI
+      - Sui
       - Solana
       - Story
       - XRP
@@ -4902,14 +4903,17 @@ components:
       type: string
       enum:
       - administrator
+      - arbitrum
       - base
       - bitcoin
       - bitcoinCash
+      - bsc
       - cardano
       - dogecoin
       - ethereum
       - litecoin
-      - sUI
+      - polygon
+      - sui
       - solana
       - story
       - xRP
