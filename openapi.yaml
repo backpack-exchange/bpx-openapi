@@ -4523,6 +4523,7 @@ components:
       - S
       - POINTS
       - ROAM
+      - AI16Z
     Balance:
       type: object
       title: Balance
