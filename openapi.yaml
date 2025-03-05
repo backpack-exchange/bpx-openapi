@@ -597,6 +597,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -605,6 +606,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -614,6 +616,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -623,6 +626,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -660,6 +664,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -668,6 +673,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -677,6 +683,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -686,6 +693,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -740,6 +748,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -748,6 +757,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -757,6 +767,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -766,6 +777,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -774,6 +786,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -820,6 +833,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -828,6 +842,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -837,6 +852,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -846,6 +862,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -854,6 +871,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: side
         schema:
           $ref: '#/components/schemas/Side'
@@ -862,6 +880,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: price
         schema:
           type: string
@@ -871,6 +890,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: reduceOnly
         schema:
           type: boolean
@@ -879,6 +899,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: autoBorrow
         schema:
           type: boolean
@@ -887,6 +908,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: autoBorrowRepay
         schema:
           type: boolean
@@ -895,6 +917,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: autoLendRedeem
         schema:
           type: boolean
@@ -903,6 +926,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -946,6 +970,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -954,6 +979,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -963,6 +989,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -972,6 +999,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -980,6 +1008,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: autoBorrow
         schema:
           type: boolean
@@ -988,6 +1017,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: autoLendRedeem
         schema:
           type: boolean
@@ -996,6 +1026,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1078,6 +1109,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1086,6 +1118,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1095,6 +1128,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1104,6 +1138,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1141,6 +1176,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1149,6 +1185,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1158,6 +1195,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1167,6 +1205,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -1230,6 +1269,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -1238,6 +1278,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1275,6 +1316,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1283,6 +1325,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1292,6 +1335,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1301,6 +1345,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1341,6 +1386,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1349,6 +1395,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1358,6 +1405,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1367,6 +1415,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: subaccountId
         schema:
           type: integer
@@ -1375,6 +1424,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1413,6 +1463,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1421,6 +1472,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1430,6 +1482,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1439,6 +1492,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: from
         schema:
           type: integer
@@ -1448,6 +1502,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: to
         schema:
           type: integer
@@ -1457,6 +1512,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -1466,6 +1522,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -1475,6 +1532,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1522,6 +1580,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1530,6 +1589,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1539,6 +1599,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1548,6 +1609,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: blockchain
         schema:
           $ref: '#/components/schemas/Blockchain'
@@ -1556,6 +1618,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1624,6 +1687,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1660,6 +1724,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: interval
         schema:
           $ref: '#/components/schemas/TickerInterval'
@@ -1667,6 +1732,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1705,6 +1771,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1735,6 +1802,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1773,6 +1841,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: interval
         schema:
           $ref: '#/components/schemas/KlineInterval'
@@ -1780,6 +1849,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: startTime
         schema:
           type: integer
@@ -1789,6 +1859,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: endTime
         schema:
           type: integer
@@ -1798,6 +1869,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1836,6 +1908,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1872,6 +1945,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -1935,6 +2009,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -1944,6 +2019,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -1953,6 +2029,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2028,6 +2105,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2036,6 +2114,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2045,6 +2124,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2054,6 +2134,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: clientId
         schema:
           type: integer
@@ -2063,6 +2144,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: orderId
         schema:
           type: string
@@ -2071,6 +2153,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -2079,6 +2162,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2122,6 +2206,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2130,6 +2215,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2139,6 +2225,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2148,6 +2235,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2206,6 +2294,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2214,6 +2303,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2223,6 +2313,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2232,6 +2323,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2286,6 +2378,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2294,6 +2387,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2303,6 +2397,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2312,6 +2407,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: marketType
         schema:
           type: string
@@ -2320,6 +2416,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -2328,6 +2425,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2367,6 +2465,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2375,6 +2474,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2384,6 +2484,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2393,6 +2494,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2447,6 +2549,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2455,6 +2558,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2464,6 +2568,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2473,6 +2578,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2521,6 +2627,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2529,6 +2636,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2538,6 +2646,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2547,6 +2656,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2641,6 +2751,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -2650,6 +2761,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2688,6 +2800,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -2697,6 +2810,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -2706,6 +2820,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2746,6 +2861,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2754,6 +2870,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2763,6 +2880,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2772,6 +2890,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: from
         schema:
           type: integer
@@ -2781,6 +2900,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: to
         schema:
           type: integer
@@ -2790,6 +2910,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -2799,6 +2920,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -2808,6 +2930,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -2857,6 +2980,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2866,6 +2990,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2875,6 +3000,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2883,6 +3009,7 @@ paths:
         required: true
         deprecated: false
         explode: true
+        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2951,6 +3078,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2959,6 +3087,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2968,6 +3097,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2977,6 +3107,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: type
         schema:
           $ref: '#/components/schemas/BorrowLendEventType'
@@ -2985,6 +3116,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: sources
         schema:
           type: string
@@ -2995,6 +3127,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: positionId
         schema:
           type: string
@@ -3003,6 +3136,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -3011,6 +3145,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3020,6 +3155,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3029,6 +3165,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3105,6 +3242,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3113,6 +3251,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3122,6 +3261,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3131,6 +3271,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: asset
         schema:
           type: string
@@ -3139,6 +3280,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -3151,6 +3293,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: positionId
         schema:
           type: string
@@ -3159,6 +3302,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3168,6 +3312,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3177,6 +3322,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: source
         schema:
           $ref: '#/components/schemas/InterestPaymentSource'
@@ -3188,6 +3334,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3261,6 +3408,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: side
         schema:
           $ref: '#/components/schemas/BorrowLendSide'
@@ -3269,6 +3417,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: state
         schema:
           $ref: '#/components/schemas/BorrowLendPositionState'
@@ -3277,6 +3426,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3286,6 +3436,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3295,6 +3446,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3372,6 +3524,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3380,6 +3533,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3389,6 +3543,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3398,6 +3553,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: orderId
         schema:
           type: string
@@ -3406,6 +3562,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: from
         schema:
           type: integer
@@ -3415,6 +3572,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: to
         schema:
           type: integer
@@ -3424,6 +3582,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -3432,6 +3591,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3441,6 +3601,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3450,6 +3611,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: fillType
         schema:
           $ref: '#/components/schemas/FillType'
@@ -3458,6 +3620,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: marketType
         schema:
           type: array
@@ -3468,6 +3631,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3544,6 +3708,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3552,6 +3717,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3561,6 +3727,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3570,6 +3737,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: subaccountId
         schema:
           type: integer
@@ -3579,6 +3747,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -3587,6 +3756,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3596,6 +3766,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3605,6 +3776,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3684,6 +3856,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3692,6 +3865,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3701,6 +3875,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3710,6 +3885,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: orderId
         schema:
           type: string
@@ -3718,6 +3894,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -3726,6 +3903,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3735,6 +3913,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3744,6 +3923,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: marketType
         schema:
           type: array
@@ -3754,6 +3934,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3830,6 +4011,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3838,6 +4020,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3847,6 +4030,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3856,6 +4040,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: subaccountId
         schema:
           type: integer
@@ -3865,6 +4050,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: symbol
         schema:
           type: string
@@ -3873,6 +4059,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -3882,6 +4069,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -3891,6 +4079,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3967,6 +4156,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3975,6 +4165,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3984,6 +4175,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3993,6 +4185,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: limit
         schema:
           type: integer
@@ -4002,6 +4195,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: offset
         schema:
           type: integer
@@ -4011,6 +4205,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       - name: source
         schema:
           $ref: '#/components/schemas/SettlementSourceFilter'
@@ -4018,6 +4213,7 @@ paths:
         required: false
         deprecated: false
         explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -4080,6 +4276,7 @@ components:
   schemas:
     AccountSummary:
       type: object
+      title: AccountSummary
       required:
       - autoBorrowSettlements
       - autoLend
@@ -4151,6 +4348,7 @@ components:
           description: Number of open trigger orders.
     AccountWithdrawalPayload:
       type: object
+      title: AccountWithdrawalPayload
       required:
       - address
       - blockchain
@@ -4222,6 +4420,7 @@ components:
       - NOT_IMPLEMENTED
     ApiErrorResponse:
       type: object
+      title: ApiErrorResponse
       required:
       - code
       - message
@@ -4326,6 +4525,7 @@ components:
       - ROAM
     Balance:
       type: object
+      title: Balance
       required:
       - available
       - locked
@@ -4381,6 +4581,7 @@ components:
       - LendRedeem
     BorrowLendExecutePayload:
       type: object
+      title: BorrowLendExecutePayload
       required:
       - quantity
       - side
@@ -4402,6 +4603,7 @@ components:
           - description: The asset to repay.
     BorrowLendHistory:
       type: object
+      title: BorrowLendHistory
       required:
       - borrowInterestRate
       - borrowedQuantity
@@ -4436,6 +4638,7 @@ components:
           description: Utilisation.
     BorrowLendMarket:
       type: object
+      title: BorrowLendMarket
       description: Borrow Lending market summary.
       required:
       - state
@@ -4545,6 +4748,7 @@ components:
       - 1year
     BorrowLendMovement:
       type: object
+      title: BorrowLendMovement
       required:
       - eventType
       - positionId
@@ -4588,6 +4792,7 @@ components:
             margin.
     BorrowLendPositionRow:
       type: object
+      title: BorrowLendPositionRow
       required:
       - positionId
       - quantity
@@ -4637,6 +4842,7 @@ components:
       - Closed
     BorrowLendPositionWithMargin:
       type: object
+      title: BorrowLendPositionWithMargin
       required:
       - cumulativeInterest
       - id
@@ -4720,6 +4926,7 @@ components:
       - Withdrawal
     Collateral:
       type: object
+      title: Collateral
       required:
       - symbol
       - assetMarkPrice
@@ -4772,6 +4979,7 @@ components:
           description: The amount of freely available assets.
     CollateralFunction:
       type: object
+      title: CollateralFunction
       required:
       - weight
       - kind
@@ -4817,6 +5025,7 @@ components:
       - $ref: '#/components/schemas/InverseSqrtFunction'
     CollateralSummary:
       type: object
+      title: CollateralSummary
       required:
       - symbol
       - imfFunction
@@ -4843,6 +5052,7 @@ components:
           - description: Calculates the haircut for collateral value.
     Deposit:
       type: object
+      title: Deposit
       required:
       - id
       - source
@@ -4893,6 +5103,7 @@ components:
           description: When the deposit was created.
     DepositAddress:
       type: object
+      title: DepositAddress
       required:
       - address
       properties:
@@ -4934,6 +5145,7 @@ components:
       - refunded
     Depth:
       type: object
+      title: Depth
       required:
       - asks
       - bids
@@ -4991,6 +5203,7 @@ components:
       - CollateralConversionAndSpotLiquidation
     FundingIntervalRate:
       type: object
+      title: FundingIntervalRate
       required:
       - symbol
       - intervalEndTimestamp
@@ -5009,6 +5222,7 @@ components:
           description: The funding rate for the interval.
     FundingPayment:
       type: object
+      title: FundingPayment
       required:
       - userId
       - symbol
@@ -5041,6 +5255,7 @@ components:
           description: The funding rate for the payment.
     FuturePositionWithMargin:
       type: object
+      title: FuturePositionWithMargin
       required:
       - breakEvenPrice
       - entryPrice
@@ -5150,8 +5365,10 @@ components:
           description: Cumulative interest paid for this position's unrealized pnl.
     IdentityFunction:
       type: object
+      title: IdentityFunction
     InterestPayment:
       type: object
+      title: InterestPayment
       required:
       - paymentType
       - interestRate
@@ -5206,6 +5423,7 @@ components:
       - BorrowLend
     InverseSqrtFunction:
       type: object
+      title: InverseSqrtFunction
       required:
       - base
       - positiveCurvePenalty
@@ -5218,6 +5436,7 @@ components:
           format: decimal
     Kline:
       type: object
+      title: Kline
       required:
       - start
       - end
@@ -5272,6 +5491,7 @@ components:
       - 1month
     LeverageFilter:
       type: object
+      title: LeverageFilter
       required:
       - minLeverage
       - maxLeverage
@@ -5291,6 +5511,7 @@ components:
           description: Leverage increment.
     LimitOrder:
       type: object
+      title: LimitOrder
       required:
       - id
       - createdAt
@@ -5382,6 +5603,7 @@ components:
           format: int64
     MarginAccountSummary:
       type: object
+      title: MarginAccountSummary
       required:
       - assetsValue
       - borrowLiability
@@ -5460,6 +5682,7 @@ components:
           description: Id of the user.
     MarkPrice:
       type: object
+      title: MarkPrice
       required:
       - fundingRate
       - indexPrice
@@ -5490,6 +5713,7 @@ components:
           description: The symbol of the market.
     Market:
       type: object
+      title: Market
       required:
       - symbol
       - baseSymbol
@@ -5551,6 +5775,7 @@ components:
           description: Market created at time.
     MarketAsset:
       type: object
+      title: MarketAsset
       required:
       - symbol
       - tokens
@@ -5567,6 +5792,7 @@ components:
             $ref: '#/components/schemas/Token'
     MarketOrder:
       type: object
+      title: MarketOrder
       required:
       - id
       - createdAt
@@ -5661,6 +5887,7 @@ components:
       - RFQ
     MaxBorrowQuantity:
       type: object
+      title: MaxBorrowQuantity
       required:
       - symbol
       - maxBorrowQuantity
@@ -5672,6 +5899,7 @@ components:
           format: decimal
     MaxOrderQuantity:
       type: object
+      title: MaxOrderQuantity
       required:
       - symbol
       - side
@@ -5697,6 +5925,7 @@ components:
           type: boolean
     MaxWithdrawalQuantity:
       type: object
+      title: MaxWithdrawalQuantity
       required:
       - maxWithdrawalQuantity
       - symbol
@@ -5712,6 +5941,7 @@ components:
           type: string
     OpenInterest:
       type: object
+      title: OpenInterest
       required:
       - symbol
       - timestamp
@@ -5729,6 +5959,7 @@ components:
           description: Timestamp.
     Order:
       type: object
+      title: Order
       required:
       - id
       - orderType
@@ -5805,6 +6036,7 @@ components:
           description: Trigger quantity
     OrderAck:
       type: object
+      title: OrderAck
       description: Response for order execute when the order is accepted but not yet executed.
       required:
       - id
@@ -5814,6 +6046,7 @@ components:
           description: Order id.
     OrderBookFilters:
       type: object
+      title: OrderBookFilters
       required:
       - price
       - quantity
@@ -5843,6 +6076,7 @@ components:
       - PostOnly
     OrderCancelAllPayload:
       type: object
+      title: OrderCancelAllPayload
       required:
       - symbol
       properties:
@@ -5851,6 +6085,7 @@ components:
           description: Market to cancel orders for.
     OrderCancelPayload:
       type: object
+      title: OrderCancelPayload
       required:
       - symbol
       properties:
@@ -5866,6 +6101,7 @@ components:
           description: Market the order exists on.
     OrderExecutePayload:
       type: object
+      title: OrderExecutePayload
       required:
       - orderType
       - side
@@ -5969,6 +6205,7 @@ components:
       - UserPermissions
     OrderFill:
       type: object
+      title: OrderFill
       required:
       - fee
       - feeSymbol
@@ -6090,6 +6327,7 @@ components:
       - UnrealizedNegativePnl
     PnlPayment:
       type: object
+      title: PnlPayment
       required:
       - pnlRealized
       - symbol
@@ -6128,6 +6366,7 @@ components:
       - $ref: '#/components/schemas/SqrtFunction'
     PriceBandMarkPrice:
       type: object
+      title: PriceBandMarkPrice
       required:
       - maxMultiplier
       - minMultiplier
@@ -6142,6 +6381,7 @@ components:
           description: Minimum allowed multiplier move from mean price.
     PriceBandMeanPremium:
       type: object
+      title: PriceBandMeanPremium
       required:
       - tolerancePct
       properties:
@@ -6154,6 +6394,7 @@ components:
             orders will be prevented from being placed if the premium exceeds 10%.
     PriceFilter:
       type: object
+      title: PriceFilter
       required:
       - minPrice
       - tickSize
@@ -6222,6 +6463,7 @@ components:
             an entry fee for spot margin.
     QuantityFilter:
       type: object
+      title: QuantityFilter
       required:
       - minQuantity
       - stepSize
@@ -6245,6 +6487,7 @@ components:
           description: Quantity increment.
     Quote:
       type: object
+      title: Quote
       required:
       - rfqId
       - quoteId
@@ -6272,6 +6515,7 @@ components:
           - description: Status.
     QuotePayload:
       type: object
+      title: QuotePayload
       required:
       - rfqId
       - bidPrice
@@ -6300,6 +6544,7 @@ components:
       - RejectBoth
     Settlement:
       type: object
+      title: Settlement
       required:
       - quantity
       - source
@@ -6360,6 +6605,7 @@ components:
       - Ask
     SqrtFunction:
       type: object
+      title: SqrtFunction
       required:
       - base
       - factor
@@ -6377,6 +6623,7 @@ components:
       - Maintenance
     StatusAndMessage:
       type: object
+      title: StatusAndMessage
       required:
       - status
       properties:
@@ -6399,6 +6646,7 @@ components:
       - OrderBookClosed
     Ticker:
       type: object
+      title: Ticker
       required:
       - symbol
       - firstPrice
@@ -6462,6 +6710,7 @@ components:
       - FOK
     Token:
       type: object
+      title: Token
       required:
       - blockchain
       - depositEnabled
@@ -6492,6 +6741,7 @@ components:
           format: decimal
     Trade:
       type: object
+      title: Trade
       required:
       - price
       - quantity
@@ -6524,6 +6774,7 @@ components:
           description: Whether the buyer was the maker order.
     UpdateAccountSettingsRequest:
       type: object
+      title: UpdateAccountSettingsRequest
       properties:
         autoBorrowSettlements:
           type: boolean
@@ -6547,6 +6798,7 @@ components:
             subaccount.
     Withdrawal:
       type: object
+      title: Withdrawal
       required:
       - id
       - blockchain
