@@ -4925,6 +4925,11 @@ components:
       - Reconciliation
       - SpotMargin
       - Withdrawal
+    CancelOrderTypeEnum:
+      type: string
+      enum:
+      - RestingLimitOrder
+      - ConditionalOrder
     Collateral:
       type: object
       title: Collateral
@@ -6084,6 +6089,11 @@ components:
         symbol:
           type: string
           description: Market to cancel orders for.
+        orderType:
+          description: Type of orders to cancel.
+          allOf:
+          - $ref: '#/components/schemas/CancelOrderTypeEnum'
+          - description: Type of orders to cancel.
     OrderCancelPayload:
       type: object
       title: OrderCancelPayload
