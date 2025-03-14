@@ -47,6 +47,8 @@ tags:
   description: Public market data.
 - name: Order
   description: Order management.
+- name: Performance
+  description: Performance.
 - name: Position
   description: Account position summary.
 - name: Preferences
