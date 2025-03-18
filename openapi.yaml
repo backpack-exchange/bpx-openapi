@@ -200,6 +200,8 @@ tags:
       "Q": "32123",           // Quantity in quote
       "p": "20",              // Price
       "P": "21",              // Trigger price
+      "a": "30",              // Take profit trigger price
+      "b": "10",              // Stop loss trigger price
       "Y": "10",              // Trigger quantity
       "X": "Filled",          // Order state
       "R": "PRICE_BAND",      // Order expiry reason
@@ -239,6 +241,8 @@ tags:
     - `Q` - Only present if the order is reverse market order.
     - `p` - Only present if the order is a limit order.
     - `P` - Only present if the order is a trigger order.
+    - `a` - Only present if the order has a take profit trigger price set.
+    - `b` - Only present if the order has a stop loss trigger price set.
     - `Y` - Only present if the order is a trigger order.
     - `R` - Only present if the event is a `orderExpired` event.
     - `t` - Only present if the event is a `orderFill` event.
