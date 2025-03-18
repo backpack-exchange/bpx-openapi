@@ -5583,6 +5583,18 @@ components:
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
+        stopLossTriggerPrice:
+          type: string
+          description: Stop loss price (price the stop loss order will be triggered at).
+        stopLossLimitPrice:
+          type: string
+          format: decimal
+          description: |-
+            Stop loss limit price. If set the stop loss will be a limit order,
+            otherwise it will be a market order.
+        stopLossTriggerBy:
+          type: string
+          description: Reference price that should trigger the stop loss order.
         side:
           description: |-
             The order side. It will be matched against the resting orders on the
@@ -5595,11 +5607,26 @@ components:
         symbol:
           type: string
           description: Market symbol.
+        takeProfitTriggerPrice:
+          type: string
+          description: Take profit price (price the take profit order will be triggered at).
+        takeProfitLimitPrice:
+          type: string
+          format: decimal
+          description: |-
+            Take profit limit price. If set the take profit will be a limit order,
+            otherwise it will be a market order.
+        takeProfitTriggerBy:
+          type: string
+          description: Reference price that should trigger the take profit order.
         timeInForce:
           description: How long the order is good for.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: How long the order is good for.
+        triggerBy:
+          type: string
+          description: Reference price that should trigger the order.
         triggerPrice:
           type: string
           description: Price the order should trigger at, if any.
@@ -5872,9 +5899,36 @@ components:
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status of the order.
+        stopLossTriggerPrice:
+          type: string
+          description: Stop loss price (price the stop loss order will be triggered at).
+        stopLossLimitPrice:
+          type: string
+          format: decimal
+          description: |-
+            Stop loss limit price. If set the stop loss will be a limit order,
+            otherwise it will be a market order.
+        stopLossTriggerBy:
+          type: string
+          description: Reference price that should trigger the stop loss order.
         symbol:
           type: string
           description: Market symbol.
+        takeProfitTriggerPrice:
+          type: string
+          description: Take profit price (price the take profit order will be triggered at).
+        takeProfitLimitPrice:
+          type: string
+          format: decimal
+          description: |-
+            Take profit limit price. If set the take profit will be a limit order,
+            otherwise it will be a market order.
+        takeProfitTriggerBy:
+          type: string
+          description: Reference price that should trigger the take profit order.
+        triggerBy:
+          type: string
+          description: Reference price that should trigger the order.
         triggerPrice:
           type: string
           description: Price the order should trigger at, if any.
@@ -6028,20 +6082,47 @@ components:
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: Side of the order.
+        stopLossTriggerPrice:
+          type: string
+          description: Stop loss price (price the stop loss order will be triggered at).
+        stopLossLimitPrice:
+          type: string
+          format: decimal
+          description: |-
+            Stop loss limit price. If set the stop loss will be a limit order,
+            otherwise it will be a market order.
+        stopLossTriggerBy:
+          type: string
+          description: Reference price that should trigger the stop loss order.
         symbol:
           type: string
           description: Market symbol of the order.
+        takeProfitTriggerPrice:
+          type: string
+          description: Take profit price (price the take profit order will be triggered at).
+        takeProfitLimitPrice:
+          type: string
+          format: decimal
+          description: |-
+            Take profit limit price. If set the take profit will be a limit order,
+            otherwise it will be a market order.
+        takeProfitTriggerBy:
+          type: string
+          description: Reference price that should trigger the take profit order.
         timeInForce:
           description: Time in force of the order.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: Time in force of the order.
+        triggerBy:
+          type: string
+          description: Reference price that should trigger the order.
         triggerPrice:
           type: string
           description: Price the order was set to trigger at.
         triggerQuantity:
           type: string
-          description: Trigger quantity
+          description: Trigger quantity.
     OrderAck:
       type: object
       title: OrderAck
@@ -6143,11 +6224,11 @@ components:
           - description: Order type, market or limit.
         postOnly:
           type: boolean
-          description: Whether the order is post only or not
+          description: Only post liquidity, do not take liquidity.
         price:
           type: string
           format: decimal
-          description: The order price if this is a limit order
+          description: The order price if this is a limit order.
         quantity:
           type: string
           format: decimal
@@ -6166,31 +6247,50 @@ components:
           type: boolean
           description: If true then the order can only reduce the positon. Futures only.
         selfTradePrevention:
-          description: |-
-            Action to take in the event the user crosses themselves in the
-            order book.
+          description: Action to take if the user crosses themselves in the order book.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
-          - description: |-
-              Action to take in the event the user crosses themselves in the
-              order book.
+          - description: Action to take if the user crosses themselves in the order book.
         side:
           description: |-
-            The order side. It will be matched against the resting orders on the
-            other side of the order book.
+            Order will be matched against the resting orders on the other side of
+            the order book.
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: |-
-              The order side. It will be matched against the resting orders on the
-              other side of the order book.
+              Order will be matched against the resting orders on the other side of
+              the order book.
+        stopLossLimitPrice:
+          type: string
+          format: decimal
+          description: Stop loss limit price. If set the stop loss will be a limit order.
+        stopLossTriggerBy:
+          type: string
+          description: Reference price that should trigger the stop loss order.
+        stopLossTriggerPrice:
+          type: string
+          description: Stop loss price (price the stop loss order will be triggered at).
         symbol:
           type: string
           description: The market for the order.
+        takeProfitLimitPrice:
+          type: string
+          format: decimal
+          description: Take profit limit price. If set the take profit will be a limit order,
+        takeProfitTriggerBy:
+          type: string
+          description: Reference price that should trigger the take profit order.
+        takeProfitTriggerPrice:
+          type: string
+          description: Take profit price (price the take profit order will be triggered at).
         timeInForce:
           description: How long the order is good for.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: How long the order is good for.
+        triggerBy:
+          type: string
+          description: Trigger by.
         triggerPrice:
           type: string
           description: Trigger price if this is a conditional order.
