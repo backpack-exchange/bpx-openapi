@@ -5955,39 +5955,39 @@ components:
       type: object
       title: MaxBorrowQuantity
       required:
-      - symbol
       - maxBorrowQuantity
+      - symbol
       properties:
-        symbol:
-          type: string
         maxBorrowQuantity:
           type: string
           format: decimal
+        symbol:
+          type: string
     MaxOrderQuantity:
       type: object
       title: MaxOrderQuantity
       required:
-      - symbol
-      - side
       - maxOrderQuantity
+      - side
+      - symbol
       properties:
-        symbol:
-          type: string
-        side:
-          type: string
-        price:
-          type: string
-          format: decimal
-        maxOrderQuantity:
-          type: string
-          format: decimal
-        reduceOnly:
-          type: boolean
         autoBorrow:
           type: boolean
         autoBorrowRepay:
           type: boolean
         autoLendRedeem:
+          type: boolean
+        maxOrderQuantity:
+          type: string
+          format: decimal
+        price:
+          type: string
+          format: decimal
+        side:
+          type: string
+        symbol:
+          type: string
+        reduceOnly:
           type: boolean
     MaxWithdrawalQuantity:
       type: object
