@@ -4934,8 +4934,8 @@ components:
     CancelOrderTypeEnum:
       type: string
       enum:
-      - Limit
-      - Trigger
+      - RestingLimitOrder
+      - ConditionalOrder
     Collateral:
       type: object
       title: Collateral
