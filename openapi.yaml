@@ -6399,8 +6399,6 @@ components:
       enum:
       - Market
       - Limit
-      - StopMarket
-      - StopLimit
     OrderType_LimitOrder:
       allOf:
       - type: object
