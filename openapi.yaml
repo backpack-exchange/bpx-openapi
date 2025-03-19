@@ -5656,7 +5656,6 @@ components:
       - netEquityLocked
       - netExposureFutures
       - pnlUnrealized
-      - userId
       properties:
         assetsValue:
           type: string
@@ -5711,14 +5710,6 @@ components:
           type: string
           format: decimal
           description: Unrealised PnL.
-        subaccountId:
-          type: integer
-          format: int32
-          description: Subaccount id.
-        userId:
-          type: integer
-          format: int32
-          description: Id of the user.
     MarkPrice:
       type: object
       title: MarkPrice
