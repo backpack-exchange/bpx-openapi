@@ -217,6 +217,7 @@ tags:
       "V": "RejectTaker",     // Self trade prevention
       "T": 1694687692989999,  // Engine timestamp in microseconds
       "O": "USER"             // Origin of the update
+      "I": "1111343026156135" // Related order ID
     }
     ```
 
@@ -5596,6 +5597,11 @@ components:
         triggeredAt:
           type: integer
           format: int64
+        relatedOrderId:
+          type: string
+          description: |-
+            The ID of the related order. This may refer to a parent order or,
+            for a trigger order, the order this trigger is for.
     MarginAccountSummary:
       type: object
       title: MarginAccountSummary
@@ -5889,6 +5895,11 @@ components:
         triggeredAt:
           type: integer
           format: int64
+        relatedOrderId:
+          type: string
+          description: |-
+            The ID of the related order. This may refer to a parent order or,
+            for a trigger order, the order this trigger is for.
     MarketType:
       type: string
       enum:
