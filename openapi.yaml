@@ -5986,6 +5986,7 @@ components:
       title: Order
       required:
       - id
+      - createdAt
       - orderType
       - selfTradePrevention
       - status
@@ -5996,6 +5997,10 @@ components:
         id:
           type: string
           description: Unique ID of the order.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: Time the order was created.
         executedQuantity:
           type: string
           format: decimal
