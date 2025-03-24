@@ -1523,7 +1523,7 @@ paths:
       - name: limit
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Maximum number to return. Default `100`, maximum `1000`.
         required: false
@@ -1533,7 +1533,7 @@ paths:
       - name: offset
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Offset. Default `0`.
         required: false
@@ -2787,7 +2787,7 @@ paths:
       - name: limit
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Limit the number of trades returned. Default `100`, maximum `1000`.
         required: false
@@ -2797,7 +2797,7 @@ paths:
       - name: offset
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Offset. Default `0`.
         required: false
@@ -2897,7 +2897,7 @@ paths:
       - name: limit
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Maximum number to return. Default `100`, maximum `1000`.
         required: false
@@ -2907,7 +2907,7 @@ paths:
       - name: offset
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Offset. Default `0`.
         required: false
@@ -3616,7 +3616,7 @@ paths:
       - name: limit
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Maximum number to return. Default `100`, maximum `1000`.
         required: false
@@ -3626,7 +3626,7 @@ paths:
       - name: offset
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Offset. Default `0`.
         required: false
@@ -3928,7 +3928,7 @@ paths:
       - name: limit
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Maximum number to return. Default `100`, maximum `1000`.
         required: false
@@ -3938,7 +3938,7 @@ paths:
       - name: offset
         schema:
           type: integer
-          format: int64
+          format: uint64
         in: query
         description: Offset. Default `0`.
         required: false
