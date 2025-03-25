@@ -16,6 +16,8 @@ tags:
   description: Account Limits.
 - name: Address
   description: Saved addresses.
+- name: Affiliate
+  description: Affiliate program.
 - name: Assets
   description: Assets and collateral data.
 - name: Borrow Lend
