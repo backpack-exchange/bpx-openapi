@@ -4547,6 +4547,14 @@ components:
       - POINTS
       - ROAM
       - AI16Z
+      - LAYER
+      - FARTCOIN
+      - NEAR
+      - PNUT
+      - ARB
+      - DOT
+      - APT
+      - OP
     Balance:
       type: object
       title: Balance
