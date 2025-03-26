@@ -6274,11 +6274,12 @@ components:
           type: string
           format: decimal
           description: Stop loss limit price. If set the stop loss will be a limit order.
+        stopLossTriggerBy:
+          type: string
+          description: Reference price that should trigger the stop loss order.
         stopLossTriggerPrice:
           type: string
-          description: |-
-            Reference price that should trigger the stop loss order.
-            Stop loss price (price the stop loss order will be triggered at).
+          description: Stop loss price (price the stop loss order will be triggered at).
         symbol:
           type: string
           description: The market for the order.
@@ -6286,21 +6287,23 @@ components:
           type: string
           format: decimal
           description: Take profit limit price. If set the take profit will be a limit order,
+        takeProfitTriggerBy:
+          type: string
+          description: Reference price that should trigger the take profit order.
         takeProfitTriggerPrice:
           type: string
-          description: |-
-            Reference price that should trigger the take profit order.
-            Take profit price (price the take profit order will be triggered at).
+          description: Take profit price (price the take profit order will be triggered at).
         timeInForce:
           description: How long the order is good for.
           allOf:
           - $ref: '#/components/schemas/TimeInForce'
           - description: How long the order is good for.
+        triggerBy:
+          type: string
+          description: Trigger by.
         triggerPrice:
           type: string
-          description: |-
-            Trigger by.
-            Trigger price if this is a conditional order.
+          description: Trigger price if this is a conditional order.
         triggerQuantity:
           type: string
           description: Trigger quantity type if this is a trigger order.
