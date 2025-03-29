@@ -545,7 +545,8 @@ tags:
 
     ## Ticker
 
-    The ticker stream pushes 24hr rolling statistics for a single symbol every second.
+    The ticker stream pushes 24hr rolling statistics for a single symbol
+    every second.
 
     Stream name format: `ticker.<symbol>`
 
@@ -565,7 +566,8 @@ tags:
     ```
     ## Open interest
 
-    Open interest updates are pushed to the openInterest stream every 60 seconds.
+    Open interest updates are pushed to the openInterest stream every 60
+    seconds.
 
     Stream name format: `openInterest.<symbol>`
     ```
