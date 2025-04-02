@@ -4361,7 +4361,7 @@ components:
         futuresMakerFee:
           type: string
           format: decimal
-          description: Futures maker fee in basis points.
+          description: Futures maker fee in basis points. Negative if a rebate exists.
         futuresTakerFee:
           type: string
           format: decimal
@@ -4384,7 +4384,7 @@ components:
         spotMakerFee:
           type: string
           format: decimal
-          description: Spot maker fee in basis points.
+          description: Spot maker fee in basis points. Negative if a rebate exists.
         spotTakerFee:
           type: string
           format: decimal
