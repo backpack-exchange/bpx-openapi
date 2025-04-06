@@ -6347,6 +6347,7 @@ components:
       - PostOnlyTaker
       - ReduceOnlyNotReduced
       - SelfTradePrevention
+      - StopWithoutPosition
       - PriceImpact
       - Unknown
       - UserPermissions
