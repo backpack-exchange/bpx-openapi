@@ -607,6 +607,8 @@ tags:
   description: Public trade data.
 - name: User
   description: User operations.
+- name: UserNotifications
+  description: User notification preferences.
 - name: Vasp
   description: VASP data.
 - name: WalletLinks
