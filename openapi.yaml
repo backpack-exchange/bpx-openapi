@@ -453,9 +453,9 @@ tags:
     is the first update ID in the event, and the `u` field is the final
     update ID in the event.
 
-    There is an alternative depth stream that aggregates updates into a
-    single message over a 200ms period instead of pushing updates in
-    realtime. This is useful for reducing network traffic.
+    There are alternative depth streams that aggregates updates into a
+    single message over a 200ms or 1000ms period instead of pushing updates
+    in realtime. This is useful for reducing network traffic.
 
     Updates are sequential, so `U` will always be `u + 1` from the previous
     message. If this is not the case, the client should assume that the
@@ -463,6 +463,7 @@ tags:
 
     Stream name format: `depth.<symbol>` (realtime)
     Stream name format: `depth.200ms.<symbol>` (aggregated)
+    Stream name format: `depth.1000ms.<symbol>` (aggregated)
     ```
     {
       "e": "depth",           // Event type
