@@ -514,6 +514,8 @@ tags:
 
     ## Liquidation
 
+    Contains updates for liquidation events for all liquidation types.
+
     Stream name format: `liquidation`
 
     ```
@@ -583,7 +585,8 @@ tags:
     ## Trade
 
     Contains public trade data for a single symbol. The trade ID is a
-    sequential number specific to the symbol.
+    sequential number specific to the symbol. This stream includes updates
+    for trades executed as a result of liquidations.
 
     Stream name format: `trade.<symbol>`
     ```
