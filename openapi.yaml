@@ -3685,6 +3685,15 @@ paths:
         deprecated: false
         explode: true
         style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -6755,6 +6764,11 @@ components:
       enum:
       - Bid
       - Ask
+    SortDirection:
+      type: string
+      enum:
+      - Asc
+      - Desc
     SqrtFunction:
       type: object
       title: SqrtFunction
