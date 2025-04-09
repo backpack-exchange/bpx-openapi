@@ -5266,6 +5266,55 @@ components:
           - '499.555'
         lastUpdateId: '1684026955123'
         timestamp: 1684026955123
+    EqualsMoneyWithdrawalState:
+      type: string
+      enum:
+      - initialized
+      - pending
+      - processing
+      - complete
+      - declined
+      - cancelled
+      - review
+    FiatAsset:
+      type: string
+      enum:
+      - AED
+      - AUD
+      - BGN
+      - BHD
+      - CAD
+      - CHF
+      - CNH
+      - CNY
+      - CZK
+      - DKK
+      - EUR
+      - GBP
+      - HKD
+      - HUF
+      - ILS
+      - JOD
+      - JPY
+      - KES
+      - KWD
+      - MUR
+      - MXN
+      - NOK
+      - NZD
+      - OMR
+      - PLN
+      - QAR
+      - RON
+      - SAR
+      - SEK
+      - SGD
+      - THB
+      - TND
+      - TRY
+      - USD
+      - ZAR
+      - ZMW
     FillType:
       type: string
       enum:
@@ -6999,6 +7048,23 @@ components:
           type: string
           format: decimal
           description: Fee charged.
+        fiatFee:
+          type: string
+          format: decimal
+          description: Fiat fee charged.
+        fiatState:
+          description: Fiat state for Equals Money.
+          allOf:
+          - $ref: '#/components/schemas/EqualsMoneyWithdrawalState'
+          - description: Fiat state for Equals Money.
+        fiatSymbol:
+          description: Fiat symbol.
+          allOf:
+          - $ref: '#/components/schemas/FiatAsset'
+          - description: Fiat symbol.
+        providerId:
+          type: string
+          description: Provider ID for payment provider.
         symbol:
           description: Symbol of the asset to withdraw.
           allOf:
@@ -7026,6 +7092,15 @@ components:
         isInternal:
           type: boolean
           description: Whether the withdrawal is an internal transfer.
+        bankName:
+          type: string
+          description: Bank name.
+        bankIdentifier:
+          type: string
+          description: Bank identifier.
+        accountIdentifier:
+          type: string
+          description: Account identifier.
     WithdrawalStatus:
       type: string
       enum:
