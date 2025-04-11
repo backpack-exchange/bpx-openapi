@@ -1662,12 +1662,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/DepositAddress'
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
           content:
