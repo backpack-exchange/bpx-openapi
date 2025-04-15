@@ -5171,6 +5171,18 @@ components:
           type: string
           format: naive-date-time
           description: When the deposit was created.
+        fiatAmount:
+          type: number
+          format: double
+          description: Amount in fiat currency.
+        fiatCurrency:
+          description: Currency of the fiat amount.
+          allOf:
+          - $ref: '#/components/schemas/FiatAsset'
+          - description: Currency of the fiat amount.
+        institutionBic:
+          type: string
+          description: Institution BIC.
     DepositAddress:
       type: object
       title: DepositAddress
