@@ -1863,11 +1863,15 @@ paths:
         `startTime` and `endTime`. If no `startTime` is provided, the interval
         duration will be used. If no `endTime` is provided, the current time
         will be used.
+
+        The `priceType` parameter can be used to specify the price type of the
+        kline. If not provided, the default is `LastPrice`.
       parameters:
       - name: symbol
         schema:
           type: string
         in: query
+        description: Market symbol for the kline query, e.g. SOL_USDC.
         required: true
         deprecated: false
         explode: true
@@ -1896,6 +1900,15 @@ paths:
           format: int64
         in: query
         description: UTC timestamp in seconds. Set to the current time if not provided.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: priceType
+        schema:
+          $ref: '#/components/schemas/KlinePriceType'
+        in: query
+        description: The price type of the K-line.
         required: false
         deprecated: false
         explode: true
@@ -5620,6 +5633,12 @@ components:
       - 3d
       - 1w
       - 1month
+    KlinePriceType:
+      type: string
+      enum:
+      - Last
+      - Index
+      - Mark
     LimitOrder:
       type: object
       title: LimitOrder
