@@ -4498,6 +4498,7 @@ components:
         clientId:
           type: string
           description: Custom client id.
+          maxLength: 255
         quantity:
           type: string
           format: decimal
