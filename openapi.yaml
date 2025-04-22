@@ -3185,6 +3185,15 @@ paths:
         deprecated: false
         explode: true
         style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3354,6 +3363,15 @@ paths:
         deprecated: false
         explode: true
         style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -3503,6 +3521,15 @@ paths:
           format: uint64
         in: query
         description: Offset for pagination. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
         required: false
         deprecated: false
         explode: true
@@ -3846,6 +3873,15 @@ paths:
         deprecated: false
         explode: true
         style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -4004,6 +4040,15 @@ paths:
         deprecated: false
         explode: true
         style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -4149,6 +4194,15 @@ paths:
         deprecated: false
         explode: true
         style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
       responses:
         '200':
           description: Success.
@@ -4279,6 +4333,15 @@ paths:
         schema:
           $ref: '#/components/schemas/SettlementSourceFilter'
         in: query
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
         required: false
         deprecated: false
         explode: true
