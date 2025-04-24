@@ -5261,6 +5261,9 @@ components:
         institutionBic:
           type: string
           description: Institution BIC.
+        platformMemo:
+          type: string
+          description: An optional memo that may be provided by the platform.
     DepositAddress:
       type: object
       title: DepositAddress
