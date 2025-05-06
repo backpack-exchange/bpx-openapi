@@ -6331,6 +6331,10 @@ components:
         triggerQuantity:
           type: string
           description: Trigger quantity.
+        clientId:
+          type: integer
+          format: uint32
+          description: Custom order ID.
     OrderAck:
       type: object
       title: OrderAck
