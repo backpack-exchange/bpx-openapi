@@ -7464,7 +7464,9 @@ components:
     QuotePublic:
       type: object
       title: QuotePublic
-      description: Quote when shown to the requester. Omits fields that only the quoter should see.
+      description: |-
+        Quote when shown to the requester. Omits fields that only the quoter should
+        see.
       required:
       - rfqId
       - quoteId
