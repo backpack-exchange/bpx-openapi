@@ -7109,6 +7109,7 @@ components:
       - InsufficientMargin
       - Liquidation
       - PostOnlyTaker
+      - PriceOutOfBounds
       - ReduceOnlyNotReduced
       - SelfTradePrevention
       - StopWithoutPosition
