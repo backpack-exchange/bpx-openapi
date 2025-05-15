@@ -6609,6 +6609,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the asset, e.g. ETH.
+        coingeckoId:
+          type: string
+          description: Coingecko ID of the asset.
         tokens:
           type: array
           description: Token on each blockchain the asset is available on.
