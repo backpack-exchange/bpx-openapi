@@ -6602,6 +6602,7 @@ components:
       title: MarketAsset
       required:
       - symbol
+      - displayName
       - tokens
       properties:
         symbol:
@@ -6609,6 +6610,9 @@ components:
           allOf:
           - $ref: '#/components/schemas/Asset'
           - description: Symbol of the asset, e.g. ETH.
+        displayName:
+          type: string
+          description: Display name of the asset.
         coingeckoId:
           type: string
           description: Coingecko ID of the asset.
@@ -7865,6 +7869,7 @@ components:
       type: object
       title: Token
       required:
+      - displayName
       - blockchain
       - depositEnabled
       - minimumDeposit
@@ -7872,6 +7877,8 @@ components:
       - minimumWithdrawal
       - withdrawalFee
       properties:
+        displayName:
+          type: string
         blockchain:
           $ref: '#/components/schemas/Blockchain'
         contractAddress:
