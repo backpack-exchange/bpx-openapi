@@ -350,8 +350,9 @@ tags:
       "e": "rfqActive",              // Event type
       "E": 1730225420369829,         // Event time in microseconds
       "R": 113392053149171712,       // RFQ ID
-      "s": "SOL_USDC",               // Symbol
-      "q": "10",                     // Quantity
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "q": "10",                     // Quantity (in base asset)
+      "Q": "10",                     // Quantity (in quote asset)
       "w": 1730225480368500,         // Submission time in milliseconds
       "W": 1730225540368500,         // Expiry time in milliseconds
       "X": "New",                    // RFQ status
@@ -365,7 +366,7 @@ tags:
       "e": "quoteAccepted",          // Event type
       "E": 1730225434631394,         // Event time in microseconds
       "R": 113392053149171712,       // RFQ ID
-      "Q": 113392054083780608,       // Quote ID
+      "u": 113392054083780608,       // Quote ID
       "C": "quote123",               // Client Quote ID (optional)
       "X": "New",                    // Quote status
       "T": 1730225434629778          // Engine timestamp in microseconds
@@ -378,7 +379,7 @@ tags:
       "e": "quoteCancelled",         // Event type
       "E": 1730225583761963,         // Event time in microseconds
       "R": 113392061354344448,       // RFQ ID
-      "Q": 113392062870847488,       // Quote ID
+      "u": 113392062870847488,       // Quote ID
       "C": "quote123",               // Client Quote ID (optional)
       "X": "Cancelled",              // Quote status
       "T": 1730225583753811          // Engine timestamp in microseconds
@@ -391,7 +392,7 @@ tags:
       "e": "rfqFilled",              // Event type
       "E": 1730225497648996,         // Event time in microseconds
       "R": 113392053149171712,       // RFQ ID
-      "Q": 113392054083780608,       // Quote ID
+      "u": 113392054083780608,       // Quote ID
       "C": "quote123",               // Client Quote ID (optional)
       "S": "Bid",                    // RFQ side (Bid or Ask)
       "p": "21",                     // Fill price
@@ -7515,7 +7516,6 @@ components:
       - rfqId
       - symbol
       - side
-      - quantity
       - submissionTime
       - expiryTime
       - status
@@ -7537,10 +7537,20 @@ components:
           allOf:
           - $ref: '#/components/schemas/Side'
           - description: Side.
+        price:
+          type: string
+          format: decimal
+          description: |-
+            RFQ price.
+            Price of the RFQ. Only when execution mode is `Immediate`.
         quantity:
           type: string
           format: decimal
-          description: Quantity to fill.
+          description: Quantity to fill (in base asset).
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity to fill (in quote asset).
         submissionTime:
           type: integer
           format: int64
@@ -7580,9 +7590,8 @@ components:
       type: object
       title: RequestForQuotePayload
       required:
-      - quantity
-      - buyAsset
-      - sellAsset
+      - symbol
+      - side
       properties:
         clientId:
           type: integer
@@ -7591,21 +7600,23 @@ components:
         quantity:
           type: string
           format: decimal
-          description: RFQ quantity.
+          description: RFQ quantity (in base asset).
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: RFQ quote quantity (in quote asset).
         price:
           type: string
           format: decimal
           description: RFQ price. Only when execution mode is `Immediate`.
-        buyAsset:
-          description: Asset the requester will buy.
+        symbol:
+          type: string
+          description: RFQ symbol.
+        side:
+          description: Side of the order.
           allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: Asset the requester will buy.
-        sellAsset:
-          description: Asset the requester will sell.
-          allOf:
-          - $ref: '#/components/schemas/Asset'
-          - description: Asset the requester will sell.
+          - $ref: '#/components/schemas/Side'
+          - description: Side of the order.
         executionMode:
           description: Execution mode. Defaults to `AwaitAccept` when not provided.
           allOf:
@@ -7620,8 +7631,6 @@ components:
       required:
       - rfqId
       - symbol
-      - side
-      - quantity
       - submissionTime
       - expiryTime
       - status
@@ -7633,15 +7642,14 @@ components:
         symbol:
           type: string
           description: Market symbol.
-        side:
-          description: Side.
-          allOf:
-          - $ref: '#/components/schemas/Side'
-          - description: Side.
         quantity:
           type: string
           format: decimal
-          description: Quantity to fill.
+          description: Quantity to fill (in base asset).
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity to fill (in quote asset).
         submissionTime:
           type: integer
           format: int64
