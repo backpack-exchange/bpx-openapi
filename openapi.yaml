@@ -1861,8 +1861,7 @@ paths:
       summary: Get K-lines.
       description: |-
         Get K-Lines for the given market symbol, optionally providing a
-        `startTime` and `endTime`. If no `startTime` is provided, the interval
-        duration will be used. If no `endTime` is provided, the current time
+        `startTime` and `endTime`. If no `endTime` is provided, the current time
         will be used.
 
         The `priceType` parameter can be used to specify the price type of the
