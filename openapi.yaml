@@ -316,13 +316,22 @@ tags:
 
     ### Event Types
 
+    For RFQs that submitted by other requesters.
     - `rfqActive`: Indicates that an RFQ is active and open for quotes.
+
+    For RFQs that submitted by your account.
+    - `rfqAccepted`: Indicates that an RFQ has been accepted and is no
+    - `rfqRefreshed`: Indicates that an RFQ has been refreshed, is active
+    and open for quotes.
+    - `rfqCancelled`: Indicates that an RFQ has been cancelled or expired.
+    - `rfqCandidate`: RFQ has received a new best quote.
+    - `rfqFilled`: Indicates that an RFQ has been fully filled with a quote.
+
+    For Quotes submitted by your account.
     - `quoteAccepted`: Indicates that a quote submitted by the maker has
     been accepted.
     - `quoteCancelled`: Indicates that a quote has been cancelled due to
     quote submission, RFQ being filled, refreshed, cancelled, or expired.
-    - `rfqFilled`: Indicates that an RFQ has been fully filled with a quote
-    from the maker.
 
     ### Quote Submission and RFQ Timing
 
