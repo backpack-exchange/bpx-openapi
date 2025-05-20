@@ -5963,6 +5963,8 @@ components:
       - declined
       - cancelled
       - review
+      - awaitingDocuments
+      - awaitingComplianceQuestions
     FiatAsset:
       type: string
       enum:
