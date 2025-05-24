@@ -5266,6 +5266,12 @@ components:
       - APT
       - OP
       - PYUSD
+      - HUMA
+      - WAL
+      - DEEP
+      - CETUS
+      - SEND
+      - BLUE
     Balance:
       type: object
       title: Balance
