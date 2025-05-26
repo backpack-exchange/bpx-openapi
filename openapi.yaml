@@ -5272,6 +5272,9 @@ components:
       - CETUS
       - SEND
       - BLUE
+      - NS
+      - HAEDAL
+      - JPY
     Balance:
       type: object
       title: Balance
