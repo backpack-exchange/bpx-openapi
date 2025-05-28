@@ -774,6 +774,83 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: update_account_settings
+  /api/v1/account/convertDust:
+    post:
+      tags:
+      - Account
+      summary: Convert a dust balance on an account.
+      description: |-
+        Converts a dust balance to USDC. The balance (including lend) must be
+        less than the minimum quantity tradable on the spot order book.
+
+        **Instruction:** `accountConvertDust`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/AccountConvertDustPayload'
+        required: true
+      responses:
+        '200':
+          description: Success.
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '503':
+          description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: convert_dust
   /api/v1/account/limits/borrow:
     get:
       tags:
@@ -5005,6 +5082,17 @@ paths:
       operationId: get_settlement_history
 components:
   schemas:
+    AccountConvertDustPayload:
+      type: object
+      title: AccountConvertDustPayload
+      required:
+      - symbol
+      properties:
+        symbol:
+          description: The asset symbol to convert dust for.
+          allOf:
+          - $ref: '#/components/schemas/Asset'
+          - description: The asset symbol to convert dust for.
     AccountSummary:
       type: object
       title: AccountSummary
@@ -5668,6 +5756,7 @@ components:
       - AutoBorrowRepay
       - AutoLend
       - BackstopProvider
+      - DustConversion
       - Interest
       - Liquidation
       - LiquidationAdl
