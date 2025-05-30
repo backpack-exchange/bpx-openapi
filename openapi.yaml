@@ -6955,6 +6955,11 @@ components:
           type: integer
           format: uint32
           description: Custom order ID.
+        systemOrderType:
+          description: The type of system order, if applicable.
+          allOf:
+          - $ref: '#/components/schemas/SystemOrderType'
+          - description: The type of system order, if applicable.
     OrderAck:
       type: object
       title: OrderAck
