@@ -2641,9 +2641,8 @@ paths:
       - Request For Quote
       summary: Submit RFQ.
       description: |-
-        This endpoint allows a taker to create a Request for Quote (RFQ),
-        specifying details of the desired trade. The created RFQ will be
-        available for makers to respond to within a specified time window.
+        Submit a Request for Quote (RFQ). The RFQ will be available for
+        a specified time window for makers to respond to.
 
         **Instruction:** `rfqSubmit`
       parameters:
@@ -2720,10 +2719,9 @@ paths:
     get:
       tags:
       - Request For Quote
-      summary: Get all RFQs your account has submitted and their respective quotes.
+      summary: Get RFQs.
       description: |-
-        This endpoint queries all RFQs an account has submitted and
-        retrieves any existing quotes for them.
+        Get RFQs, and any existing quotes.
 
         **Instruction:** `rfqQueryAccount`
       parameters:
@@ -2815,11 +2813,9 @@ paths:
     post:
       tags:
       - Request For Quote
-      summary: Accept Quote.
+      summary: Accept quote.
       description: |-
-        This endpoint allows a taker to accept a specific quote from a maker
-        in response to an RFQ. Once accepted, the trade is executed if all
-        conditions are met within the specified time window.
+        Accept a specific quote from a maker in response to an RFQ.
 
         **Instruction:** `quoteAccept`
       parameters:
@@ -2899,8 +2895,7 @@ paths:
       - Request For Quote
       summary: Refresh RFQ.
       description: |-
-        This endpoint allows a taker to refresh an existing RFQ, resetting
-        its time window and making it available again for makers to respond.
+        Refresh a RFQ, extending the time window it is available for.
 
         **Instruction:** `rfqRefresh`
       parameters:
@@ -2979,11 +2974,7 @@ paths:
       tags:
       - Request For Quote
       summary: Cancel RFQ.
-      description: |-
-        This endpoint allows a taker to cancel an existing RFQ, making it
-        unavailable for makers to respond to or submit quotes.
-
-        **Instruction:** `rfqCancel`
+      description: '**Instruction:** `rfqCancel`'
       parameters:
       - name: X-API-KEY
         schema:
@@ -3055,100 +3046,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: cancel_rfq
-  /api/v1/rfq/all:
-    get:
-      tags:
-      - Request For Quote
-      summary: Get open RFQs.
-      description: |-
-        This endpoint queries open RFQs.
-
-        **Instruction:** `rfqQueryAll`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-        style: null
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-        style: null
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-        style: null
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-        style: null
-      - name: symbol
-        schema:
-          type: string
-        in: query
-        description: Filter for symbol.
-        required: false
-        deprecated: false
-        explode: true
-        style: null
-      responses:
-        '200':
-          description: Accepted.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RequestForQuotePublic'
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '503':
-          description: System under maintenance.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_all_rfqs
   /api/v1/rfq/quote:
     post:
       tags:
       - Request For Quote
       summary: Submit quote.
       description: |-
-        This endpoint allows a maker to submit a quote in response to an RFQ.
-        The submitted quote will be evaluated and, if valid, may be accepted by
-        the taker within the specified time window.
+        Submit a quote in response to an RFQ. If valid, the quote may be
+        accepted within the specified time window.
 
         **Instruction:** `quoteSubmit`
       parameters:
@@ -3225,12 +3130,11 @@ paths:
     get:
       tags:
       - Request For Quote
-      summary: Get all quotes for RFQs.
+      summary: Get quotes.
       description: |-
-        This endpoint retrieves all quotes your account has submitted and their
-        respective RFQ.
+        Get quotes for the account and the RFQ they were submitted for.
 
-        **Instruction:** `quoteQueryAccount`
+        **Instruction:** `quoteQuery`
       parameters:
       - name: X-API-KEY
         schema:
