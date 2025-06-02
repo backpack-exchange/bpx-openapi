@@ -6375,12 +6375,12 @@ components:
         selfTradePrevention:
           description: |-
             Action to take in the event the user crosses themselves in the
-            order book.
+            order book. Default is `RejectTaker`.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
           - description: |-
               Action to take in the event the user crosses themselves in the
-              order book.
+              order book. Default is `RejectTaker`.
         status:
           description: Status of the order.
           allOf:
@@ -6659,9 +6659,7 @@ components:
       properties:
         id:
           type: string
-          description: |-
-            Unique ID of this order. This gets assigned by the matching engine
-            so it is initially None.
+          description: Unique ID of this order.
         clientId:
           type: integer
           format: uint32
@@ -6697,12 +6695,12 @@ components:
         selfTradePrevention:
           description: |-
             Action to take in the event the user crosses themselves in the
-            order book.
+            order book. Default is `RejectTaker`.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
           - description: |-
               Action to take in the event the user crosses themselves in the
-              order book.
+              order book. Default is `RejectTaker`.
         side:
           description: |-
             The order side. It will be matched against the resting orders on the
@@ -6882,7 +6880,7 @@ components:
           - description: Type of order.
         postOnly:
           type: boolean
-          description: Whether the order was post only or not.
+          description: Whether the order is post only or not.
         price:
           type: string
           format: decimal
@@ -6896,10 +6894,10 @@ components:
           format: decimal
           description: Quantity of the order in quote the quote asset.
         selfTradePrevention:
-          description: Self trade prevention setting of the order.
+          description: Self trade prevention setting of the order. Default is `RejectTaker`.
           allOf:
           - $ref: '#/components/schemas/SelfTradePrevention'
-          - description: Self trade prevention setting of the order.
+          - description: Self trade prevention setting of the order. Default is `RejectTaker`.
         status:
           description: Status of the order.
           allOf:
