@@ -627,8 +627,6 @@ tags:
   description: VASP data.
 - name: WalletLinks
   description: Wallet links.
-- name: WebAuthn
-  description: WebAuthn.
 paths:
   /api/v1/account:
     get:
