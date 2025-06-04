@@ -5880,6 +5880,8 @@ components:
       - review
       - awaitingDocuments
       - awaitingComplianceQuestions
+      - refundedInternal
+      - refundedExternal
     FiatAsset:
       type: string
       enum:
