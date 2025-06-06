@@ -5813,12 +5813,14 @@ components:
       - administrator
       - arbitrum
       - base
+      - berachain
       - bitcoin
       - bitcoinCash
       - bsc
       - cardano
       - dogecoin
       - ethereum
+      - hyperliquid
       - litecoin
       - polygon
       - sui
