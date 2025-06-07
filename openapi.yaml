@@ -355,58 +355,144 @@ tags:
 
     ### Example Messages
 
-    **RFQ Active**
+    **RFQ Accepted** (sent to requester)
+    ```
+    {
+      "e": "rfqAccepted",            // Event type
+      "E": 1730225420369829,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "C": "123",                    // Client RFQ ID
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "S": "Bid",                    // RFQ side
+      "q": "10",                     // Quantity (if quantity in base asset)
+      "w": 1730225480368,            // Submission time in milliseconds
+      "W": 1730225540368,            // Expiry time in milliseconds
+      "X": "New",                    // RFQ status
+      "T": 1730225420368765          // Engine timestamp in microseconds
+    }
+    ```
+
+    **RFQ Active** (broadcast to all rfq listeners)
     ```
     {
       "e": "rfqActive",              // Event type
       "E": 1730225420369829,         // Event time in microseconds
       "R": 113392053149171712,       // RFQ ID
       "s": "SOL_USDC_RFQ",           // Symbol
-      "q": "10",                     // Quantity (in base asset)
-      "Q": "10",                     // Quantity (in quote asset)
-      "w": 1730225480368500,         // Submission time in milliseconds
-      "W": 1730225540368500,         // Expiry time in milliseconds
+      "q": "10",                     // Quantity (optional) (if quantity in base asset)
+      "w": 1730225480368,            // Submission time in milliseconds
+      "W": 1730225540368,            // Expiry time in milliseconds
       "X": "New",                    // RFQ status
       "T": 1730225420368765          // Engine timestamp in microseconds
     }
     ```
 
-    **Quote Accepted**
+    **RFQ Refreshed** (sent to requester)
+    ```
+    {
+      "e": "rfqRefreshed",           // Event type
+      "E": 1730225450369829,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "C": "123",                    // Client RFQ ID
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "S": "Bid",                    // RFQ side
+      "q": "10",                     // Quantity (optional) (if quantity in base asset)
+      "w": 1730225480368,            // Submission time in milliseconds
+      "W": 1730225540368,            // Expiry time in milliseconds
+      "X": "New",                    // RFQ status
+      "T": 1730225450368765          // Engine timestamp in microseconds
+    }
+    ```
+
+    **RFQ Cancelled** (sent to taker only)
+    ```
+    {
+      "e": "rfqCancelled",           // Event type
+      "E": 1730225460369829,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "C": "123",                    // Client RFQ ID
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "S": "Bid",                    // RFQ side
+      "Q": "150",                    // Quote quantity (optional) (if quantity in quote asset)
+      "w": 1730225480368,            // Submission time in milliseconds
+      "W": 1730225540368,            // Expiry time in milliseconds
+      "X": "Cancelled",              // RFQ status
+      "T": 1730225460368765          // Engine timestamp in microseconds
+    }
+    ```
+
+    **Quote Accepted** (sent to quoter)
     ```
     {
       "e": "quoteAccepted",          // Event type
       "E": 1730225434631394,         // Event time in microseconds
       "R": 113392053149171712,       // RFQ ID
       "u": 113392054083780608,       // Quote ID
-      "C": "quote123",               // Client Quote ID (optional)
+      "C": "123",                    // Client Quote ID
+      "s": "SOL_USDC_RFQ",           // Symbol
       "X": "New",                    // Quote status
       "T": 1730225434629778          // Engine timestamp in microseconds
     }
     ```
 
-    **Quote Cancelled**
+    **Quote Cancelled** (sent to quoter)
     ```
     {
       "e": "quoteCancelled",         // Event type
       "E": 1730225583761963,         // Event time in microseconds
       "R": 113392061354344448,       // RFQ ID
       "u": 113392062870847488,       // Quote ID
-      "C": "quote123",               // Client Quote ID (optional)
+      "C": "123",                    // Client Quote ID
+      "s": "SOL_USDC_RFQ",           // Symbol
       "X": "Cancelled",              // Quote status
       "T": 1730225583753811          // Engine timestamp in microseconds
     }
     ```
 
-    **RFQ Filled**
+    **RFQ Candidate** (sent to requester with quote details)
     ```
+    {
+      "e": "rfqCandidate",           // Event type
+      "E": 1730225490648996,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "u": 113392054083780608,       // Quote ID
+      "C": "123",                    // Client RFQ ID
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "S": "Bid",                    // RFQ side
+      "q": "10",                     // RFQ quantity (in base asset)
+      "Q": "150",                    // RFQ quote quantity (in quote asset)
+      "p": "15.50",                  // Taker price (quote price + fee)
+      "X": "New",                    // RFQ status
+      "T": 1730225490647080          // Engine timestamp in microseconds
+    }
+    ```
+
+    **RFQ Filled** (sent to both requester and quoter)
+    ```
+    // To requester
     {
       "e": "rfqFilled",              // Event type
       "E": 1730225497648996,         // Event time in microseconds
       "R": 113392053149171712,       // RFQ ID
       "u": 113392054083780608,       // Quote ID
-      "C": "quote123",               // Client Quote ID (optional)
-      "S": "Bid",                    // RFQ side (Bid or Ask)
-      "p": "21",                     // Fill price
+      "C": "123",                    // Client RFQ ID
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "S": "Bid",                    // RFQ side
+      "Q": "150",                    // RFQ quote quantity (optional) (if quantity in quote asset)
+      "p": "15.50",                  // Taker price (quote price + fee)
+      "X": "Filled",                 // RFQ status
+      "T": 1730225497647080          // Engine timestamp in microseconds
+    }
+
+    // To quoter
+    {
+      "e": "rfqFilled",              // Event type
+      "E": 1730225497648996,         // Event time in microseconds
+      "R": 113392053149171712,       // RFQ ID
+      "u": 113392054083780608,       // Quote ID
+      "C": "123",                    // Client Quote ID
+      "s": "SOL_USDC_RFQ",           // Symbol
+      "p": "15.00",                  // Price
       "X": "Filled",                 // Quote status
       "T": 1730225497647080          // Engine timestamp in microseconds
     }
@@ -414,16 +500,17 @@ tags:
 
     ### Field Descriptions
 
-    - `e` - Event type (e.g., `rfqActive`, `quoteAccepted`,
-    `quoteCancelled`, `rfqFilled`).
+    - `e` - Event type (e.g., `rfqActive`, `rfqAccepted`, `rfqRefreshed`,
+    `rfqCancelled`, `quoteAccepted`, `quoteCancelled`, `rfqCandidate`, `rfqFilled`).
     - `E` - Event time in microseconds.
     - `R` - RFQ ID, identifying the request for quote.
-    - `Q` - Quote ID, identifying the specific quote.
-    - `C` - Client Quote ID.
-    - `s` - Symbol associated with the RFQ.
-    - `q` - Quantity for the RFQ.
+    - `u` - Quote ID, identifying the specific quote.
+    - `C` - Client ID (either Client RFQ ID or Client Quote ID depending on context).
+    - `s` - Symbol the RFQ is for.
     - `S` - Side of the RFQ, either "Bid" or "Ask".
-    - `p` - Price associated with the fill event.
+    - `q` - Quantity for the RFQ (in base asset, if quantity in base asset).
+    - `Q` - Quote quantity for the RFQ (in quote asset, if quantity in quote asset).
+    - `p` - Price associated with the quote/fill event.
     - `w` - Submission time for the RFQ in milliseconds.
     - `W` - Expiry time for the RFQ in milliseconds.
     - `X` - Order status (e.g., `New`, `Cancelled`, `Filled`).
