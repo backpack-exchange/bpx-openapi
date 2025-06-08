@@ -501,15 +501,18 @@ tags:
     ### Field Descriptions
 
     - `e` - Event type (e.g., `rfqActive`, `rfqAccepted`, `rfqRefreshed`,
-    `rfqCancelled`, `quoteAccepted`, `quoteCancelled`, `rfqCandidate`, `rfqFilled`).
+    `rfqCancelled`, `quoteAccepted`, `quoteCancelled`, `rfqCandidate`,
+    `rfqFilled`).
     - `E` - Event time in microseconds.
     - `R` - RFQ ID, identifying the request for quote.
     - `u` - Quote ID, identifying the specific quote.
-    - `C` - Client ID (either Client RFQ ID or Client Quote ID depending on context).
+    - `C` - Client ID (either Client RFQ ID or Client Quote ID depending on
+    context).
     - `s` - Symbol the RFQ is for.
     - `S` - Side of the RFQ, either "Bid" or "Ask".
     - `q` - Quantity for the RFQ (in base asset, if quantity in base asset).
-    - `Q` - Quote quantity for the RFQ (in quote asset, if quantity in quote asset).
+    - `Q` - Quote quantity for the RFQ (in quote asset, if quantity in quote
+    asset).
     - `p` - Price associated with the quote/fill event.
     - `w` - Submission time for the RFQ in milliseconds.
     - `W` - Expiry time for the RFQ in milliseconds.
