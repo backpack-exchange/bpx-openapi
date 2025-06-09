@@ -5263,9 +5263,9 @@ components:
       - HYPE
       - BNB
       - KAITO
-      - PEPE1000
-      - BONK1000
-      - SHIB1000
+      - kPEPE
+      - kBONK
+      - kSHIB
       - AVAX
       - S
       - POINTS
@@ -5289,6 +5289,9 @@ components:
       - NS
       - HAEDAL
       - JPY
+      - TAO
+      - VIRTUAL
+      - TIA
     Balance:
       type: object
       title: Balance
