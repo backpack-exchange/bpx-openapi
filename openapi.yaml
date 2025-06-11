@@ -4874,6 +4874,341 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_pnl_payments
+  /wapi/v1/history/rfq:
+    get:
+      tags:
+      - History
+      summary: Get rfq history.
+      description: |-
+        Retrieves the rfq history for the user. This includes RFQs that have
+        been filled or expired.
+
+        **Instruction:** `rfqHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: rfqId
+        schema:
+          type: string
+        in: query
+        description: Filter to the given rfq.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: status
+        schema:
+          $ref: '#/components/schemas/OrderStatus'
+        in: query
+        description: Filter to the given status.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: side
+        schema:
+          $ref: '#/components/schemas/Side'
+        in: query
+        description: Filter to the given side.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestForQuoteHistorical'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_rfq_history
+  /wapi/v1/history/quote:
+    get:
+      tags:
+      - History
+      summary: Get quote history.
+      description: |-
+        Retrieves the quote history for the user. This includes quotes that have
+        been filled or expired.
+
+        **Instruction:** `quoteHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: quoteId
+        schema:
+          type: string
+        in: query
+        description: Filter to the given quote.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: status
+        schema:
+          $ref: '#/components/schemas/OrderStatus'
+        in: query
+        description: Filter to the given status.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/QuoteHistorical'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_quote_history
   /wapi/v1/history/settlement:
     get:
       tags:
@@ -7512,6 +7847,53 @@ components:
         quoteId:
           type: string
           description: RFQ quote ID.
+    QuoteHistorical:
+      type: object
+      title: QuoteHistorical
+      required:
+      - userId
+      - rfqId
+      - quoteId
+      - bidPrice
+      - askPrice
+      - status
+      - createdAt
+      properties:
+        userId:
+          type: integer
+          format: int32
+          description: User ID.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Subaccount ID.
+        rfqId:
+          type: string
+          description: Unique RFQ order ID, assigned by the matching engine.
+        quoteId:
+          type: string
+          description: Unique RFQ quote ID, assigned by the matching engine.
+        clientId:
+          type: integer
+          format: uint32
+          description: Custom RFQ quote ID, assigned by the maker (optionally).
+        bidPrice:
+          type: string
+          format: decimal
+          description: Quote bid price.
+        askPrice:
+          type: string
+          format: decimal
+          description: Quote ask price.
+        status:
+          description: Status.
+          allOf:
+          - $ref: '#/components/schemas/OrderStatus'
+          - description: Status.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: Time the quote was created.
     QuotePayload:
       type: object
       title: QuotePayload
@@ -7650,6 +8032,81 @@ components:
           type: integer
           format: uint32
           description: Custom RFQ ID.
+    RequestForQuoteHistorical:
+      type: object
+      title: RequestForQuoteHistorical
+      required:
+      - userId
+      - rfqId
+      - symbol
+      - side
+      - submissionTime
+      - expiryTime
+      - status
+      - executionMode
+      - createdAt
+      properties:
+        userId:
+          type: integer
+          format: int32
+          description: User ID.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Subaccount ID.
+        rfqId:
+          type: string
+          description: Unique RFQ order ID, assigned by the matching engine.
+        clientId:
+          type: integer
+          format: uint32
+          description: Custom RFQ order ID, assigned by the user (optionally).
+        symbol:
+          type: string
+          description: Market symbol.
+        side:
+          description: Side.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: Side.
+        price:
+          type: string
+          format: decimal
+          description: |-
+            RFQ price.
+            Price of the RFQ. Only when execution mode is `Immediate`.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity to fill (in base asset).
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quantity to fill (in quote asset).
+        submissionTime:
+          type: string
+          format: naive-date-time
+          description: |-
+            Time by which quotes must be submitted for
+            the RFQ.
+        expiryTime:
+          type: string
+          format: naive-date-time
+          description: Time by which the RFQ expires if no match.
+        status:
+          description: Status.
+          allOf:
+          - $ref: '#/components/schemas/OrderStatus'
+          - description: Status.
+        executionMode:
+          description: RFQ execution mode.
+          allOf:
+          - $ref: '#/components/schemas/RfqExecutionMode'
+          - description: RFQ execution mode.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: Time the RFQ was created.
     RequestForQuotePayload:
       type: object
       title: RequestForQuotePayload
