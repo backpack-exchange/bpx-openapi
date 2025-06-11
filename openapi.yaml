@@ -7464,8 +7464,10 @@ components:
       required:
       - rfqId
       - quoteId
-      - price
+      - bidPrice
+      - askPrice
       - status
+      - createdAt
       properties:
         rfqId:
           type: string
@@ -7477,15 +7479,23 @@ components:
           type: integer
           format: uint32
           description: Custom RFQ quote ID, assigned by the maker (optionally).
-        price:
+        bidPrice:
           type: string
           format: decimal
-          description: Quote price.
+          description: Quote bid price.
+        askPrice:
+          type: string
+          format: decimal
+          description: Quote ask price.
         status:
           description: Status.
           allOf:
           - $ref: '#/components/schemas/OrderStatus'
           - description: Status.
+        createdAt:
+          type: integer
+          format: int64
+          description: Time the quote was created.
     QuoteAcceptPayload:
       type: object
       title: QuoteAcceptPayload
