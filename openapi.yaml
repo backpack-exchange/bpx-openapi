@@ -5655,6 +5655,7 @@ components:
       type: string
       enum:
       - Arbitrum
+      - Avalanche
       - Base
       - Berachain
       - Bitcoin
@@ -5666,6 +5667,7 @@ components:
       - Ethereum
       - Hyperliquid
       - Litecoin
+      - Optimism
       - Polygon
       - Sui
       - Solana
@@ -6242,6 +6244,7 @@ components:
       enum:
       - administrator
       - arbitrum
+      - avalanche
       - base
       - berachain
       - bitcoin
@@ -6253,6 +6256,7 @@ components:
       - hyperliquid
       - litecoin
       - polygon
+      - optimism
       - sui
       - solana
       - story
