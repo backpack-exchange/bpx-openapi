@@ -6481,7 +6481,6 @@ components:
       - equalsMoney
       - nuvei
       - banxa
-      - ioFinnet
       - internal
     DepositStatus:
       type: string
