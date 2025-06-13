@@ -34,7 +34,6 @@ tags:
   description: Disclosures
 - name: Entity
   description: Entity operations.
-- name: FtxClaims
 - name: Funding
   description: Futures funding.
 - name: Futures
