@@ -2449,12 +2449,6 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/OrderType'
-        '202':
-          description: Request accepted but not yet executed.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/OrderAck'
         '400':
           description: Bad request.
           content:
@@ -2623,14 +2617,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BatchCommandOrderResult'
-        '202':
-          description: Request accepted but not yet executed.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OrderAck'
         '400':
           description: Bad request.
           content:
@@ -7544,16 +7530,6 @@ components:
         strategyId:
           type: string
           description: Strategy ID of the order, if any.
-    OrderAck:
-      type: object
-      title: OrderAck
-      description: Response for order execute when the order is accepted but not yet executed.
-      required:
-      - id
-      properties:
-        id:
-          type: string
-          description: Order id.
     OrderBookFilters:
       type: object
       title: OrderBookFilters
