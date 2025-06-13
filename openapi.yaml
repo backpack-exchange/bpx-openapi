@@ -14,6 +14,8 @@ tags:
   description: Account settings and limits.
 - name: AccountLimits
   description: Account Limits.
+- name: Achievements
+  description: Achievements.
 - name: Address
   description: Saved addresses.
 - name: Affiliate
