@@ -64,6 +64,8 @@ tags:
   description: Risk Dashboard.
 - name: Safe
   description: Safe data.
+- name: SatoshiTest
+  description: Satoshi test for address ownership verification.
 - name: Service
   description: Service tokens.
 - name: Session
