@@ -6466,7 +6466,6 @@ components:
       - story
       - xRP
       - equalsMoney
-      - nuvei
       - banxa
       - internal
     DepositStatus:
