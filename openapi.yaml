@@ -3462,6 +3462,456 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_account_quotes
+  /api/v1/strategy:
+    get:
+      tags:
+      - Strategy
+      summary: Get open strategy.
+      description: |-
+        Retrieves an open strategy from the engine. This only returns the
+        strategy if it is active (i.e. has not been completely filled,
+        cancelled by the user, or cancelled by the system).
+
+        One of `strategyId` or `clientStrategyId` must be specified.
+
+        **Instruction:** `strategyQuery`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: clientStrategyId
+        schema:
+          type: integer
+          format: uint32
+        in: query
+        description: Client ID of the strategy.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: strategyId
+        schema:
+          type: string
+        in: query
+        description: ID of the strategy.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Market symbol for the strategy.
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/StrategyType'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: Strategy not found.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_strategy
+    post:
+      tags:
+      - Strategy
+      summary: Create strategy.
+      description: |-
+        Submits a strategy to the engine for processing.
+
+        **Instruction:** `strategyCreate`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/StrategyCreatePayload'
+        required: true
+      responses:
+        '200':
+          description: Strategy created.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/StrategyType'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '503':
+          description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: strategy_create
+    delete:
+      tags:
+      - Strategy
+      summary: Cancel open strategy.
+      description: |-
+        Cancels an open strategy currently being run.
+
+        One of `strategyId` or `clientStrategyId` must be specified.
+
+        **Instruction:** `strategyCancel`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/StrategyCancelPayload'
+        required: true
+      responses:
+        '200':
+          description: Strategy cancelled.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/StrategyType'
+        '202':
+          description: Request accepted but not yet executed.
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '503':
+          description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: cancel_strategy
+  /api/v1/strategies:
+    get:
+      tags:
+      - Strategy
+      summary: Get open strategies.
+      description: |-
+        Retrieves all open strategies. If a symbol is provided, only open
+        strategies for that market will be returned, otherwise all open
+        strategies are returned.
+
+        **Instruction:** `strategyQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: marketType
+        schema:
+          $ref: '#/components/schemas/MarketType'
+        in: query
+        description: The market for the strategies (SPOT or PERP).
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: strategyType
+        schema:
+          $ref: '#/components/schemas/StrategyTypeEnum'
+        in: query
+        description: The strategy type.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: The symbol of the market for the strategies.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StrategyType'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_open_strategies
+    delete:
+      tags:
+      - Strategy
+      summary: Cancel open strategies.
+      description: |-
+        Cancels all open strategies on the specified market.
+
+        **Instruction:** `strategyCancelAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: true
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/StrategyCancelAllPayload'
+        required: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StrategyType'
+        '202':
+          description: Request accepted but not yet executed.
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '503':
+          description: System under maintenance.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: cancel_open_strategies
   /api/v1/status:
     get:
       tags:
@@ -5511,6 +5961,172 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_settlement_history
+  /wapi/v1/history/strategies:
+    get:
+      tags:
+      - History
+      summary: Get strategy history.
+      description: |-
+        Retrieves the strategy history for the user. This returns strategies
+        that are no longer active as they have either been
+        completed, cancelled by the user or cancelled by the system.
+
+        **Instruction:** `strategyHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: strategyId
+        schema:
+          type: string
+        in: query
+        description: Filter to the given strategy.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: marketType
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/MarketType'
+        in: query
+        description: Market type.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Strategy'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_strategies_history
 components:
   schemas:
     AccountConvertDustPayload:
@@ -8415,6 +9031,93 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/QuotePublic'
+    ScheduledStrategy:
+      type: object
+      title: ScheduledStrategy
+      required:
+      - id
+      - createdAt
+      - executedQuantity
+      - executedQuoteQuantity
+      - quantity
+      - selfTradePrevention
+      - status
+      - side
+      - symbol
+      - timeInForce
+      - duration
+      - interval
+      properties:
+        id:
+          type: string
+          description: ID of the strategy.
+        clientStrategyId:
+          type: integer
+          format: uint32
+          description: Custom client strategy ID.
+        createdAt:
+          type: integer
+          format: int64
+          description: Time the strategey was created.
+        executedQuantity:
+          type: string
+          format: decimal
+          description: Quantity that has been filled.
+        executedQuoteQuantity:
+          type: string
+          format: decimal
+          description: Quote quantity that has been filled.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity to fill.
+        reduceOnly:
+          type: boolean
+          description: True if reducing a futures position.
+        selfTradePrevention:
+          description: |-
+            Action to take in the event the user crosses themselves in the
+            order book.
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: |-
+              Action to take in the event the user crosses themselves in the
+              order book.
+        status:
+          description: Status of the strategy.
+          allOf:
+          - $ref: '#/components/schemas/StrategyStatus'
+          - description: Status of the strategy.
+        side:
+          description: |-
+            The strategy side. The strategy's orders will be matched against the
+            resting orders on the other side of the order book.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The strategy side. The strategy's orders will be matched against the
+              resting orders on the other side of the order book.
+        symbol:
+          type: string
+          description: Market symbol.
+        timeInForce:
+          description: How long the strategy's orders is good for.
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: How long the strategy's orders is good for.
+        duration:
+          type: integer
+          format: uint64
+          description: Duration of the strategy in milliseconds.
+        interval:
+          type: integer
+          format: uint64
+          description: Interval of the strategy in milliseconds.
+        randomizedIntervalQuantity:
+          type: boolean
+          description: |-
+            Determines whether the strategy will execute a randomized interval
+            quantity.
     SelfTradePrevention:
       type: string
       enum:
@@ -8519,6 +9222,245 @@ components:
         message:
           type: string
           description: Status message, if any.
+    Strategy:
+      type: object
+      title: Strategy
+      required:
+      - id
+      - createdAt
+      - strategyType
+      - selfTradePrevention
+      - status
+      - side
+      - symbol
+      - timeInForce
+      - duration
+      - interval
+      - randomizedIntervalQuantity
+      properties:
+        id:
+          type: string
+          description: Unique ID of the strategy.
+        createdAt:
+          type: string
+          format: naive-date-time
+          description: Time the strategy was created.
+        executedQuantity:
+          type: string
+          format: decimal
+          description: Quantity of the strategy that has been filled.
+        executedQuoteQuantity:
+          type: string
+          format: decimal
+          description: Quote quantity of the strategy that has been filled.
+        cancelReason:
+          description: Strategy cancel reason.
+          allOf:
+          - $ref: '#/components/schemas/StrategyCrankCancelReason'
+          - description: Strategy cancel reason.
+        strategyType:
+          description: Type of strategy.
+          allOf:
+          - $ref: '#/components/schemas/StrategyTypeEnum'
+          - description: Type of strategy.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity of the strategy.
+        selfTradePrevention:
+          description: Self trade prevention setting of the strategy's orders.
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: Self trade prevention setting of the strategy's orders.
+        status:
+          description: Status of the strategy.
+          allOf:
+          - $ref: '#/components/schemas/StrategyStatus'
+          - description: Status of the strategy.
+        side:
+          description: Side of the strategy.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: Side of the strategy.
+        symbol:
+          type: string
+          description: Market symbol of the strategy.
+        timeInForce:
+          description: Time in force of the strategy.
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: Time in force of the strategy.
+        clientStrategyId:
+          type: integer
+          format: uint32
+          description: Custom order strategy ID.
+        duration:
+          type: integer
+          format: uint64
+          description: Duration of the strategy in milliseconds.
+        interval:
+          type: integer
+          format: uint64
+          description: Interval of the strategy in milliseconds.
+        randomizedIntervalQuantity:
+          type: boolean
+          description: |-
+            Determines whether the strategy will execute a randomized interval
+            quantity.
+    StrategyCancelAllPayload:
+      type: object
+      title: StrategyCancelAllPayload
+      required:
+      - symbol
+      properties:
+        symbol:
+          type: string
+          description: Market to cancel strategies for.
+        strategyType:
+          description: Type of strategies to cancel.
+          allOf:
+          - $ref: '#/components/schemas/StrategyTypeEnum'
+          - description: Type of strategies to cancel.
+    StrategyCancelPayload:
+      type: object
+      title: StrategyCancelPayload
+      required:
+      - symbol
+      properties:
+        clientStrategyId:
+          type: integer
+          format: uint32
+          description: Client ID of the strategy.
+        strategyId:
+          type: string
+          description: ID of the strategy.
+        symbol:
+          type: string
+          description: Market the strategy exists on.
+    StrategyCrankCancelReason:
+      type: string
+      enum:
+      - Expired
+      - FillOrKill
+      - InsufficientBorrowableQuantity
+      - InsufficientFunds
+      - InsufficientLiquidity
+      - InvalidPrice
+      - InvalidQuantity
+      - InsufficientMargin
+      - Liquidation
+      - PriceOutOfBounds
+      - ReduceOnlyNotReduced
+      - SelfTradePrevention
+      - Unknown
+      - UserPermissions
+    StrategyCreatePayload:
+      type: object
+      title: StrategyCreatePayload
+      required:
+      - strategyType
+      - side
+      - symbol
+      properties:
+        autoLend:
+          type: boolean
+          description: If true then the strategy's orders can lend. Spot margin only.
+        autoLendRedeem:
+          type: boolean
+          description: |-
+            If true then the strategy's orders can redeem a lend if required. Spot
+            margin only.
+        autoBorrow:
+          type: boolean
+          description: If true then the strategy's orders can borrow. Spot margin only.
+        autoBorrowRepay:
+          type: boolean
+          description: If true then the strategy's orders can repay a borrow. Spot margin only.
+        clientStrategyId:
+          type: integer
+          format: uint32
+          description: Custom client strategy id.
+        strategyType:
+          description: Strategy type.
+          allOf:
+          - $ref: '#/components/schemas/StrategyTypeEnum'
+          - description: Strategy type.
+        quantity:
+          type: string
+          format: decimal
+          description: The strategy quantity.
+        price:
+          type: string
+          format: decimal
+          description: The strategy limit price.
+        postOnly:
+          type: boolean
+          description: Only post liquidity, do not take liquidity.
+        reduceOnly:
+          type: boolean
+          description: |-
+            If true then the strategy's orders can only reduce the position.
+            Futures only.
+        selfTradePrevention:
+          description: Action to take if the user crosses themselves in the order book.
+          allOf:
+          - $ref: '#/components/schemas/SelfTradePrevention'
+          - description: Action to take if the user crosses themselves in the order book.
+        side:
+          description: The side of the strategy.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: The side of the strategy.
+        symbol:
+          type: string
+          description: The market for the strategy.
+        timeInForce:
+          description: How long the strategy's orders are good for.
+          allOf:
+          - $ref: '#/components/schemas/TimeInForce'
+          - description: How long the strategy's orders are good for.
+        duration:
+          type: integer
+          format: uint64
+          description: Duration of the strategy.
+        interval:
+          type: integer
+          format: uint64
+          description: Interval of the strategy.
+        randomizedIntervalQuantity:
+          type: boolean
+          description: Randomized interval quantity for the strategy.
+    StrategyStatus:
+      type: string
+      enum:
+      - Running
+      - Completed
+      - Cancelled
+      - Terminated
+    StrategyType:
+      type: object
+      anyOf:
+      - $ref: '#/components/schemas/StrategyType_ScheduledStrategy'
+      discriminator:
+        propertyName: strategyType
+        mapping:
+          Scheduled: '#/components/schemas/StrategyType_ScheduledStrategy'
+    StrategyTypeEnum:
+      type: string
+      enum:
+      - Scheduled
+    StrategyType_ScheduledStrategy:
+      allOf:
+      - type: object
+        required:
+        - strategyType
+        properties:
+          strategyType:
+            type: string
+            enum:
+            - Scheduled
+            example: Scheduled
+      - $ref: '#/components/schemas/ScheduledStrategy'
     SystemOrderType:
       type: string
       enum:
