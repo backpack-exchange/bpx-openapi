@@ -4796,6 +4796,160 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_borrow_lend_position_history
+  /wapi/v1/history/dust:
+    get:
+      tags:
+      - History
+      summary: Get dust history.
+      description: |-
+        Retrieves the dust history for the user.
+
+        **Instruction:** `dustHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: id
+        schema:
+          type: integer
+          format: int64
+        in: query
+        description: Filter to the given dust conversion id.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+        style: null
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DustConversion'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_dust_history
   /wapi/v1/history/fills:
     get:
       tags:
@@ -7141,6 +7295,35 @@ components:
           - '499.555'
         lastUpdateId: '1684026955123'
         timestamp: 1684026955123
+    DustConversion:
+      type: object
+      title: DustConversion
+      required:
+      - id
+      - quantity
+      - symbol
+      - usdcReceived
+      - timestamp
+      properties:
+        id:
+          type: integer
+          format: uint64
+          description: The ID of the dust conversion.
+        quantity:
+          type: string
+          format: decimal
+          description: Dust quantity.
+        symbol:
+          type: string
+          description: Symbol.
+        usdcReceived:
+          type: string
+          format: decimal
+          description: USDC received.
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: Timestamp.
     EqualsMoneyWithdrawalState:
       type: string
       enum:
