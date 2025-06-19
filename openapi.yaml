@@ -4800,9 +4800,9 @@ paths:
     get:
       tags:
       - History
-      summary: Get dust history.
+      summary: Get dust conversion history.
       description: |-
-        Retrieves the dust history for the user.
+        Retrieves the dust conversion history for the user.
 
         **Instruction:** `dustHistoryQueryAll`
       parameters:
@@ -4849,7 +4849,7 @@ paths:
           type: integer
           format: int64
         in: query
-        description: Filter to the given dust conversion id.
+        description: Filter to a given dust conversion id.
         required: false
         deprecated: false
         explode: true
