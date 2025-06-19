@@ -9902,6 +9902,7 @@ components:
       type: string
       enum:
       - confirmed
+      - information required
       - pending
 x-tagGroups:
 - name: Public Endpoints
