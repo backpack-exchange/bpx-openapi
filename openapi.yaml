@@ -8584,15 +8584,11 @@ components:
       anyOf:
       - $ref: '#/components/schemas/OrderType_MarketOrder'
       - $ref: '#/components/schemas/OrderType_LimitOrder'
-      - $ref: '#/components/schemas/OrderType_MarketOrder'
-      - $ref: '#/components/schemas/OrderType_LimitOrder'
       discriminator:
         propertyName: orderType
         mapping:
           Market: '#/components/schemas/OrderType_MarketOrder'
           Limit: '#/components/schemas/OrderType_LimitOrder'
-          StopMarket: '#/components/schemas/OrderType_MarketOrder'
-          StopLimit: '#/components/schemas/OrderType_LimitOrder'
     OrderTypeEnum:
       type: string
       enum:
@@ -8607,8 +8603,8 @@ components:
           orderType:
             type: string
             enum:
-            - StopLimit
-            example: StopLimit
+            - Limit
+            example: Limit
       - $ref: '#/components/schemas/LimitOrder'
     OrderType_MarketOrder:
       allOf:
@@ -8619,8 +8615,8 @@ components:
           orderType:
             type: string
             enum:
-            - StopMarket
-            example: StopMarket
+            - Market
+            example: Market
       - $ref: '#/components/schemas/MarketOrder'
     PaymentType:
       type: string
@@ -9898,6 +9894,10 @@ components:
         accountIdentifier:
           type: string
           description: Account identifier.
+        triggerAt:
+          type: string
+          format: naive-date-time
+          description: When the withdrawal is to be triggered.
     WithdrawalStatus:
       type: string
       enum:
