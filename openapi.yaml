@@ -740,7 +740,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -749,7 +748,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -759,7 +757,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -769,7 +766,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -807,7 +803,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -816,7 +811,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -826,7 +820,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -836,7 +829,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -890,7 +882,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -899,7 +890,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -909,7 +899,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -919,7 +908,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -968,7 +956,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -977,7 +964,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -987,7 +973,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -997,7 +982,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -1006,7 +990,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1053,7 +1036,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1062,7 +1044,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1072,7 +1053,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1082,7 +1062,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -1091,7 +1070,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: side
         schema:
           $ref: '#/components/schemas/Side'
@@ -1100,7 +1078,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: price
         schema:
           type: string
@@ -1110,7 +1087,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: reduceOnly
         schema:
           type: boolean
@@ -1119,7 +1095,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: autoBorrow
         schema:
           type: boolean
@@ -1128,7 +1103,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: autoBorrowRepay
         schema:
           type: boolean
@@ -1137,7 +1111,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: autoLendRedeem
         schema:
           type: boolean
@@ -1146,7 +1119,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1190,7 +1162,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1199,7 +1170,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1209,7 +1179,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1219,7 +1188,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -1228,7 +1196,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: autoBorrow
         schema:
           type: boolean
@@ -1237,7 +1204,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: autoLendRedeem
         schema:
           type: boolean
@@ -1246,7 +1212,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1329,7 +1294,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1338,7 +1302,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1348,7 +1311,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1358,7 +1320,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1396,7 +1357,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1405,7 +1365,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1415,7 +1374,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1425,7 +1383,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -1489,7 +1446,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -1498,7 +1454,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1536,7 +1491,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1545,7 +1499,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1555,7 +1508,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1565,7 +1517,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1606,7 +1557,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1615,7 +1565,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1625,7 +1574,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1635,7 +1583,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: subaccountId
         schema:
           type: integer
@@ -1644,7 +1591,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1683,7 +1629,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1692,7 +1637,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1702,7 +1646,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1712,7 +1655,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: from
         schema:
           type: integer
@@ -1722,7 +1664,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: to
         schema:
           type: integer
@@ -1732,7 +1673,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -1742,7 +1682,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -1752,7 +1691,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1800,7 +1738,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -1809,7 +1746,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -1819,7 +1755,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -1829,7 +1764,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: blockchain
         schema:
           $ref: '#/components/schemas/Blockchain'
@@ -1838,7 +1772,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1901,7 +1834,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1938,7 +1870,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: interval
         schema:
           $ref: '#/components/schemas/TickerInterval'
@@ -1946,7 +1877,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -1985,7 +1915,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2016,7 +1945,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2058,7 +1986,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: interval
         schema:
           $ref: '#/components/schemas/KlineInterval'
@@ -2066,7 +1993,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: startTime
         schema:
           type: integer
@@ -2076,7 +2002,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: endTime
         schema:
           type: integer
@@ -2086,7 +2011,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: priceType
         schema:
           $ref: '#/components/schemas/KlinePriceType'
@@ -2095,7 +2019,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2134,7 +2057,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2173,7 +2095,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2211,7 +2132,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -2221,7 +2141,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -2231,7 +2150,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2307,7 +2225,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2316,7 +2233,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2326,7 +2242,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2336,7 +2251,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: clientId
         schema:
           type: integer
@@ -2346,7 +2260,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: orderId
         schema:
           type: string
@@ -2355,7 +2268,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -2364,7 +2276,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2408,7 +2319,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2417,7 +2327,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2427,7 +2336,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2437,7 +2345,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2490,7 +2397,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2499,7 +2405,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2509,7 +2414,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2519,7 +2423,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2572,7 +2475,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2581,7 +2483,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2591,7 +2492,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2601,7 +2501,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2657,7 +2556,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2666,7 +2564,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2676,7 +2573,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2686,7 +2582,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: marketType
         schema:
           $ref: '#/components/schemas/MarketType'
@@ -2695,7 +2590,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -2704,7 +2598,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2744,7 +2637,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2753,7 +2645,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2763,7 +2654,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2773,7 +2663,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2828,7 +2717,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2837,7 +2725,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2847,7 +2734,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2857,7 +2743,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -2905,7 +2790,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2914,7 +2798,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -2924,7 +2807,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -2934,7 +2816,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -2984,7 +2865,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -2993,7 +2873,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3003,7 +2882,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3013,7 +2891,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: rfqId
         schema:
           type: string
@@ -3022,7 +2899,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -3031,7 +2907,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Accepted.
@@ -3078,7 +2953,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3087,7 +2961,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3097,7 +2970,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3107,7 +2979,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3158,7 +3029,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3167,7 +3037,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3177,7 +3046,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3187,7 +3055,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3235,7 +3102,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3244,7 +3110,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3254,7 +3119,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3264,7 +3128,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3316,7 +3179,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3325,7 +3187,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3335,7 +3196,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3345,7 +3205,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3395,7 +3254,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3404,7 +3262,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3414,7 +3271,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3424,7 +3280,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -3433,7 +3288,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Accepted.
@@ -3484,7 +3338,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3493,7 +3346,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3503,7 +3355,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3513,7 +3364,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: clientStrategyId
         schema:
           type: integer
@@ -3523,7 +3373,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: strategyId
         schema:
           type: string
@@ -3532,7 +3381,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -3541,7 +3389,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -3585,7 +3432,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3594,7 +3440,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3604,7 +3449,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3614,7 +3458,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3666,7 +3509,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3675,7 +3517,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3685,7 +3526,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3695,7 +3535,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3750,7 +3589,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3759,7 +3597,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3769,7 +3606,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3779,7 +3615,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: marketType
         schema:
           $ref: '#/components/schemas/MarketType'
@@ -3788,7 +3623,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: strategyType
         schema:
           $ref: '#/components/schemas/StrategyTypeEnum'
@@ -3797,7 +3631,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -3806,7 +3639,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -3846,7 +3678,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -3855,7 +3686,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -3865,7 +3695,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -3875,7 +3704,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3974,7 +3802,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -3984,7 +3811,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4023,7 +3849,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -4033,7 +3858,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -4043,7 +3867,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4084,7 +3907,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4093,7 +3915,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4103,7 +3924,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4113,7 +3933,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: from
         schema:
           type: integer
@@ -4123,7 +3942,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: to
         schema:
           type: integer
@@ -4133,7 +3951,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -4143,7 +3960,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -4153,7 +3969,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4203,7 +4018,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4213,7 +4027,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4223,7 +4036,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4232,7 +4044,6 @@ paths:
         required: true
         deprecated: false
         explode: true
-        style: null
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -4301,7 +4112,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4310,7 +4120,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4320,7 +4129,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4330,7 +4138,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: type
         schema:
           $ref: '#/components/schemas/BorrowLendEventType'
@@ -4339,7 +4146,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sources
         schema:
           type: string
@@ -4350,7 +4156,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: positionId
         schema:
           type: string
@@ -4359,7 +4164,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -4368,7 +4172,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -4378,7 +4181,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -4388,7 +4190,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -4397,7 +4198,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4474,7 +4274,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4483,7 +4282,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4493,7 +4291,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4503,7 +4300,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: asset
         schema:
           type: string
@@ -4512,7 +4308,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -4525,7 +4320,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: positionId
         schema:
           type: string
@@ -4534,7 +4328,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -4544,7 +4337,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -4554,7 +4346,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: source
         schema:
           $ref: '#/components/schemas/InterestPaymentSource'
@@ -4566,7 +4357,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -4575,7 +4365,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4652,7 +4441,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4661,7 +4449,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4671,7 +4458,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4681,7 +4467,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -4690,7 +4475,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: side
         schema:
           $ref: '#/components/schemas/BorrowLendSide'
@@ -4699,7 +4483,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: state
         schema:
           $ref: '#/components/schemas/BorrowLendPositionState'
@@ -4708,7 +4491,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -4718,7 +4500,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -4728,7 +4509,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -4737,7 +4517,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4814,7 +4593,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4823,7 +4601,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4833,7 +4610,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4843,7 +4619,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: id
         schema:
           type: integer
@@ -4853,7 +4628,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -4862,7 +4636,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -4872,7 +4645,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -4882,7 +4654,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -4891,7 +4662,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -4969,7 +4739,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -4978,7 +4747,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -4988,7 +4756,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -4998,7 +4765,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: orderId
         schema:
           type: string
@@ -5007,7 +4773,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: strategyId
         schema:
           type: string
@@ -5016,7 +4781,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: from
         schema:
           type: integer
@@ -5026,7 +4790,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: to
         schema:
           type: integer
@@ -5036,7 +4799,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -5045,7 +4807,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -5055,7 +4816,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -5065,7 +4825,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: fillType
         schema:
           $ref: '#/components/schemas/FillType'
@@ -5074,7 +4833,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: marketType
         schema:
           type: array
@@ -5085,7 +4843,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5094,7 +4851,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -5171,7 +4927,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -5180,7 +4935,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -5190,7 +4944,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -5200,7 +4953,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: subaccountId
         schema:
           type: integer
@@ -5210,7 +4962,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -5219,7 +4970,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -5229,7 +4979,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -5239,7 +4988,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5248,7 +4996,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -5328,7 +5075,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -5337,7 +5083,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -5347,7 +5092,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -5357,7 +5101,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: orderId
         schema:
           type: string
@@ -5366,7 +5109,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: strategyId
         schema:
           type: string
@@ -5375,7 +5117,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -5384,7 +5125,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -5394,7 +5134,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -5404,7 +5143,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: marketType
         schema:
           type: array
@@ -5415,7 +5153,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5424,7 +5161,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -5501,7 +5237,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -5510,7 +5245,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -5520,7 +5254,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -5530,7 +5263,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: subaccountId
         schema:
           type: integer
@@ -5540,7 +5272,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -5549,7 +5280,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -5559,7 +5289,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -5569,7 +5298,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5578,7 +5306,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -5656,7 +5383,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -5665,7 +5391,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -5675,7 +5400,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -5685,7 +5409,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: rfqId
         schema:
           type: string
@@ -5694,7 +5417,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -5703,7 +5425,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: status
         schema:
           $ref: '#/components/schemas/OrderStatus'
@@ -5712,7 +5433,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: side
         schema:
           $ref: '#/components/schemas/Side'
@@ -5721,7 +5441,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -5731,7 +5450,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -5741,7 +5459,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5750,7 +5467,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -5828,7 +5544,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -5837,7 +5552,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -5847,7 +5561,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -5857,7 +5570,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: quoteId
         schema:
           type: string
@@ -5866,7 +5578,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -5875,7 +5586,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: status
         schema:
           $ref: '#/components/schemas/OrderStatus'
@@ -5884,7 +5594,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -5894,7 +5603,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -5904,7 +5612,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5913,7 +5620,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -5990,7 +5696,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -5999,7 +5704,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -6009,7 +5713,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -6019,7 +5722,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -6029,7 +5731,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -6039,7 +5740,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: source
         schema:
           $ref: '#/components/schemas/SettlementSourceFilter'
@@ -6047,7 +5747,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -6056,7 +5755,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
@@ -6135,7 +5833,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-SIGNATURE
         schema:
           type: string
@@ -6144,7 +5841,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-TIMESTAMP
         schema:
           type: integer
@@ -6154,7 +5850,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: X-WINDOW
         schema:
           type: integer
@@ -6164,7 +5859,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: strategyId
         schema:
           type: string
@@ -6173,7 +5867,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: symbol
         schema:
           type: string
@@ -6182,7 +5875,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: limit
         schema:
           type: integer
@@ -6192,7 +5884,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: offset
         schema:
           type: integer
@@ -6202,7 +5893,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: marketType
         schema:
           type: array
@@ -6213,7 +5903,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -6222,7 +5911,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-        style: null
       responses:
         '200':
           description: Success.
