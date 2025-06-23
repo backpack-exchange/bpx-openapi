@@ -6257,6 +6257,7 @@ components:
       - TAO
       - VIRTUAL
       - TIA
+      - TRX
     Balance:
       type: object
       title: Balance
@@ -6334,6 +6335,7 @@ components:
       - Sui
       - Solana
       - Story
+      - Tron
       - XRP
     BorrowLendBookState:
       type: string
@@ -6922,6 +6924,7 @@ components:
       - sui
       - solana
       - story
+      - tron
       - xRP
       - equalsMoney
       - banxa
