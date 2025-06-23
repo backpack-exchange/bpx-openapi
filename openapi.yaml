@@ -2848,93 +2848,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: submit_rfq
-    get:
-      tags:
-      - Request For Quote
-      summary: Get RFQs.
-      description: |-
-        Get RFQs, and any existing quotes.
-
-        **Instruction:** `rfqQueryAccount`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      - name: rfqId
-        schema:
-          type: string
-        in: query
-        description: Request a specific RFQ ID.
-        required: false
-        deprecated: false
-        explode: true
-      - name: symbol
-        schema:
-          type: string
-        in: query
-        description: Filter for symbol.
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Accepted.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RfqWithQuotes'
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '503':
-          description: System under maintenance.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_account_rfqs
   /api/v1/rfq/accept:
     post:
       tags:
@@ -3237,85 +3150,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: submit_quote
-    get:
-      tags:
-      - Request For Quote
-      summary: Get quotes.
-      description: |-
-        Get quotes for the account and the RFQ they were submitted for.
-
-        **Instruction:** `quoteQuery`
-      parameters:
-      - name: X-API-KEY
-        schema:
-          type: string
-        in: header
-        description: API key
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-SIGNATURE
-        schema:
-          type: string
-        in: header
-        description: Signature of the request
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-TIMESTAMP
-        schema:
-          type: integer
-          format: int64
-        in: header
-        description: Timestamp of the request in milliseconds
-        required: true
-        deprecated: false
-        explode: true
-      - name: X-WINDOW
-        schema:
-          type: integer
-          format: uint64
-        in: header
-        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
-        required: false
-        deprecated: false
-        explode: true
-      - name: symbol
-        schema:
-          type: string
-        in: query
-        description: Filter for symbol.
-        required: false
-        deprecated: false
-        explode: true
-      responses:
-        '200':
-          description: Accepted.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/QuoteToRfq'
-        '400':
-          description: Bad request.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '500':
-          description: Internal server error.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-        '503':
-          description: System under maintenance.
-          content:
-            application/json; charset=utf-8:
-              schema:
-                $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_account_quotes
   /api/v1/strategy:
     get:
       tags:
@@ -8601,44 +8435,6 @@ components:
           type: string
           format: decimal
           description: Ask price.
-    QuotePublic:
-      type: object
-      title: QuotePublic
-      description: |-
-        Quote when shown to the requester. Omits fields that only the quoter should
-        see.
-      required:
-      - rfqId
-      - quoteId
-      - price
-      - status
-      properties:
-        rfqId:
-          type: string
-          description: Unique RFQ order ID, assigned by the matching engine.
-        quoteId:
-          type: string
-          description: Unique RFQ quote ID, assigned by the matching engine.
-        price:
-          type: string
-          format: decimal
-          description: Quote price.
-        status:
-          description: Status.
-          allOf:
-          - $ref: '#/components/schemas/OrderStatus'
-          - description: Status.
-    QuoteToRfq:
-      type: object
-      title: QuoteToRfq
-      required:
-      - quote
-      - rfq
-      properties:
-        quote:
-          $ref: '#/components/schemas/Quote'
-        rfq:
-          $ref: '#/components/schemas/RequestForQuotePublic'
     RequestForQuote:
       type: object
       title: RequestForQuote
@@ -8827,53 +8623,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/RfqExecutionMode'
           - description: Execution mode. Defaults to `AwaitAccept` when not provided.
-    RequestForQuotePublic:
-      type: object
-      title: RequestForQuotePublic
-      description: |-
-        Request for quote when shown to anyone other than the requester.
-        Omits fields that only the requester should see.
-      required:
-      - rfqId
-      - symbol
-      - submissionTime
-      - expiryTime
-      - status
-      - createdAt
-      properties:
-        rfqId:
-          type: string
-          description: Unique RFQ order ID, assigned by the matching engine.
-        symbol:
-          type: string
-          description: Market symbol.
-        quantity:
-          type: string
-          format: decimal
-          description: Quantity to fill (in base asset).
-        quoteQuantity:
-          type: string
-          format: decimal
-          description: Quantity to fill (in quote asset).
-        submissionTime:
-          type: integer
-          format: int64
-          description: |-
-            Time (milliseconds since epoch) by which quotes must be submitted for
-            the RFQ.
-        expiryTime:
-          type: integer
-          format: int64
-          description: Time (milliseconds since epoch) by which the RFQ expires if no match.
-        status:
-          description: Status.
-          allOf:
-          - $ref: '#/components/schemas/OrderStatus'
-          - description: Status.
-        createdAt:
-          type: integer
-          format: int64
-          description: Time the RFQ was created.
     RequestForQuoteRefreshPayload:
       type: object
       title: RequestForQuoteRefreshPayload
@@ -8888,19 +8637,6 @@ components:
       enum:
       - AwaitAccept
       - Immediate
-    RfqWithQuotes:
-      type: object
-      title: RfqWithQuotes
-      required:
-      - rfq
-      - quotes
-      properties:
-        rfq:
-          $ref: '#/components/schemas/RequestForQuote'
-        quotes:
-          type: array
-          items:
-            $ref: '#/components/schemas/QuotePublic'
     ScheduledStrategy:
       type: object
       title: ScheduledStrategy
