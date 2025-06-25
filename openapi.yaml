@@ -5923,6 +5923,9 @@ components:
         twoFactorToken:
           type: string
           description: Issued two factor token.
+        passkeyToken:
+          type: string
+          description: Issued passkey token.
         autoBorrow:
           type: boolean
           description: Auto borrow to withdraw if required.
