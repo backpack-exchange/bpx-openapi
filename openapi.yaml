@@ -6095,6 +6095,9 @@ components:
       - VIRTUAL
       - TIA
       - TRX
+      - FRAG
+      - PUMP
+      - WCT
     Balance:
       type: object
       title: Balance
