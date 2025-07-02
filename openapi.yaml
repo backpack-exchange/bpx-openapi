@@ -5514,6 +5514,151 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_quote_history
+  /wapi/v1/history/rfq/fill:
+    get:
+      tags:
+      - History
+      summary: Get RFQ fill history.
+      description: |-
+        Retrieves the RFQ fill history for the user. This comprises of fills
+        where the account was either the requester or quoter.
+
+        **Instruction:** `rfqFillHistoryQueryAll`
+      parameters:
+      - name: X-API-KEY
+        schema:
+          type: string
+        in: header
+        description: API key
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-SIGNATURE
+        schema:
+          type: string
+        in: header
+        description: Signature of the request
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-TIMESTAMP
+        schema:
+          type: integer
+          format: int64
+        in: header
+        description: Timestamp of the request in milliseconds
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-WINDOW
+        schema:
+          type: integer
+          format: uint64
+        in: header
+        description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: fillId
+        schema:
+          type: string
+        in: query
+        description: Filter to the given rfq.
+        required: false
+        deprecated: false
+        explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter to the given symbol.
+        required: false
+        deprecated: false
+        explode: true
+      - name: limit
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Maximum number to return. Default `100`, maximum `1000`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: offset
+        schema:
+          type: integer
+          format: uint64
+        in: query
+        description: Offset. Default `0`.
+        required: false
+        deprecated: false
+        explode: true
+      - name: sortDirection
+        schema:
+          $ref: '#/components/schemas/SortDirection'
+        in: query
+        description: Sort direction.
+        required: false
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RequestForQuoteFillHistorical'
+          headers:
+            ACCESS-CONTROL-EXPOSE-HEADERS:
+              required: true
+              deprecated: false
+              schema:
+                type: string
+            X-PAGE-COUNT:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-CURRENT-PAGE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-PAGE-SIZE:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+            X-TOTAL:
+              required: true
+              deprecated: false
+              schema:
+                type: integer
+                format: uint64
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_rfq_fill_history
   /wapi/v1/history/settlement:
     get:
       tags:
@@ -8518,6 +8663,74 @@ components:
           type: integer
           format: uint32
           description: Custom RFQ ID.
+    RequestForQuoteFillHistorical:
+      type: object
+      title: RequestForQuoteFillHistorical
+      required:
+      - fillId
+      - userId
+      - rfqId
+      - quoteId
+      - symbol
+      - rfqSide
+      - userSide
+      - price
+      - quantity
+      - quoteQuantity
+      - timestamp
+      properties:
+        fillId:
+          type: string
+          description: Fill ID.
+        userId:
+          type: integer
+          format: int32
+          description: User ID.
+        subaccountId:
+          type: integer
+          format: int32
+          description: Subaccount ID.
+        rfqId:
+          type: string
+          description: Unique RFQ order ID, assigned by the matching engine.
+        quoteId:
+          type: string
+          description: Unique RFQ quote ID, assigned by the matching engine.
+        symbol:
+          type: string
+          description: Symbol.
+        rfqSide:
+          description: Side of the RFQ.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: Side of the RFQ.
+        userSide:
+          description: |-
+            The side the user took. If this is the same as the
+            RFQ side, then the user was the requester. Otherwise,
+            the user was the quoter.
+          allOf:
+          - $ref: '#/components/schemas/Side'
+          - description: |-
+              The side the user took. If this is the same as the
+              RFQ side, then the user was the requester. Otherwise,
+              the user was the quoter.
+        price:
+          type: string
+          format: decimal
+          description: RFQ price.
+        quantity:
+          type: string
+          format: decimal
+          description: Quantity.
+        quoteQuantity:
+          type: string
+          format: decimal
+          description: Quote quantity.
+        timestamp:
+          type: string
+          format: naive-date-time
+          description: Time of the RFQ Fill.
     RequestForQuoteHistorical:
       type: object
       title: RequestForQuoteHistorical
