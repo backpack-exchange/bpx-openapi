@@ -6689,10 +6689,6 @@ components:
         fromAddress:
           type: string
           description: Source address.
-        confirmationBlockNumber:
-          type: integer
-          format: int64
-          description: Confirmation status, if this is a blockchain deposit.
         source:
           description: Source of the deposit, blockchain or a payment processor.
           allOf:
