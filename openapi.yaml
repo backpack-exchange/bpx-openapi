@@ -34,6 +34,8 @@ tags:
   description: Disclosures
 - name: Entity
   description: Entity operations.
+- name: FtxCreditor
+  description: FTX Creditor Claims.
 - name: Funding
   description: Futures funding.
 - name: Futures
