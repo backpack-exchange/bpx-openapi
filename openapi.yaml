@@ -3727,6 +3727,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: get_historical_trades
+  /api/v1/wallets:
+    get:
+      tags:
+      - System
+      summary: Get wallets.
+      description: Returns all configured blockchain wallets and their addresses.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WalletResponse'
+      operationId: get_wallets
   /wapi/v1/capital/withdrawals:
     get:
       tags:
@@ -9240,6 +9256,19 @@ components:
           description: |-
             Determines the maximum leverage allowed for the main account or
             subaccount.
+    WalletResponse:
+      type: object
+      title: WalletResponse
+      required:
+      - blockchain
+      - address
+      properties:
+        blockchain:
+          type: string
+          description: The blockchain network.
+        address:
+          type: string
+          description: The wallet address.
     Withdrawal:
       type: object
       title: Withdrawal
