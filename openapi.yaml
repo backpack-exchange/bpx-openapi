@@ -4703,14 +4703,6 @@ paths:
         required: false
         deprecated: false
         explode: true
-      - name: ignoreStrategies
-        schema:
-          type: boolean
-        in: query
-        description: Ignore fills from strategies e.g. TWAPs.
-        required: false
-        deprecated: false
-        explode: true
       - name: sortDirection
         schema:
           $ref: '#/components/schemas/SortDirection'
@@ -5018,14 +5010,6 @@ paths:
             $ref: '#/components/schemas/MarketType'
         in: query
         description: Market type.
-        required: false
-        deprecated: false
-        explode: true
-      - name: ignoreStrategies
-        schema:
-          type: boolean
-        in: query
-        description: Ignore orders from strategies e.g. TWAPs.
         required: false
         deprecated: false
         explode: true
