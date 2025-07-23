@@ -6123,6 +6123,7 @@ components:
       - PUMP
       - WCT
       - ES
+      - SEI
     Balance:
       type: object
       title: Balance
@@ -6198,6 +6199,7 @@ components:
       - Litecoin
       - Optimism
       - Polygon
+      - Sei
       - Sui
       - Solana
       - Story
@@ -6784,6 +6786,7 @@ components:
       - litecoin
       - polygon
       - optimism
+      - sei
       - sui
       - solana
       - story
