@@ -6124,6 +6124,8 @@ components:
       - WCT
       - ES
       - SEI
+      - CRV
+      - TON
     Balance:
       type: object
       title: Balance
