@@ -5982,6 +5982,7 @@ components:
     Blockchain:
       type: string
       enum:
+      - Aptos
       - Arbitrum
       - Avalanche
       - Base
@@ -6570,6 +6571,7 @@ components:
       type: string
       enum:
       - administrator
+      - aptos
       - arbitrum
       - avalanche
       - base
