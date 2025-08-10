@@ -8299,6 +8299,11 @@ components:
           description: |-
             Time (milliseconds since epoch) by which quotes must be submitted for
             the RFQ.
+        systemOrderType:
+          description: The type of system order, only when RFQ was initiated by the system.
+          allOf:
+          - $ref: '#/components/schemas/SystemOrderType'
+          - description: The type of system order, only when RFQ was initiated by the system.
         expiryTime:
           type: integer
           format: int64
