@@ -6774,7 +6774,6 @@ components:
       - symbol
       - quantity
       - intervalEndTimestamp
-      - paymentIntervalEndTimestamp
       - fundingRate
       properties:
         userId:
@@ -6796,12 +6795,6 @@ components:
           type: string
           format: naive-date-time
           description: The end of the funding rate interval.
-        paymentIntervalEndTimestamp:
-          type: string
-          format: naive-date-time
-          description: |-
-            The end of the payment interval. A funding interval may have multiple
-            payments.
         fundingRate:
           type: string
           format: decimal
