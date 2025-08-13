@@ -6794,7 +6794,7 @@ components:
         intervalEndTimestamp:
           type: string
           format: naive-date-time
-          description: The end of the funding rate interval.
+          description: The end of the funding interval for the payment.
         fundingRate:
           type: string
           format: decimal
