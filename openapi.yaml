@@ -5923,6 +5923,9 @@ components:
       - SEI
       - CRV
       - TON
+      - HBAR
+      - XLM
+      - ZORA
     Balance:
       type: object
       title: Balance
