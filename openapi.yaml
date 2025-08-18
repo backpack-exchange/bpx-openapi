@@ -6162,7 +6162,7 @@ components:
           type: string
           format: decimal
           description: |-
-            The max utilization threhsold for any given timestep. Any borrow
+            The max utilization threshold for any given timestep. Any borrow
             or lend redemption should fail if it puts utilization above this
             (with the exception of liquidations).
         throttleUpdateFraction:
