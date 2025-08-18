@@ -7283,7 +7283,7 @@ components:
       properties:
         symbol:
           type: string
-          description: Symbol of the market, e.g. ETH_USDC
+          description: Symbol of the market, e.g. `ETH_USDC`
         baseSymbol:
           description: The base asset of the market.
           allOf:
@@ -8032,7 +8032,7 @@ components:
           format: decimal
           description: |-
             Maximum allowed deviation from the mean premium. E.g. if
-            tolerance_pct is 0.05 (5%), and the mean premium is 5%, then
+            `tolerance_pct` is 0.05 (5%), and the mean premium is 5%, then
             orders will be prevented from being placed if the premium exceeds 10%.
     PriceFilter:
       type: object
@@ -8118,7 +8118,7 @@ components:
 
             For futures, this will be the threshold at which a position gets closed
             and so it should be as close as possible, preferably equal, to the
-            step_size.
+            `step_size`.
         maxQuantity:
           type: string
           format: decimal
