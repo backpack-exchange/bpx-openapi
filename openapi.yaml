@@ -186,6 +186,7 @@ tags:
       "T": 1694687692989999,  // Engine timestamp in microseconds
       "O": "USER"             // Origin of the update
       "I": "1111343026156135" // Related order ID
+      "H": 6023471188         // Strategy ID
     }
     ```
 
@@ -1408,7 +1409,7 @@ paths:
             application/json; charset=utf-8:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
-      operationId: get_estimated_liquidation_price
+      operationId: get_borrow_lend_estimated_liquidation_price
   /api/v1/borrowLend/markets:
     get:
       tags:
