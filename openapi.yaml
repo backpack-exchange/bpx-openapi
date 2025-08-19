@@ -7907,6 +7907,7 @@ components:
       type: string
       enum:
       - AccountTradingSuspended
+      - BorrowRequiresLendRedeem
       - FillOrKill
       - InsufficientBorrowableQuantity
       - InsufficientFunds
