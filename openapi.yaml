@@ -1357,6 +1357,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: execute_borrow_lend
+  /api/v1/borrowLend/position/liquidationPrice:
+    get:
+      tags:
+      - Borrow Lend
+      summary: Get an estimated liquidation price for potential borrow lend position.
+      description: |-
+        Retrieves the estimated liquidation price for a potential borrow lend
+        position.
+      parameters:
+      - name: subaccountId
+        schema:
+          type: integer
+          format: uint16
+        in: query
+        description: Optional subaccount.
+        required: false
+        deprecated: false
+        explode: true
+      - name: borrow
+        schema:
+          type: string
+        in: query
+        description: Standard base64 encoded json of [`BorrowLendExecutePayload`]
+        required: true
+        deprecated: false
+        explode: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/PositionEstimatedLiquidationPrice'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_estimated_liquidation_price
   /api/v1/borrowLend/markets:
     get:
       tags:
@@ -7989,6 +8041,19 @@ components:
       - Lend
       - UnrealizedPositivePnl
       - UnrealizedNegativePnl
+    PositionEstimatedLiquidationPrice:
+      type: object
+      title: PositionEstimatedLiquidationPrice
+      required:
+      - liquidationPrice
+      - markPrice
+      properties:
+        liquidationPrice:
+          type: string
+          format: decimal
+        markPrice:
+          type: string
+          format: decimal
     PositionImfFunction:
       type: object
       anyOf:
