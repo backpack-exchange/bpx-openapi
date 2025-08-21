@@ -2748,6 +2748,14 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: symbol
+        schema:
+          type: string
+        in: query
+        description: Filter for a single position by symbol.
+        required: false
+        deprecated: false
+        explode: true
       responses:
         '200':
           description: Success.
@@ -2765,6 +2773,12 @@ paths:
                 $ref: '#/components/schemas/ApiErrorResponse'
         '401':
           description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: Position not found.
           content:
             application/json; charset=utf-8:
               schema:
