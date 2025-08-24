@@ -7350,6 +7350,7 @@ components:
       - filters
       - orderBookState
       - createdAt
+      - visible
       properties:
         symbol:
           type: string
@@ -7413,6 +7414,9 @@ components:
           type: string
           format: naive-date-time
           description: Market created at time.
+        visible:
+          type: boolean
+          description: Market currently visible.
     MarketAsset:
       type: object
       title: MarketAsset
