@@ -187,6 +187,7 @@ tags:
       "O": "USER"             // Origin of the update
       "I": "1111343026156135" // Related order ID
       "H": 6023471188         // Strategy ID
+      "y": true               // Post only
     }
     ```
 
