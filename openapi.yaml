@@ -519,7 +519,7 @@ tags:
     update ID in the event.
 
     There are alternative depth streams that aggregates updates into a
-    single message over a 200ms or 1000ms period instead of pushing updates
+    single message over a 200ms, 600ms or 1000ms period instead of pushing updates
     in realtime. This is useful for reducing network traffic.
 
     Updates are sequential, so `U` will always be `u + 1` from the previous
@@ -528,6 +528,7 @@ tags:
 
     Stream name format: `depth.<symbol>` (realtime)
     Stream name format: `depth.200ms.<symbol>` (aggregated)
+    Stream name format: `depth.600ms.<symbol>` (aggregated)
     Stream name format: `depth.1000ms.<symbol>` (aggregated)
     ```
     {
