@@ -519,8 +519,8 @@ tags:
     update ID in the event.
 
     There are alternative depth streams that aggregates updates into a
-    single message over a 200ms, 600ms or 1000ms period instead of pushing updates
-    in realtime. This is useful for reducing network traffic.
+    single message over a 200ms, 600ms or 1000ms period instead of pushing
+    updates in realtime. This is useful for reducing network traffic.
 
     Updates are sequential, so `U` will always be `u + 1` from the previous
     message. If this is not the case, the client should assume that the
