@@ -5995,6 +5995,7 @@ components:
       - HBAR
       - XLM
       - ZORA
+      - WLFI
     Balance:
       type: object
       title: Balance
