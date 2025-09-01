@@ -7949,6 +7949,8 @@ components:
       - PriceImpact
       - Unknown
       - UserPermissions
+      - MaxStopOrdersPerPosition
+      - PositionLimit
     OrderFill:
       type: object
       title: OrderFill
