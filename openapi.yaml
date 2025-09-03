@@ -6696,6 +6696,7 @@ components:
             type: array
             items:
               type: string
+              format: decimal
             maxLength: 2
             minLength: 2
         bids:
@@ -6705,6 +6706,7 @@ components:
             type: array
             items:
               type: string
+              format: decimal
             maxLength: 2
             minLength: 2
         lastUpdateId:
