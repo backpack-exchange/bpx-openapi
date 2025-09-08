@@ -3964,6 +3964,114 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiErrorResponse'
       operationId: request_withdrawal
+  /wapi/v1/capital/withdrawals/delay:
+    get:
+      summary: Get withdrawal delay.
+      description: |-
+        A configurable hourly delay can be applied to withdrawals to non
+        whitelisted addresses.
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/WithdrawalDelay'
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: ''
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: get_withdrawal_delay
+    post:
+      summary: Create withdrawal delay.
+      description: |-
+        A configurable hourly delay can be applied to withdrawals to non
+        whitelisted addresses.
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/CreateWithdrawalDelayRequest'
+        required: true
+      responses:
+        '200':
+          description: Success.
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '409':
+          description: Withdrawal delay already exists.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal server error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: create_withdrawal_delay
+    patch:
+      summary: Update the withdrawal delay.
+      description: |-
+        A configurable hourly delay can be applied to withdrawals to non
+        whitelisted addresses.
+
+        Updates are only applied after the current delay ends.
+      requestBody:
+        content:
+          application/json; charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/UpdateWithdrawalDelayRequest'
+        required: true
+      responses:
+        '200':
+          description: Success.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/WithdrawalDelay'
+        '400':
+          description: Bad request.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '404':
+          description: ''
+        '401':
+          description: Unauthorized.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json; charset=utf-8:
+              schema:
+                $ref: '#/components/schemas/ApiErrorResponse'
+      operationId: update_withdrawal_delay
   /wapi/v1/history/borrowLend:
     get:
       tags:
@@ -6568,6 +6676,20 @@ components:
           allOf:
           - $ref: '#/components/schemas/CollateralFunction'
           - description: Calculates the haircut for collateral value.
+    CreateWithdrawalDelayRequest:
+      type: object
+      title: CreateWithdrawalDelayRequest
+      required:
+      - withdrawalDelayHours
+      - twoFactorToken
+      properties:
+        withdrawalDelayHours:
+          type: integer
+          format: uint32
+          description: The delay applied to withdrawals being processed, in hours.
+        twoFactorToken:
+          type: string
+          description: Issued two factor token.
     Deposit:
       type: object
       title: Deposit
@@ -9148,6 +9270,20 @@ components:
           description: |-
             Determines the maximum leverage allowed for the main account or
             subaccount.
+    UpdateWithdrawalDelayRequest:
+      type: object
+      title: UpdateWithdrawalDelayRequest
+      required:
+      - withdrawalDelayHours
+      - twoFactorToken
+      properties:
+        withdrawalDelayHours:
+          type: integer
+          format: uint32
+          description: The delay applied to withdrawals being processed, in hours.
+        twoFactorToken:
+          type: string
+          description: Issued two factor token.
     WalletResponse:
       type: object
       title: WalletResponse
@@ -9255,6 +9391,26 @@ components:
           type: string
           format: naive-date-time
           description: When the withdrawal is to be triggered.
+    WithdrawalDelay:
+      type: object
+      title: WithdrawalDelay
+      properties:
+        currentWithdrawalDelayHours:
+          type: integer
+          format: int32
+          description: The delay applied to withdrawals being processed.
+        pendingWithdrawalDelayHours:
+          type: integer
+          format: int32
+          description: |-
+            The delay that will be applied to withdrawals once the update to the
+            setting is enabled.
+        pendingWithdrawalDelayHoursEnabledAt:
+          type: string
+          format: naive-date-time
+          description: |-
+            The time when the update to the withdrawal delay setting will be
+            applied.
     WithdrawalStatus:
       type: string
       enum:
