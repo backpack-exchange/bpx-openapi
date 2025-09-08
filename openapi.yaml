@@ -6103,6 +6103,10 @@ components:
       - XLM
       - ZORA
       - WLFI
+      - BPEUR
+      - SWTCH
+      - LINEA
+      - XPL
     Balance:
       type: object
       title: Balance
