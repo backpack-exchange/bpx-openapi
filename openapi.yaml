@@ -2143,7 +2143,7 @@ paths:
           type: integer
           format: uint64
         in: query
-        description: Maximum number to return. Default `100`, maximum `1000`.
+        description: Maximum number to return. Default `100`, maximum `10000`.
         required: false
         deprecated: false
         explode: true
