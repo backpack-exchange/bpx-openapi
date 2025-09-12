@@ -7693,6 +7693,15 @@ components:
         strategyId:
           type: string
           description: Strategy ID of the order, if any.
+        slippageTolerance:
+          type: string
+          format: decimal
+          description: Slippage tolerance allowed for the order.
+        slippageToleranceType:
+          description: Slippage tolerance type
+          allOf:
+          - $ref: '#/components/schemas/SlippageToleranceType'
+          - description: Slippage tolerance type
     MarketType:
       type: string
       enum:
@@ -7895,6 +7904,15 @@ components:
         strategyId:
           type: string
           description: Strategy ID of the order, if any.
+        slippageTolerance:
+          type: string
+          format: decimal
+          description: Slippage tolerance allowed for the order.
+        slippageToleranceType:
+          description: Slippage tolerance type
+          allOf:
+          - $ref: '#/components/schemas/SlippageToleranceType'
+          - description: Slippage tolerance type
     OrderBookFilters:
       type: object
       title: OrderBookFilters
@@ -8054,6 +8072,15 @@ components:
         triggerQuantity:
           type: string
           description: Trigger quantity type if this is a trigger order.
+        slippageTolerance:
+          type: string
+          format: decimal
+          description: Slippage tolerance allowed for the order.
+        slippageToleranceType:
+          description: Slippage tolerance type.
+          allOf:
+          - $ref: '#/components/schemas/SlippageToleranceType'
+          - description: Slippage tolerance type.
     OrderExpiryReason:
       type: string
       enum:
@@ -8080,6 +8107,7 @@ components:
       - UserPermissions
       - MaxStopOrdersPerPosition
       - PositionLimit
+      - SlippageToleranceExceeded
     OrderFill:
       type: object
       title: OrderFill
@@ -8768,6 +8796,15 @@ components:
           description: |-
             Determines whether the strategy will execute a randomized interval
             quantity.
+        slippageTolerance:
+          type: string
+          format: decimal
+          description: Slippage tolerance allowed for the order.
+        slippageToleranceType:
+          description: Slippage tolerance type
+          allOf:
+          - $ref: '#/components/schemas/SlippageToleranceType'
+          - description: Slippage tolerance type
     SelfTradePrevention:
       type: string
       enum:
@@ -8835,6 +8872,11 @@ components:
       enum:
       - Bid
       - Ask
+    SlippageToleranceType:
+      type: string
+      enum:
+      - TickSize
+      - Percent
     SortDirection:
       type: string
       enum:
@@ -8957,6 +8999,15 @@ components:
           description: |-
             Determines whether the strategy will execute a randomized interval
             quantity.
+        slippageTolerance:
+          type: string
+          format: decimal
+          description: Slippage tolerance allowed for the order.
+        slippageToleranceType:
+          description: Slippage tolerance type
+          allOf:
+          - $ref: '#/components/schemas/SlippageToleranceType'
+          - description: Slippage tolerance type
     StrategyCancelAllPayload:
       type: object
       title: StrategyCancelAllPayload
@@ -9080,6 +9131,15 @@ components:
         randomizedIntervalQuantity:
           type: boolean
           description: Randomized interval quantity for the strategy.
+        slippageTolerance:
+          type: string
+          format: decimal
+          description: Slippage tolerance allowed for the order.
+        slippageToleranceType:
+          description: Slippage tolerance type.
+          allOf:
+          - $ref: '#/components/schemas/SlippageToleranceType'
+          - description: Slippage tolerance type.
     StrategyStatus:
       type: string
       enum:
