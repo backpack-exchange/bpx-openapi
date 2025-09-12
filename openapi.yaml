@@ -6805,6 +6805,7 @@ components:
       - ownershipVerificationRequired
       - pending
       - refunded
+      - senderVerificationCompleted
       - senderVerificationRequired
     Depth:
       type: object
@@ -9419,10 +9420,10 @@ components:
       type: string
       enum:
       - confirmed
-      - information provided
-      - information required
-      - ownership verification required
+      - ownershipVerificationRequired
       - pending
+      - recipientInformationProvided
+      - recipientInformationRequired
 x-tagGroups:
 - name: Public Endpoints
   tags:
