@@ -2351,6 +2351,23 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: X-BROKER-ID
+        schema:
+          type: integer
+          format: uint16
+        in: header
+        description: Broker ID of the order
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-Broker-Id
+        schema:
+          type: integer
+          format: uint16
+        in: header
+        required: false
+        deprecated: false
+        explode: true
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -7988,6 +8005,10 @@ components:
         autoBorrowRepay:
           type: boolean
           description: If true then the order can repay a borrow. Spot margin only.
+        brokerId:
+          type: integer
+          format: uint16
+          description: Broker ID of the order.
         clientId:
           type: integer
           format: uint32
@@ -9077,6 +9098,10 @@ components:
         autoBorrowRepay:
           type: boolean
           description: If true then the strategy's orders can repay a borrow. Spot margin only.
+        brokerId:
+          type: integer
+          format: uint16
+          description: Broker ID of the orders.
         clientStrategyId:
           type: integer
           format: uint32
