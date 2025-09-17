@@ -2524,6 +2524,14 @@ paths:
         required: false
         deprecated: false
         explode: true
+      - name: X-Broker-Id
+        schema:
+          type: integer
+          format: uint16
+        in: header
+        required: false
+        deprecated: false
+        explode: true
       requestBody:
         content:
           application/json; charset=utf-8:
@@ -3326,6 +3334,14 @@ paths:
           format: uint64
         in: header
         description: Time the request is valid for in milliseconds (default `5000`, maximum `60000`)
+        required: false
+        deprecated: false
+        explode: true
+      - name: X-Broker-Id
+        schema:
+          type: integer
+          format: uint16
+        in: header
         required: false
         deprecated: false
         explode: true
