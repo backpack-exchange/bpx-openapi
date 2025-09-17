@@ -6140,6 +6140,11 @@ components:
       - SWTCH
       - LINEA
       - XPL
+      - BARD
+      - FLOCK
+      - AVNT
+      - PENDLE
+      - AERO
     Balance:
       type: object
       title: Balance
