@@ -6145,6 +6145,8 @@ components:
       - AVNT
       - PENDLE
       - AERO
+      - ASTER
+      - GLXY
     Balance:
       type: object
       title: Balance
