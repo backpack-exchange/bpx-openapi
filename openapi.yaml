@@ -6147,6 +6147,8 @@ components:
       - AERO
       - ASTER
       - GLXY
+      - 0G
+      - 2Z
     Balance:
       type: object
       title: Balance
