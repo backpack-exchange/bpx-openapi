@@ -6208,6 +6208,7 @@ components:
     Blockchain:
       type: string
       enum:
+      - 0G
       - Aptos
       - Arbitrum
       - Avalanche
@@ -6221,9 +6222,12 @@ components:
       - Eclipse
       - EqualsMoney
       - Ethereum
+      - HyperEVM
       - Hyperliquid
+      - Linea
       - Litecoin
       - Optimism
+      - Plasma
       - Polygon
       - Sei
       - Sui
@@ -6811,6 +6815,7 @@ components:
       type: string
       enum:
       - administrator
+      - 0G
       - aptos
       - arbitrum
       - avalanche
@@ -6823,10 +6828,13 @@ components:
       - dogecoin
       - eclipse
       - ethereum
+      - hyperEVM
       - hyperliquid
+      - linea
       - litecoin
       - polygon
       - optimism
+      - plasma
       - sei
       - sui
       - solana
