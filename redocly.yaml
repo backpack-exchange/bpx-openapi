@@ -1,0 +1,6 @@
+features.openapi:
+  theme:
+    logo:
+      maxWidth: "100%"
+      maxHeight: "100%"
+      gutter: "2rem 6rem"
